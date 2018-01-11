@@ -21,6 +21,12 @@ exports.validate = {
   package: 'egg-validate',
 };
 
+exports.passport = {
+  enable: true,
+  package: 'egg-passport',
+};
+
+
 // // 角色管理
 // exports.userrole = {
 //   package: 'egg-userrole',

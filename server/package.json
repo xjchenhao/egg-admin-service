@@ -6,8 +6,10 @@
   "dependencies": {
     "egg": "^2.0.0",
     "egg-mysql": "^3.0.0",
+    "egg-passport": "^2.0.1",
     "egg-scripts": "^2.1.0",
     "egg-validate": "^1.0.0",
+    "passport-local": "^1.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
