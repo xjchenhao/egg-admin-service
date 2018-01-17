@@ -35,7 +35,11 @@ module.exports = app => {
 
   /* 系统级接口 */
   app.get('sysLogout', '/nodeApi/sys/logout', 'sys.main.logout');           // 登录接口
-  app.get('/nodeApi/sys/login', app.passport.authenticate('local'));              // 登录接口
+  app.get('/nodeApi/sys/login', 'sys.main.login');              // 登录接口
+  app.router.post('/nodeApi/sys/aaa', app.passport.authenticate('local', {
+    successRedirect: '/nodeApi/auth/groups',
+    failureRedirect: '/nodeApi/auth/users'
+  }));              // 登录接口
   app.get('sysUserInfo', '/nodeApi/sys/userInfo', 'sys.main.userInfo');     // 获取用户信息
   app.get('sysSidebar', '/nodeApi/sys/sidebar', 'sys.main.sidebar');        // 查看系统菜单
 

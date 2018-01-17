@@ -17,7 +17,11 @@ module.exports = app => {
                     user_password: crypto.createHash('md5').update(password).digest('hex'),
                 },
             });
-
+            // console.log(app.passport.authenticate.toString());
+            app.passport.authenticate({
+                usernameField:'usernameField',
+                passwordField:'passwordField'
+            });
             if (list.length) {
                 ctx.login(userName, {
                     a: 1
