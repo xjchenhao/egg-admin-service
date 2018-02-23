@@ -14,11 +14,17 @@ module.exports = app => {
             username,
             password,
         };
-        
+        if (!username) {
+            return done(null, false, { message: '请输入用户名' });
+        }
+        if (!password) {
+            return done(null, false, { message: '请输入密码' });
+        }
+
         app.passport.doVerify(req, user, done);
     }));
 
-    // 处理用户信息
+    // 验证用户信息
     app.passport.verify(async (ctx, user) => {
         let list = await ctx.app.mysql.get('back').select('back_user', {
             where: {
@@ -29,6 +35,8 @@ module.exports = app => {
 
         if (list.length) {
             return user;
+        } else {
+            return false;
         }
     });
     app.passport.serializeUser(async (ctx, user) => { });

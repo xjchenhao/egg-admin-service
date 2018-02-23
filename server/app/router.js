@@ -4,6 +4,48 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
+  const passportMiddleware = app.middleware.passportLocal();
+
+  // let passportMiddleware = async function (ctx, next) {
+  //   let { req, res } = ctx;
+
+  //   await app.passport.authenticate('local', async function (err, user, info) {
+
+  //     if (err) { return next(err); }
+  //     // console.log(ctx);
+  //     if (!user) {
+  //       console.log('登录失败');
+  //       console.log(ctx.body);
+  //       ctx.body = {
+  //         "code": "1000",
+  //         "msg": info || "请输入正确的账号或密码",
+  //         "result": {}
+  //       }
+  //       return false;
+  //       // ctx.app.router.redirect('/nodeApi/auth/users', 302);
+  //       // return await next();
+
+  //     }
+  //     await next();
+
+  //     // req.logIn(user, function (err) {
+  //     //   if (err) { return next(err); }
+  //     //   // ctx.body = {
+  //     //   //   "code": "0",
+  //     //   //   "msg": "ok",
+  //     //   //   "result": {
+
+  //     //   //   }
+  //     //   // }
+  //     //   // 已登陆
+  //     //   return next();
+  //     //   // return ctx.res.redirect('/nodeApi/auth/users');
+  //     //   // return res.redirect('/users/' + user.username);
+  //     // });
+  //   })(ctx, next);
+  //   // await next();
+  // };
+
   // ------------------------------------------------------------------------------------------------【api路由】
 
   /* 用户管理 */
@@ -35,15 +77,20 @@ module.exports = app => {
 
   /* 系统级接口 */
   app.get('sysLogout', '/nodeApi/sys/logout', 'sys.main.logout');           // 登录接口
-  app.get('/nodeApi/sys/login', 'sys.main.login');              // 登录接口
-  app.router.post('/nodeApi/sys/aaa', app.passport.authenticate('local', {
-    successRedirect: '/nodeApi/auth/groups',
-    failureRedirect: '/nodeApi/auth/users'
-  }));              // 登录接口
+  app.get('sysLogin', '/nodeApi/sys/login', 'sys.main.login');              // 登录接口
   app.get('sysUserInfo', '/nodeApi/sys/userInfo', 'sys.main.userInfo');     // 获取用户信息
   app.get('sysSidebar', '/nodeApi/sys/sidebar', 'sys.main.sidebar');        // 查看系统菜单
 
   app.get('/nodeApi/sys/editProfile/:id/edit', 'sys.editProfile.edit');           // 编辑资料-用户详情
   app.put('/nodeApi/sys/editProfile/:id', 'sys.editProfile.update');              // 编辑资料-修改用户详情
   app.put('/nodeApi/sys/editProfile/pwd/:id', 'sys.editProfile.setPassword');     // 编辑资料-重置密码
+
+
+  /* passport测试 */
+  // app.post('/nodeApi/passport/login', app.passport.authenticate('local', {              // 登录接口
+  //   successRedirect: '/nodeApi/passport/success',
+  //   failureRedirect: '/nodeApi/passport/failure'
+  // }));
+  // app.get('/nodeApi/passport/success', );
+  app.post('/nodeApi/sys/aaa', passportMiddleware);
 };

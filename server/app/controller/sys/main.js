@@ -5,42 +5,52 @@ let _ = require('underscore');
 
 module.exports = app => {
     class sysController extends app.Controller {
-        * login (ctx) {
-            const { userName, password } = ctx.request.query;
-            // ctx.login(userName, password);
-            // console.log(userName);
-            // app.passport.authenticate(userName, { successRedirect: '/authCallback' })
+        * login (ctx,a,b) {
+            console.log('进入了Controller');
+            console.log(ctx.body);
+            console.log(a);
+            console.log(b);
 
-            let list = yield this.app.mysql.get('back').select('back_user', {
-                where: {
-                    user_account: userName,
-                    user_password: crypto.createHash('md5').update(password).digest('hex'),
-                },
-            });
-            // console.log(app.passport.authenticate.toString());
-            app.passport.authenticate({
-                usernameField:'usernameField',
-                passwordField:'passwordField'
-            });
-            if (list.length) {
-                ctx.login(userName, {
-                    a: 1
-                })
-                // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-                ctx.rotateCsrfSecret();
+            // ctx.body = {
+            //     "code": "0",
+            //     "msg": "退出登录成功",
+            //     "result": {}
+            // }
+            // const { userName, password } = ctx.request.query;
+            // // ctx.login(userName, password);
+            // // console.log(userName);
+            // // app.passport.authenticate(userName, { successRedirect: '/authCallback' })
+
+            // let list = yield this.app.mysql.get('back').select('back_user', {
+            //     where: {
+            //         user_account: userName,
+            //         user_password: crypto.createHash('md5').update(password).digest('hex'),
+            //     },
+            // });
+            // // console.log(app.passport.authenticate.toString());
+            // app.passport.authenticate({
+            //     usernameField:'usernameField',
+            //     passwordField:'passwordField'
+            // });
+            // if (list.length) {
+            //     ctx.login(userName, {
+            //         a: 1
+            //     })
+            //     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
+            //     ctx.rotateCsrfSecret();
                 
-                ctx.body = {
-                    "code": "0",
-                    "msg": "OK",
-                    "result": {}
-                }
-            } else {
-                ctx.body = {
-                    "code": "1000",
-                    "msg": "请输入正确的账号或密码",
-                    "result": {}
-                }
-            }
+            //     ctx.body = {
+            //         "code": "0",
+            //         "msg": "OK",
+            //         "result": {}
+            //     }
+            // } else {
+            //     ctx.body = {
+            //         "code": "1000",
+            //         "msg": "请输入正确的账号或密码",
+            //         "result": {}
+            //     }
+            // }
 
 
             // if (list.length) {
