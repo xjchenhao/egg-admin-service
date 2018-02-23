@@ -9,8 +9,8 @@ const menuData = [{
   children: [{
     name: '用户管理',
     icon: 'user',
-    path: 'users'
-  }]
+    path: 'users',
+  }],
 }, {
   name: 'demo',
   icon: 'book',
@@ -135,7 +135,7 @@ const menuData = [{
   ],
 }];
 
-function formatter (data, parentPath = '') {
+function formatter(data, parentPath = '') {
   const list = [];
   data.forEach((item) => {
     if (item.children) {

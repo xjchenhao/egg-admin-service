@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
+import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, message } from 'antd';
 import StandardTable from './../../components/Auth/Users/List/index';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Users.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
 @connect(state => ({

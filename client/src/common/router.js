@@ -17,7 +17,7 @@ const dynamicWrapper = (app, models, component) => dynamic({
   },
 });
 
-function getFlatMenuData (menus) {
+function getFlatMenuData(menus) {
   let keys = {};
   menus.forEach((item) => {
     if (item.children) {

@@ -1,13 +1,10 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
-import { Table, Alert, Badge, Divider } from 'antd';
+import { Table, Divider } from 'antd';
 import styles from './index.less';
 
-const statusMap = ['default', 'processing', 'success', 'error'];
 class StandardTable extends PureComponent {
   state = {
     selectedRowKeys: [],
-    totalCallNo: 0,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -15,7 +12,6 @@ class StandardTable extends PureComponent {
     if (nextProps.selectedRows.length === 0) {
       this.setState({
         selectedRowKeys: [],
-        totalCallNo: 0,
       });
     }
   }
@@ -25,10 +21,8 @@ class StandardTable extends PureComponent {
   }
 
   render() {
-    const { selectedRowKeys, totalCallNo } = this.state;
+    const { selectedRowKeys } = this.state;
     const { data: { list, pagination }, loading } = this.props;
-
-    const status = ['关闭', '运行中', '已上线', '异常'];
 
     const columns = [
       {
