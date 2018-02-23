@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, message } from 'antd';
+import { Row, Col, Card, Form, Input, Icon, Button, Modal } from 'antd';
 import StandardTable from './../../components/Auth/Users/List/index';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
@@ -22,7 +22,7 @@ export default class TableList extends PureComponent {
       visible: false,
       form: {
         user_password: '',
-      }
+      },
     },
     editModal: {
       visible: false,
@@ -33,11 +33,11 @@ export default class TableList extends PureComponent {
         user_email: '',
         user_mobile: '',
         user_password: '',
-      }
-    }
+      },
+    },
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'rule/fetch',
@@ -159,7 +159,7 @@ export default class TableList extends PureComponent {
 
   handleEditInput = (e, key) => {
     this.setState(Object.assign(this.state.editModal.form, {
-      [key]: e.target.value
+      [key]: e.target.value,
     }));
   }
 
@@ -181,7 +181,7 @@ export default class TableList extends PureComponent {
   //   });
   // }
 
-  renderSimpleForm () {
+  renderSimpleForm() {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -214,7 +214,7 @@ export default class TableList extends PureComponent {
     );
   }
 
-  renderAdvancedForm () {
+  renderAdvancedForm() {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -263,11 +263,11 @@ export default class TableList extends PureComponent {
     );
   }
 
-  renderForm () {
+  renderForm() {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render () {
+  render() {
     const { rule: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
@@ -313,45 +313,68 @@ export default class TableList extends PureComponent {
             wrapperCol={{ span: 15 }}
             label="登录名"
           >
-            <Input placeholder="请输入" onChange={(e) => {
+            <Input
+              placeholder="请输入"
+              onChange={(e) => {
               this.handleEditInput(e, 'user_account');
-            }} value={formEdit.user_account} />
+            }}
+              value={formEdit.user_account}
+            />
           </FormItem>
           <FormItem
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 15 }}
             label="真实姓名"
           >
-            <Input placeholder="请输入" onChange={(e) => {
+            <Input
+              placeholder="请输入"
+              onChange={(e) => {
               this.handleEditInput(e, 'user_name');
-            }} value={formEdit.user_name} />
+            }}
+              value={formEdit.user_name}
+            />
           </FormItem>
           <FormItem
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 15 }}
             label="邮箱"
           >
-            <Input type="email" placeholder="请输入" onChange={(e) => {
+            <Input
+              type="email"
+              placeholder="请输入"
+              onChange={(e) => {
               this.handleEditInput(e, 'user_email');
-            }} value={formEdit.user_email} />
+            }}
+              value={formEdit.user_email}
+            />
           </FormItem>
           <FormItem
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 15 }}
             label="手机号"
           >
-            <Input type="tel" placeholder="请输入" onChange={(e) => {
+            <Input
+              type="tel"
+              placeholder="请输入"
+              onChange={(e) => {
               this.handleEditInput(e, 'user_mobile');
-            }} value={formEdit.user_mobile} />
+            }}
+              value={formEdit.user_mobile}
+            />
           </FormItem>
           <FormItem
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 15 }}
             label="密码"
           >
-            <Input type="password" placeholder="请输入" onChange={(e) => {
+            <Input
+              type="password"
+              placeholder="请输入"
+              onChange={(e) => {
               this.handleEditInput(e, 'user_password');
-            }} value={formEdit.user_password} />
+            }}
+              value={formEdit.user_password}
+            />
           </FormItem>
         </Modal>
         <Modal
@@ -365,9 +388,14 @@ export default class TableList extends PureComponent {
             wrapperCol={{ span: 15 }}
             label="密码"
           >
-            <Input type="password" placeholder="请输入" onChange={(e) => {
+            <Input
+              type="password"
+              placeholder="请输入"
+              onChange={(e) => {
               this.handleEditInput(e, 'user_account');
-            }} value={formEdit.user_account} />
+            }}
+              value={formEdit.user_account}
+            />
           </FormItem>
         </Modal>
       </PageHeaderLayout>

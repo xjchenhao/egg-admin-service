@@ -7,7 +7,7 @@ class StandardTable extends PureComponent {
     selectedRowKeys: [],
   };
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     // clean state
     if (nextProps.selectedRows.length === 0) {
       this.setState({
@@ -17,15 +17,11 @@ class StandardTable extends PureComponent {
   }
 
   handleRowSelectChange = (selectedRowKeys, selectedRows) => {
-    const totalCallNo = selectedRows.reduce((sum, val) => {
-      return sum + parseFloat(val.callNo, 10);
-    }, 0);
-
     if (this.props.onSelectRow) {
       this.props.onSelectRow(selectedRows);
     }
 
-    this.setState({ selectedRowKeys, totalCallNo });
+    this.setState({ selectedRowKeys });
   }
 
   handleTableChange = (pagination, filters, sorter) => {
@@ -36,7 +32,7 @@ class StandardTable extends PureComponent {
     this.handleRowSelectChange([], []);
   }
 
-  render () {
+  render() {
     const { selectedRowKeys } = this.state;
     const { data: { list, pagination }, loading } = this.props;
 
@@ -61,9 +57,12 @@ class StandardTable extends PureComponent {
         title: '操作',
         render: () => (
           <div>
-            <a href="javascript:;" onClick={() => {
+            <a
+              onClick={() => {
               this.props.onResetPwdVisible(true);
-            }}>重置密码</a>
+            }}
+            >重置密码
+            </a>
             <Divider type="vertical" />
             <a href="">修改</a>
             <Divider type="vertical" />
