@@ -15,14 +15,29 @@ const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 @Form.create()
 export default class TableList extends PureComponent {
   state = {
-    addInputValue: '',
-    modalVisible: false,
     expandForm: false,
     selectedRows: [],
-    formValues: {},
+    formQuery: {},
+    resetPwdModal: {
+      visible: false,
+      form: {
+        user_password: '',
+      }
+    },
+    editModal: {
+      visible: false,
+      form: {
+        user_id: '',
+        user_account: '',
+        user_name: '',
+        user_email: '',
+        user_mobile: '',
+        user_password: '',
+      }
+    }
   };
 
-  componentDidMount() {
+  componentDidMount () {
     const { dispatch } = this.props;
     dispatch({
       type: 'rule/fetch',
@@ -31,7 +46,7 @@ export default class TableList extends PureComponent {
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
-    const { formValues } = this.state;
+    const { formQuery } = this.state;
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
       const newObj = { ...obj };
@@ -42,7 +57,7 @@ export default class TableList extends PureComponent {
     const params = {
       currentPage: pagination.current,
       pageSize: pagination.pageSize,
-      ...formValues,
+      ...formQuery,
       ...filters,
     };
     if (sorter.field) {
@@ -59,7 +74,7 @@ export default class TableList extends PureComponent {
     const { form, dispatch } = this.props;
     form.resetFields();
     this.setState({
-      formValues: {},
+      formQuery: {},
     });
     dispatch({
       type: 'rule/fetch',
@@ -118,7 +133,7 @@ export default class TableList extends PureComponent {
       };
 
       this.setState({
-        formValues: values,
+        formQuery: values,
       });
 
       dispatch({
@@ -128,33 +143,45 @@ export default class TableList extends PureComponent {
     });
   }
 
-  handleModalVisible = (flag) => {
-    this.setState({
-      modalVisible: !!flag,
-    });
+  handleEditVisible = (flag) => {
+    this.setState(Object.assign(this.state.editModal, {
+      visible: !!flag,
+    }));
   }
 
-  handleAddInput = (e) => {
-    this.setState({
-      addInputValue: e.target.value,
-    });
+  handleResetPwdVisible = (flag) => {
+    this.setState(Object.assign(this.state.resetPwdModal, {
+      visible: !!flag,
+    }));
   }
 
-  handleAdd = () => {
-    this.props.dispatch({
-      type: 'rule/add',
-      payload: {
-        description: this.state.addInputValue,
-      },
-    });
+  // resetPwdModal
 
-    message.success('添加成功');
-    this.setState({
-      modalVisible: false,
-    });
+  handleEditInput = (e, key) => {
+    this.setState(Object.assign(this.state.editModal.form, {
+      [key]: e.target.value
+    }));
   }
 
-  renderSimpleForm() {
+  handleEditSubmit = () => {
+    console.log(this.state.editModal.form);
+  }
+
+  // handleAdd = () => {
+  //   this.props.dispatch({
+  //     type: 'rule/add',
+  //     payload: {
+  //       description: this.state.addInputValue,
+  //     },
+  //   });
+
+  //   message.success('添加成功');
+  //   this.setState({
+  //     modalVisible: false,
+  //   });
+  // }
+
+  renderSimpleForm () {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -187,7 +214,7 @@ export default class TableList extends PureComponent {
     );
   }
 
-  renderAdvancedForm() {
+  renderAdvancedForm () {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -236,20 +263,15 @@ export default class TableList extends PureComponent {
     );
   }
 
-  renderForm() {
+  renderForm () {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render() {
+  render () {
     const { rule: { loading: ruleLoading, data } } = this.props;
-    const { selectedRows, modalVisible, addInputValue } = this.state;
+    const { selectedRows, editModal, resetPwdModal } = this.state;
 
-    const menu = (
-      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
-        <Menu.Item key="remove">删除</Menu.Item>
-        <Menu.Item key="approval">批量审批</Menu.Item>
-      </Menu>
-    );
+    const formEdit = editModal.form;
 
     return (
       <PageHeaderLayout title="用户管理">
@@ -259,18 +281,13 @@ export default class TableList extends PureComponent {
               {this.renderForm()}
             </div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
+              <Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>
+                添加
               </Button>
               {
                 selectedRows.length > 0 && (
                   <span>
-                    <Button>批量操作</Button>
-                    <Dropdown overlay={menu}>
-                      <Button>
-                        更多操作 <Icon type="down" />
-                      </Button>
-                    </Dropdown>
+                    {/* <Button>删除</Button> */}
                   </span>
                 )
               }
@@ -280,22 +297,77 @@ export default class TableList extends PureComponent {
               loading={ruleLoading}
               data={data}
               onSelectRow={this.handleSelectRows}
+              onResetPwdVisible={this.handleResetPwdVisible}
               onChange={this.handleStandardTableChange}
             />
           </div>
         </Card>
         <Modal
-          title="新建规则"
-          visible={modalVisible}
-          onOk={this.handleAdd}
-          onCancel={() => this.handleModalVisible()}
+          title="添加用户"
+          visible={editModal.visible}
+          onOk={this.handleEditSubmit}
+          onCancel={() => this.handleEditVisible()}
         >
           <FormItem
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 15 }}
-            label="描述"
+            label="登录名"
           >
-            <Input placeholder="请输入" onChange={this.handleAddInput} value={addInputValue} />
+            <Input placeholder="请输入" onChange={(e) => {
+              this.handleEditInput(e, 'user_account');
+            }} value={formEdit.user_account} />
+          </FormItem>
+          <FormItem
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 15 }}
+            label="真实姓名"
+          >
+            <Input placeholder="请输入" onChange={(e) => {
+              this.handleEditInput(e, 'user_name');
+            }} value={formEdit.user_name} />
+          </FormItem>
+          <FormItem
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 15 }}
+            label="邮箱"
+          >
+            <Input type="email" placeholder="请输入" onChange={(e) => {
+              this.handleEditInput(e, 'user_email');
+            }} value={formEdit.user_email} />
+          </FormItem>
+          <FormItem
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 15 }}
+            label="手机号"
+          >
+            <Input type="tel" placeholder="请输入" onChange={(e) => {
+              this.handleEditInput(e, 'user_mobile');
+            }} value={formEdit.user_mobile} />
+          </FormItem>
+          <FormItem
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 15 }}
+            label="密码"
+          >
+            <Input type="password" placeholder="请输入" onChange={(e) => {
+              this.handleEditInput(e, 'user_password');
+            }} value={formEdit.user_password} />
+          </FormItem>
+        </Modal>
+        <Modal
+          title="重置密码"
+          visible={resetPwdModal.visible}
+          onOk={this.handleResetPwdSubmit}
+          onCancel={() => this.handleResetPwdVisible()}
+        >
+          <FormItem
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 15 }}
+            label="密码"
+          >
+            <Input type="password" placeholder="请输入" onChange={(e) => {
+              this.handleEditInput(e, 'user_account');
+            }} value={formEdit.user_account} />
           </FormItem>
         </Modal>
       </PageHeaderLayout>
