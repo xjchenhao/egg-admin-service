@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { Link } from 'dva/router';
-import Result from '../../../components/Result';
+import Result from '../../../components/Demo/Result';
 import styles from './RegisterResult.less';
 
 const title = <div className={styles.title}>你的账户：AntDesign@example.com 注册成功</div>;

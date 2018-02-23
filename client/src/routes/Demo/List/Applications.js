@@ -3,8 +3,8 @@ import numeral from 'numeral';
 import { connect } from 'dva';
 import { Row, Col, Form, Card, Select, Icon, Avatar, List, Tooltip, Dropdown, Menu } from 'antd';
 
-import StandardFormRow from '../../../components/StandardFormRow';
-import TagSelect from '../../../components/TagSelect';
+import StandardFormRow from '../../../components/Demo/StandardFormRow';
+import TagSelect from '../../../components/Demo/TagSelect';
 
 import styles from './Applications.less';
 

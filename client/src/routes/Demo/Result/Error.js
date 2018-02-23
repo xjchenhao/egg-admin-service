@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Card } from 'antd';
-import Result from '../../../components/Result';
+import Result from '../../../components/Demo/Result';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 
 const extra = (

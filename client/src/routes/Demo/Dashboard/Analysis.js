@@ -24,9 +24,9 @@ import {
   Bar,
   Pie,
   TimelineChart,
-} from '../../../components/Charts';
-import Trend from '../../../components/Trend';
-import NumberInfo from '../../../components/NumberInfo';
+} from '../../../components/Demo/Charts';
+import Trend from '../../../components/Demo/Trend';
+import NumberInfo from '../../../components/Demo/NumberInfo';
 import { getTimeDistance } from '../../../utils/utils';
 
 import styles from './Analysis.less';

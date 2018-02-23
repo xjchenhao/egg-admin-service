@@ -3,10 +3,10 @@ import { connect } from 'dva';
 import { Row, Col, Card, Tooltip } from 'antd';
 import numeral from 'numeral';
 
-import { Pie, WaterWave, Gauge, TagCloud } from '../../../components/Charts';
-import NumberInfo from '../../../components/NumberInfo';
-import CountDown from '../../../components/CountDown';
-import ActiveChart from '../../../components/ActiveChart';
+import { Pie, WaterWave, Gauge, TagCloud } from '../../../components/Demo/Charts';
+import NumberInfo from '../../../components/Demo/NumberInfo';
+import CountDown from '../../../components/Demo/CountDown';
+import ActiveChart from '../../../components/Demo/ActiveChart';
 
 import styles from './Monitor.less';
 

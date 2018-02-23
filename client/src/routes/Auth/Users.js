@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Select, Icon, Button, Dropdown, Menu, InputNumber, DatePicker, Modal, message } from 'antd';
-import StandardTable from '../../../components/Demo/StandardTable';
-import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import StandardTable from './../../components/Auth/Users/List/index';
+import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
-import styles from './TableList.less';
+import styles from './Users.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -161,19 +161,16 @@ export default class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="规则编号">
-              {getFieldDecorator('no')(
+            <FormItem label="登录名">
+              {getFieldDecorator('user_account')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
+            <FormItem label="真实姓名">
+              {getFieldDecorator('user_name')(
+                <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
@@ -197,55 +194,32 @@ export default class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="规则编号">
-              {getFieldDecorator('no')(
+            <FormItem label="登录名">
+              {getFieldDecorator('user_account')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
+            <FormItem label="真实姓名">
+              {getFieldDecorator('user_name')(
+                <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-            <FormItem label="调用次数">
-              {getFieldDecorator('number')(
-                <InputNumber style={{ width: '100%' }} />
+            <FormItem label="邮箱">
+              {getFieldDecorator('user_email')(
+                <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="更新日期">
-              {getFieldDecorator('date')(
-                <DatePicker style={{ width: '100%' }} placeholder="请输入更新日期" />
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status3')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="使用状态">
-              {getFieldDecorator('status4')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
+            <FormItem label="手机号">
+              {getFieldDecorator('user_mobile')(
+                <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
@@ -279,7 +253,7 @@ export default class TableList extends PureComponent {
     );
 
     return (
-      <PageHeaderLayout title="查询表格">
+      <PageHeaderLayout title="用户管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>

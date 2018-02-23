@@ -17,7 +17,7 @@ const dynamicWrapper = (app, models, component) => dynamic({
   },
 });
 
-function getFlatMenuData(menus) {
+function getFlatMenuData (menus) {
   let keys = {};
   menus.forEach((item) => {
     if (item.children) {
@@ -38,12 +38,12 @@ export const getRouterData = (app) => {
     '/home': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../routes/Home/home')),
     },
+    '/auth/users': {
+      component: dynamicWrapper(app, ['rule'], () => import('../routes/Auth/Users')),
+    },
   };
 
   const demoRouterData = {
-    '/demo': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
-    },
     '/demo/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Demo/Dashboard/Analysis')),
     },

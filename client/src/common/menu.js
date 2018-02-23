@@ -3,6 +3,15 @@ const menuData = [{
   icon: 'dashboard',
   path: 'home',
 }, {
+  name: '权限管理',
+  icon: 'dashboard',
+  path: 'auth',
+  children: [{
+    name: '用户管理',
+    icon: 'user',
+    path: 'users'
+  }]
+}, {
   name: 'demo',
   icon: 'book',
   path: 'demo',
@@ -126,7 +135,7 @@ const menuData = [{
   ],
 }];
 
-function formatter(data, parentPath = '') {
+function formatter (data, parentPath = '') {
   const list = [];
   data.forEach((item) => {
     if (item.children) {

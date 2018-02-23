@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Card, Button, Icon, List } from 'antd';
 
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import Ellipsis from '../../../components/Ellipsis';
+import Ellipsis from '../../../components/Demo/Ellipsis';
 
 import styles from './CardList.less';
 
