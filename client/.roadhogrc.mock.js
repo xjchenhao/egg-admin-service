@@ -1,11 +1,11 @@
 import mockjs from 'mockjs';
-import { getRule, postRule } from './mock/rule';
-import { getActivities, getNotice, getFakeList } from './mock/api';
-import { getFakeChartData } from './mock/chart';
-import { imgMap } from './mock/utils';
-import { getProfileBasicData } from './mock/profile';
-import { getProfileAdvancedData } from './mock/profile';
-import { getNotices } from './mock/notices';
+import { getRule, postRule } from './mock/demo/rule';
+import { getActivities, getNotice, getFakeList } from './mock/demo/api';
+import { getFakeChartData } from './mock/demo/chart';
+import { imgMap } from './mock/demo/utils';
+import { getProfileBasicData } from './mock/demo/profile';
+import { getProfileAdvancedData } from './mock/demo/profile';
+import { getNotices } from './mock/demo/notices';
 import { format, delay } from 'roadhog-api-doc';
 
 // 是否禁用代理
