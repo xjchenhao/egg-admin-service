@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Icon, Button, Modal } from 'antd';
+import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal } from 'antd';
 import StandardTable from './../../components/Auth/Users/List/index';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
@@ -271,6 +271,12 @@ export default class TableList extends PureComponent {
     const { rule: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
+    const menu = (
+      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
+        <Menu.Item key="remove">删除</Menu.Item>
+      </Menu>
+    );
+
     const formEdit = editModal.form;
 
     return (
@@ -288,6 +294,11 @@ export default class TableList extends PureComponent {
                 selectedRows.length > 0 && (
                   <span>
                     {/* <Button>删除</Button> */}
+                    <Dropdown overlay={menu}>
+                      <Button>
+                        更多操作 <Icon type="down" />
+                      </Button>
+                    </Dropdown>
                   </span>
                 )
               }
@@ -316,8 +327,8 @@ export default class TableList extends PureComponent {
             <Input
               placeholder="请输入"
               onChange={(e) => {
-              this.handleEditInput(e, 'user_account');
-            }}
+                this.handleEditInput(e, 'user_account');
+              }}
               value={formEdit.user_account}
             />
           </FormItem>
@@ -329,8 +340,8 @@ export default class TableList extends PureComponent {
             <Input
               placeholder="请输入"
               onChange={(e) => {
-              this.handleEditInput(e, 'user_name');
-            }}
+                this.handleEditInput(e, 'user_name');
+              }}
               value={formEdit.user_name}
             />
           </FormItem>
@@ -343,8 +354,8 @@ export default class TableList extends PureComponent {
               type="email"
               placeholder="请输入"
               onChange={(e) => {
-              this.handleEditInput(e, 'user_email');
-            }}
+                this.handleEditInput(e, 'user_email');
+              }}
               value={formEdit.user_email}
             />
           </FormItem>
@@ -357,8 +368,8 @@ export default class TableList extends PureComponent {
               type="tel"
               placeholder="请输入"
               onChange={(e) => {
-              this.handleEditInput(e, 'user_mobile');
-            }}
+                this.handleEditInput(e, 'user_mobile');
+              }}
               value={formEdit.user_mobile}
             />
           </FormItem>
@@ -371,8 +382,8 @@ export default class TableList extends PureComponent {
               type="password"
               placeholder="请输入"
               onChange={(e) => {
-              this.handleEditInput(e, 'user_password');
-            }}
+                this.handleEditInput(e, 'user_password');
+              }}
               value={formEdit.user_password}
             />
           </FormItem>
@@ -392,8 +403,8 @@ export default class TableList extends PureComponent {
               type="password"
               placeholder="请输入"
               onChange={(e) => {
-              this.handleEditInput(e, 'user_account');
-            }}
+                this.handleEditInput(e, 'user_account');
+              }}
               value={formEdit.user_account}
             />
           </FormItem>
