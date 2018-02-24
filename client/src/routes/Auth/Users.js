@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
 @connect(state => ({
-  rule: state.rule,
+  authUsers: state.authUsers,
 }))
 @Form.create()
 export default class TableList extends PureComponent {
@@ -40,7 +40,7 @@ export default class TableList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/fetch',
+      type: 'authUsers/fetch',
     });
   }
 
@@ -65,7 +65,7 @@ export default class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: 'authUsers/fetch',
       payload: params,
     });
   }
@@ -77,7 +77,7 @@ export default class TableList extends PureComponent {
       formQuery: {},
     });
     dispatch({
-      type: 'rule/fetch',
+      type: 'authUsers/fetch',
       payload: {},
     });
   }
@@ -97,7 +97,7 @@ export default class TableList extends PureComponent {
     switch (e.key) {
       case 'remove':
         dispatch({
-          type: 'rule/remove',
+          type: 'authUsers/remove',
           payload: {
             no: selectedRows.map(row => row.no).join(','),
           },
@@ -137,7 +137,7 @@ export default class TableList extends PureComponent {
       });
 
       dispatch({
-        type: 'rule/fetch',
+        type: 'authUsers/fetch',
         payload: values,
       });
     });
@@ -268,7 +268,7 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    const { rule: { loading: ruleLoading, data } } = this.props;
+    const { authUsers: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
     const menu = (
