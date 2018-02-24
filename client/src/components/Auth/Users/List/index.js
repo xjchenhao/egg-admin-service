@@ -34,33 +34,47 @@ class StandardTable extends PureComponent {
 
   render() {
     const { selectedRowKeys } = this.state;
-    const { data: { list, pagination }, loading } = this.props;
+    const { data: { result }, loading } = this.props;
+
+    if (!result) {
+      return false;
+    }
+    const { list, currentPage, pages, total } = result;
+    const pagination = {
+      total,
+      pageSize: pages,
+      current: currentPage,
+    };
+
 
     const columns = [
       {
         title: '序号',
-        dataIndex: 'no',
+        // dataIndex: 'no',
+        render(text, record, index) {
+          return index + 1;
+        },
       },
       {
         title: '用户名',
-        dataIndex: 'description',
+        dataIndex: 'user_account',
       },
-      // {
-      //   title: '真实姓名',
-      //   dataIndex: 'description',
-      // },
-      // {
-      //   title: '手机号',
-      //   dataIndex: 'description',
-      // },
+      {
+        title: '真实姓名',
+        dataIndex: 'user_name',
+      },
+      {
+        title: '手机号',
+        dataIndex: 'user_mobile',
+      },
       {
         title: '操作',
         render: () => (
           <div>
             <a
               onClick={() => {
-              this.props.onResetPwdVisible(true);
-            }}
+                this.props.onResetPwdVisible(true);
+              }}
             >重置密码
             </a>
             <Divider type="vertical" />

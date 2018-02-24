@@ -135,24 +135,23 @@ export default {
     const params = getUrlParams(url);
     const pageSize = params.pageSize * 1 || 10;
     const result = mockjs.mock({
-      [`list|${pageSize}`]: [{
-        'key|+1': 1,
-        disabled: ((1 % 6) === 0),
-        href: 'https://ant.design',
-        'no|+1': 1,
-        title: `一个任务名称 ${1}`,
-        owner: '曲丽丽',
-        description: '这是一段描述9',
-        callNo: Math.floor(Math.random() * 1000),
-        status: Math.floor(Math.random() * 10) % 4,
-        updatedAt: new Date(`2017-07-${Math.floor(1 / 2) + 1}`),
-        createdAt: new Date(`2017-07-${Math.floor(1 / 2) + 1}`),
-        progress: Math.ceil(Math.random() * 100),
-      }],
-      pagination: {
+      code: '0',
+      msg: 'OK',
+      result: {
+        [`list|${pageSize}`]: [
+          {
+            'id|1-1000': 95,
+            user_account: '@last',
+            user_name: '@cname',
+            'user_sex|18-60': 1,
+            user_mobile: '',
+            user_email: '@email',
+            remark: '@cword',
+          },
+        ],
+        currentPage: parseInt(params.currentPage, 10) || 1,
+        pages: pageSize,
         total: 100,
-        pageSize,
-        current: parseInt(params.currentPage, 10) || 1,
       },
     });
 
