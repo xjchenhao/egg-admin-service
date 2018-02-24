@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'dva/router';
-import logo from '../../assets/logo.svg';
+import logo from '../../../assets/logo.svg';
 import styles from './index.less';
-import { getMenuData } from '../../common/menu';
+import { getMenuData } from '../../../common/menu';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;

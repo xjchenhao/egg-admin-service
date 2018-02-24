@@ -4,8 +4,8 @@ import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
-import NoticeIcon from '../../components/Demo/NoticeIcon';
-import HeaderSearch from '../../components/Demo/HeaderSearch';
+import NoticeIcon from '../../../components/Demo/NoticeIcon';
+import HeaderSearch from '../../../components/Demo/HeaderSearch';
 import styles from './index.less';
 
 const { Header } = Layout;
