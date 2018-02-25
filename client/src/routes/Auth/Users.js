@@ -153,6 +153,7 @@ export default class TableList extends PureComponent {
     this.setState(Object.assign(this.state.resetPwdModal, {
       visible: !!flag,
     }));
+    this.props.form.resetFields();
   }
 
   // resetPwdModal
@@ -165,6 +166,13 @@ export default class TableList extends PureComponent {
 
   handleEditSubmit = () => {
     console.log(this.state.editModal.form);
+  }
+
+  handleResetPwdSubmit = () => {
+    this.props.form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      console.log(`添加成功${fieldsValue}`);
+    });
   }
 
   // handleAdd = () => {
@@ -319,74 +327,76 @@ export default class TableList extends PureComponent {
           onOk={this.handleEditSubmit}
           onCancel={() => this.handleEditVisible()}
         >
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="登录名"
-          >
-            <Input
-              placeholder="请输入"
-              onChange={(e) => {
-                this.handleEditInput(e, 'user_account');
-              }}
-              value={formEdit.user_account}
-            />
-          </FormItem>
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="真实姓名"
-          >
-            <Input
-              placeholder="请输入"
-              onChange={(e) => {
-                this.handleEditInput(e, 'user_name');
-              }}
-              value={formEdit.user_name}
-            />
-          </FormItem>
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="邮箱"
-          >
-            <Input
-              type="email"
-              placeholder="请输入"
-              onChange={(e) => {
-                this.handleEditInput(e, 'user_email');
-              }}
-              value={formEdit.user_email}
-            />
-          </FormItem>
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="手机号"
-          >
-            <Input
-              type="tel"
-              placeholder="请输入"
-              onChange={(e) => {
-                this.handleEditInput(e, 'user_mobile');
-              }}
-              value={formEdit.user_mobile}
-            />
-          </FormItem>
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="密码"
-          >
-            <Input
-              type="password"
-              placeholder="请输入"
-              onChange={(e) => {
-                this.handleEditInput(e, 'user_password');
-              }}
-              value={formEdit.user_password}
-            />
-          </FormItem>
+          <Form>
+            <FormItem
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 15 }}
+              label="登录名"
+            >
+              <Input
+                placeholder="请输入"
+                onChange={(e) => {
+                  this.handleEditInput(e, 'user_account');
+                }}
+                value={formEdit.user_account}
+              />
+            </FormItem>
+            <FormItem
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 15 }}
+              label="真实姓名"
+            >
+              <Input
+                placeholder="请输入"
+                onChange={(e) => {
+                  this.handleEditInput(e, 'user_name');
+                }}
+                value={formEdit.user_name}
+              />
+            </FormItem>
+            <FormItem
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 15 }}
+              label="邮箱"
+            >
+              <Input
+                type="email"
+                placeholder="请输入"
+                onChange={(e) => {
+                  this.handleEditInput(e, 'user_email');
+                }}
+                value={formEdit.user_email}
+              />
+            </FormItem>
+            <FormItem
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 15 }}
+              label="手机号"
+            >
+              <Input
+                type="tel"
+                placeholder="请输入"
+                onChange={(e) => {
+                  this.handleEditInput(e, 'user_mobile');
+                }}
+                value={formEdit.user_mobile}
+              />
+            </FormItem>
+            <FormItem
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 15 }}
+              label="密码"
+            >
+              <Input
+                type="password"
+                placeholder="请输入"
+                onChange={(e) => {
+                  this.handleEditInput(e, 'user_password');
+                }}
+                value={formEdit.user_password}
+              />
+            </FormItem>
+          </Form>
         </Modal>
         <Modal
           title="重置密码"
@@ -399,14 +409,15 @@ export default class TableList extends PureComponent {
             wrapperCol={{ span: 15 }}
             label="密码"
           >
-            <Input
-              type="password"
-              placeholder="请输入"
-              onChange={(e) => {
-                this.handleEditInput(e, 'user_account');
-              }}
-              value={formEdit.user_account}
-            />
+            {this.props.form.getFieldDecorator('password', {
+              rules: [
+                { required: true, message: '请输入密码' },
+                { min: 6, message: '请输入6-18位密码' },
+                { max: 18, message: '请输入6-18位密码' },
+              ],
+            })(
+              <Input type="password" placeholder="请输入" />
+            )}
           </FormItem>
         </Modal>
       </PageHeaderLayout>
