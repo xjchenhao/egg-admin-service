@@ -3,8 +3,8 @@ import moment from 'moment';
 import { connect } from 'dva';
 import { Form, Card, Select, List, Tag, Icon, Avatar, Row, Col, Button } from 'antd';
 
-import StandardFormRow from '../../../components/demo/StandardFormRow';
-import TagSelect from '../../../components/demo/TagSelect';
+import StandardFormRow from '../../../components/StandardFormRow';
+import TagSelect from '../../../components/TagSelect';
 import styles from './Articles.less';
 
 const { Option } = Select;

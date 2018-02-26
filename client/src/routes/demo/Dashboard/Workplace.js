@@ -5,8 +5,8 @@ import { Link } from 'dva/router';
 import { Row, Col, Card, List, Avatar } from 'antd';
 
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import EditableLinkGroup from '../../../components/demo/EditableLinkGroup';
-import { Radar } from '../../../components/demo/Charts';
+import EditableLinkGroup from '../../../components/EditableLinkGroup';
+import { Radar } from '../../../components/Charts';
 
 import styles from './Workplace.less';
 
