@@ -33,105 +33,105 @@ function getFlatMenuData(menus) {
 export const getRouterData = (app) => {
   const mainRouterData = {
     '/': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(app, ['demo/user', 'demo/login'], () => import('../layouts/BasicLayout')),
     },
     '/home': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../routes/Home/home')),
+      component: dynamicWrapper(app, ['demo/user', 'demo/login'], () => import('../routes/home/Index')),
     },
     '/auth/users': {
-      component: dynamicWrapper(app, ['auth/users'], () => import('../routes/Auth/Users')),
+      component: dynamicWrapper(app, ['auth/users'], () => import('../routes/auth/Users')),
     },
   };
 
   const demoRouterData = {
     '/demo/dashboard/analysis': {
-      component: dynamicWrapper(app, ['chart'], () => import('../routes/Demo/Dashboard/Analysis')),
+      component: dynamicWrapper(app, ['demo/chart'], () => import('../routes/demo/Dashboard/Analysis')),
     },
     '/demo/dashboard/monitor': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/Demo/Dashboard/Monitor')),
+      component: dynamicWrapper(app, ['demo/monitor'], () => import('../routes/demo/Dashboard/Monitor')),
     },
     '/demo/dashboard/workplace': {
-      component: dynamicWrapper(app, ['project', 'activities', 'chart'], () => import('../routes/Demo/Dashboard/Workplace')),
+      component: dynamicWrapper(app, ['demo/project', 'demo/activities', 'demo/chart'], () => import('../routes/demo/Dashboard/Workplace')),
       // hideInBreadcrumb: true,
       // name: '工作台',
     },
     '/demo/form/basic-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Demo/Forms/BasicForm')),
+      component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/BasicForm')),
     },
     '/demo/form/step-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Demo/Forms/StepForm')),
+      component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/StepForm')),
     },
     '/demo/form/step-form/info': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Demo/Forms/StepForm/Step1')),
+      component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/StepForm/Step1')),
     },
     '/demo/form/step-form/confirm': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Demo/Forms/StepForm/Step2')),
+      component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/StepForm/Step2')),
     },
     '/demo/form/step-form/result': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Demo/Forms/StepForm/Step3')),
+      component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/StepForm/Step3')),
     },
     '/demo/form/advanced-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Demo/Forms/AdvancedForm')),
+      component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/AdvancedForm')),
     },
     '/demo/list/table-list': {
-      component: dynamicWrapper(app, ['rule'], () => import('../routes/Demo/List/TableList')),
+      component: dynamicWrapper(app, ['demo/rule'], () => import('../routes/demo/List/TableList')),
     },
     '/demo/list/basic-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Demo/List/BasicList')),
+      component: dynamicWrapper(app, ['demo/list'], () => import('../routes/demo/List/BasicList')),
     },
     '/demo/list/card-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Demo/List/CardList')),
+      component: dynamicWrapper(app, ['demo/list'], () => import('../routes/demo/List/CardList')),
     },
     '/demo/list/search': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Demo/List/List')),
+      component: dynamicWrapper(app, ['demo/list'], () => import('../routes/demo/List/List')),
     },
     '/demo/list/search/projects': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Demo/List/Projects')),
+      component: dynamicWrapper(app, ['demo/list'], () => import('../routes/demo/List/Projects')),
     },
     '/demo/list/search/applications': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Demo/List/Applications')),
+      component: dynamicWrapper(app, ['demo/list'], () => import('../routes/demo/List/Applications')),
     },
     '/demo/list/search/articles': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Demo/List/Articles')),
+      component: dynamicWrapper(app, ['demo/list'], () => import('../routes/demo/List/Articles')),
     },
     '/demo/profile/basic': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Demo/Profile/BasicProfile')),
+      component: dynamicWrapper(app, ['demo/profile'], () => import('../routes/demo/Profile/BasicProfile')),
     },
     '/demo/profile/advanced': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Demo/Profile/AdvancedProfile')),
+      component: dynamicWrapper(app, ['demo/profile'], () => import('../routes/demo/Profile/AdvancedProfile')),
     },
     '/demo/result/success': {
-      component: dynamicWrapper(app, [], () => import('../routes/Demo/Result/Success')),
+      component: dynamicWrapper(app, [], () => import('../routes/demo/Result/Success')),
     },
     '/demo/result/fail': {
-      component: dynamicWrapper(app, [], () => import('../routes/Demo/Result/Error')),
+      component: dynamicWrapper(app, [], () => import('../routes/demo/Result/Error')),
     },
     '/demo/exception/403': {
-      component: dynamicWrapper(app, [], () => import('../routes/Demo/Exception/403')),
+      component: dynamicWrapper(app, [], () => import('../routes/demo/Exception/403')),
     },
     '/demo/exception/404': {
-      component: dynamicWrapper(app, [], () => import('../routes/Demo/Exception/404')),
+      component: dynamicWrapper(app, [], () => import('../routes/demo/Exception/404')),
     },
     '/demo/exception/500': {
-      component: dynamicWrapper(app, [], () => import('../routes/Demo/Exception/500')),
+      component: dynamicWrapper(app, [], () => import('../routes/demo/Exception/500')),
     },
     '/demo/exception/trigger': {
-      component: dynamicWrapper(app, ['error'], () => import('../routes/Demo/Exception/triggerException')),
+      component: dynamicWrapper(app, ['demo/error'], () => import('../routes/demo/Exception/triggerException')),
     },
     '/demo/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
     '/demo/user/login': {
-      component: dynamicWrapper(app, ['login'], () => import('../routes/Demo/User/Login')),
+      component: dynamicWrapper(app, ['demo/login'], () => import('../routes/demo/User/Login')),
     },
     '/demo/user/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/Demo/User/Register')),
+      component: dynamicWrapper(app, ['demo/register'], () => import('../routes/demo/User/Register')),
     },
     '/demo/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/Demo/User/RegisterResult')),
+      component: dynamicWrapper(app, [], () => import('../routes/demo/User/RegisterResult')),
     },
     // '/demo/user/:id': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Demo/User/SomeComponent')),
+    //   component: dynamicWrapper(app, [], () => import('../routes/demo/User/SomeComponent')),
     // },
   };
   // Get name from ./menu.js or just set it in the router data.
