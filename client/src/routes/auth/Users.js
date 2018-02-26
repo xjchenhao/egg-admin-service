@@ -27,7 +27,7 @@ export default class TableList extends PureComponent {
     editModal: {
       visible: false,
       form: {
-        user_id: '',
+        id: '',
         user_account: '',
         user_name: '',
         user_email: '',
@@ -143,17 +143,29 @@ export default class TableList extends PureComponent {
     });
   }
 
-  handleEditVisible = (flag) => {
+  handleEditVisible = (flag, id) => {
     this.setState(Object.assign(this.state.editModal, {
       visible: !!flag,
     }));
+    this.setState(Object.assign(this.state.editModal.form, {
+      id,
+    }));
   }
 
-  handleResetPwdVisible = (flag) => {
-    this.setState(Object.assign(this.state.resetPwdModal, {
-      visible: !!flag,
-    }));
-    this.props.form.resetFields();
+  handleResetPwdVisible = (flag, id) => {
+    if (!flag) {
+      this.props.form.resetFields();
+      this.setState(Object.assign(this.state.resetPwdModal, {
+        visible: false,
+      }));
+    } else {
+      this.setState(Object.assign(this.state.resetPwdModal, {
+        visible: true,
+      }));
+      this.setState(Object.assign(this.state.resetPwdModal.form, {
+        id,
+      }));
+    }
   }
 
   // resetPwdModal
@@ -168,10 +180,25 @@ export default class TableList extends PureComponent {
     console.log(this.state.editModal.form);
   }
 
-  handleResetPwdSubmit = () => {
+  handleResetPwdSubmit = (e) => {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) return;
-      console.log(`添加成功${fieldsValue}`);
+
+      dispatch({
+        type: 'users/resetPwd',
+        payload: {
+          id: this.state.resetPwdModal.form.id,
+          ...fieldsValue,
+        },
+      });
+
+      this.setState(Object.assign(this.state.resetPwdModal, {
+        visible: false,
+      }));
+      this.props.form.resetFields();
     });
   }
 
@@ -409,7 +436,7 @@ export default class TableList extends PureComponent {
             wrapperCol={{ span: 15 }}
             label="密码"
           >
-            {this.props.form.getFieldDecorator('password', {
+            {this.props.form.getFieldDecorator('user_password', {
               rules: [
                 { required: true, message: '请输入密码' },
                 { min: 6, message: '请输入6-18位密码' },

@@ -1,4 +1,5 @@
-import { getList } from '../../services/auth/users';
+import { message } from 'antd';
+import { getList, resetPwd } from '../../services/auth/users';
 
 export default {
   namespace: 'users',
@@ -26,6 +27,14 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
+    },
+    *resetPwd({ payload }, { call }) {
+      const response = yield call(resetPwd, payload);
+      if (response.code === '0') {
+        message.success('密码重置成功');
+      } else {
+        message.error(response.msg);
+      }
     },
     // *add({ payload, callback }, { call, put }) {
     //   yield put({

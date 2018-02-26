@@ -69,11 +69,11 @@ class StandardTable extends PureComponent {
       },
       {
         title: '操作',
-        render: () => (
+        render: (text, record) => (
           <div>
             <a
               onClick={() => {
-                this.props.onResetPwdVisible(true);
+                this.props.onResetPwdVisible(true, record.id);
               }}
             >重置密码
             </a>

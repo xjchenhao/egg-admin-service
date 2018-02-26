@@ -12,21 +12,10 @@ export async function getList(params) {
   return request(`/nodeApi/auth/users?${stringify(params)}`);
 }
 
-export async function queryActivities() {
-  return request('/api/activities');
-}
-
-export async function queryRule(params) {
-  return request(`/api/rule?${stringify(params)}`);
-}
-
-export async function removeRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    body: {
-      ...params,
-      method: 'delete',
-    },
+export async function resetPwd(params) {
+  return request(`/nodeApi/auth/usersPwd/${params.id}`, {
+    method: 'PUT',
+    body: params,
   });
 }
 
