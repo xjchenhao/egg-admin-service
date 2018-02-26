@@ -21,7 +21,14 @@ export default {
       const response = yield call(getList, payload);
       yield put({
         type: 'save',
-        payload: response,
+        payload: {
+          list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
+          pagination: {
+            currentPage: response.result.currentPage,
+            pageSize: response.result.pages,
+            total: response.result.total,
+          },
+        },
       });
       yield put({
         type: 'changeLoading',

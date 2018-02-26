@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal } from 'antd';
-import StandardTable from '../../components/page/auth/users/List/index';
+import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, Divider } from 'antd';
+import StandardTable from '../../components/demo/StandardTable';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Users.less';
@@ -311,6 +311,44 @@ export default class TableList extends PureComponent {
         <Menu.Item key="remove">删除</Menu.Item>
       </Menu>
     );
+    const columns = [
+      {
+        title: '序号',
+        // dataIndex: 'no',
+        render(text, record, index) {
+          return index + 1;
+        },
+      },
+      {
+        title: '用户名',
+        dataIndex: 'user_account',
+      },
+      {
+        title: '真实姓名',
+        dataIndex: 'user_name',
+      },
+      {
+        title: '手机号',
+        dataIndex: 'user_mobile',
+      },
+      {
+        title: '操作',
+        render: (text, record) => (
+          <div>
+            <a
+              onClick={() => {
+                this.handleResetPwdVisible(true, record.id);
+              }}
+            >重置密码
+            </a>
+            <Divider type="vertical" />
+            <a href="">修改</a>
+            <Divider type="vertical" />
+            <a href="">删除</a>
+          </div>
+        ),
+      },
+    ];
 
     const formEdit = editModal.form;
 
@@ -342,8 +380,8 @@ export default class TableList extends PureComponent {
               selectedRows={selectedRows}
               loading={ruleLoading}
               data={data}
+              columns={columns}
               onSelectRow={this.handleSelectRows}
-              onResetPwdVisible={this.handleResetPwdVisible}
               onChange={this.handleStandardTableChange}
             />
           </div>
