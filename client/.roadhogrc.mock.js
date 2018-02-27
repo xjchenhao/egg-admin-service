@@ -14,10 +14,33 @@ const noProxy = process.env.NO_PROXY === 'true';
 
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
+  'GET /nodeApi/auth/users/:id/edit': mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {
+      'id|1-1000': 95,
+      user_account: '@last',
+      user_name: '@cname',
+      'user_sex|18-60': 1,
+      user_mobile: '',
+      user_email: '@email',
+      remark: '@cword',
+    }
+  }),
   'GET /nodeApi/auth/users': users.getList,
   'PUT /nodeApi/auth/usersPwd/:id': mockjs.mock({
-    'code|1': ['0', '1'],
-    msg: '密码重置失败',
+    code: '0',
+    msg: 'ok',
+    result: {}
+  }),
+  'PUT /nodeApi/auth/users/:id': mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {}
+  }),
+  'POST /nodeApi/auth/users': mockjs.mock({
+    code: '0',
+    msg: 'ok',
     result: {}
   }),
 };

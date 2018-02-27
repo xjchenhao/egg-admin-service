@@ -1,17 +1,19 @@
 import { stringify } from 'qs';
 import request from '../../utils/request';
 
-// users: '/nodeApi/auth/users',                   // 用户管理
-// usersPwd: '/nodeApi/auth/usersPwd',             // 用户管理-重置密码
-// groups: '/nodeApi/auth/groups',                 // 用户组管理
-// modules: '/nodeApi/auth/modules',               // 功能模块管理
-// groupUsers: '/nodeApi/auth/groupUsers',         // 用户组管理-成员设置
-// groupModules: '/nodeApi/auth/groupModules',     // 用户组管理-权限查看
+// app.get('/nodeApi/auth/users', 'auth.user.index');                      // 用户列表
+// app.post('/nodeApi/auth/users', 'auth.user.create');                   // 新建用户
+// app.delete('/nodeApi/auth/users/:id', 'auth.user.destroy');           // 删除用户
+// app.get('/nodeApi/auth/users/:id/edit', 'auth.user.edit');               // 用户详情
+// app.put('/nodeApi/auth/users/:id', 'auth.user.update');                // 修改用户详情
+// app.put('/nodeApi/auth/usersPwd/:id', 'auth.user.setPassword');   // 重置密码
 
+// 获取用户列表
 export async function getList(params) {
   return request(`/nodeApi/auth/users?${stringify(params)}`);
 }
 
+// 重置密码
 export async function resetPwd(params) {
   return request(`/nodeApi/auth/usersPwd/${params.id}`, {
     method: 'PUT',
@@ -19,57 +21,23 @@ export async function resetPwd(params) {
   });
 }
 
-export async function addRule(params) {
-  return request('/api/rule', {
-    method: 'POST',
-    body: {
-      ...params,
-      method: 'post',
-    },
-  });
+// 获取用户信息
+export async function getUserInfo({ id }) {
+  return request(`/nodeApi/auth/users/${id}/edit`);
 }
 
-export async function fakeSubmitForm(params) {
-  return request('/api/forms', {
-    method: 'POST',
+// 编辑用户信息
+export async function editUserInfo(params) {
+  return request(`/nodeApi/auth/users/${params.id}`, {
+    method: 'PUT',
     body: params,
   });
 }
 
-export async function fakeChartData() {
-  return request('/api/fake_chart_data');
-}
-
-export async function queryTags() {
-  return request('/api/tags');
-}
-
-export async function queryBasicProfile() {
-  return request('/api/profile/basic');
-}
-
-export async function queryAdvancedProfile() {
-  return request('/api/profile/advanced');
-}
-
-export async function queryFakeList(params) {
-  return request(`/api/fake_list?${stringify(params)}`);
-}
-
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+// 添加用户
+export async function addUserInfo(params) {
+  return request('/nodeApi/auth/users', {
     method: 'POST',
     body: params,
   });
-}
-
-export async function fakeRegister(params) {
-  return request('/api/register', {
-    method: 'POST',
-    body: params,
-  });
-}
-
-export async function queryNotices() {
-  return request('/api/notices');
 }

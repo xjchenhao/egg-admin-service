@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getList, resetPwd } from '../../services/auth/users';
+import { getList, resetPwd, getUserInfo, addUserInfo, editUserInfo } from '../../services/auth/users';
 
 export default {
   namespace: 'users',
@@ -8,6 +8,9 @@ export default {
     data: {
       list: [],
       pagination: {},
+    },
+    userInfo: {
+
     },
     loading: true,
   },
@@ -43,40 +46,47 @@ export default {
         message.error(response.msg);
       }
     },
-    // *add({ payload, callback }, { call, put }) {
-    //   yield put({
-    //     type: 'changeLoading',
-    //     payload: true,
-    //   });
-    //   const response = yield call(addRule, payload);
-    //   yield put({
-    //     type: 'save',
-    //     payload: response,
-    //   });
-    //   yield put({
-    //     type: 'changeLoading',
-    //     payload: false,
-    //   });
+    *getUserInfo({ payload, callback }, { call, put }) {
+      const response = yield call(getUserInfo, payload);
 
-    //   if (callback) callback();
-    // },
-    // *remove({ payload, callback }, { call, put }) {
-    //   yield put({
-    //     type: 'changeLoading',
-    //     payload: true,
-    //   });
-    //   const response = yield call(removeRule, payload);
-    //   yield put({
-    //     type: 'save',
-    //     payload: response,
-    //   });
-    //   yield put({
-    //     type: 'changeLoading',
-    //     payload: false,
-    //   });
+      yield put({
+        type: 'changeUserInfo',
+        payload: response.result,
+      });
 
-    //   if (callback) callback();
-    // },
+      if (callback) callback();
+    },
+
+    *editUserInfo({ payload, callback }, { call }) {
+      const response = yield call(editUserInfo, payload);
+      if (response.code === '0') {
+        message.success('编辑成功');
+      } else {
+        message.error(response.msg);
+      }
+
+      if (callback) callback();
+    },
+
+    *addUserInfo({ payload, callback }, { call }) {
+      const response = yield call(addUserInfo, payload);
+      if (response.code === '0') {
+        message.success('添加成功');
+      } else {
+        message.error(response.msg);
+      }
+
+      if (callback) callback();
+    },
+
+    *resetUserInfo({ callback }, { put }) {
+      yield put({
+        type: 'changeUserInfo',
+        payload: {},
+      });
+
+      if (callback) callback();
+    },
   },
 
   reducers: {
@@ -84,6 +94,12 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    changeUserInfo(state, action) {
+      return {
+        ...state,
+        userInfo: action.payload,
       };
     },
     changeLoading(state, action) {
