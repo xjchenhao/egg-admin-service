@@ -9,6 +9,46 @@ import styles from './Users.less';
 const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
+// 重置密码弹框
+const ResetPwdModal = Form.create()((props) => {
+  const { visible, form, onCancel, onOk } = props;
+
+  return (
+    <Modal
+      title="重置密码"
+      visible={visible}
+      onOk={(e) => {
+        e.preventDefault();
+
+        form.validateFields((err, fieldsValue) => {
+          if (err) return;
+          onOk(fieldsValue);
+        });
+      }}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+      }}
+    >
+      <FormItem
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 15 }}
+        label="密码"
+      >
+        {form.getFieldDecorator('user_password', {
+          rules: [
+            { required: true, message: '请输入密码' },
+            { min: 6, message: '请输入6-18位密码' },
+            { max: 18, message: '请输入6-18位密码' },
+          ],
+        })(
+          <Input type="password" placeholder="请输入" />
+        )}
+      </FormItem>
+    </Modal>
+  );
+});
+
 @connect(state => ({
   users: state.users,
 }))
@@ -154,7 +194,6 @@ export default class TableList extends PureComponent {
 
   handleResetPwdVisible = (flag, id) => {
     if (!flag) {
-      this.props.form.resetFields();
       this.setState(Object.assign(this.state.resetPwdModal, {
         visible: false,
       }));
@@ -180,26 +219,20 @@ export default class TableList extends PureComponent {
     console.log(this.state.editModal.form);
   }
 
-  handleResetPwdSubmit = (e) => {
-    e.preventDefault();
-
+  handleResetPwdSubmit = (fieldsValue) => {
     const { dispatch } = this.props;
-    this.props.form.validateFields((err, fieldsValue) => {
-      if (err) return;
 
-      dispatch({
-        type: 'users/resetPwd',
-        payload: {
-          id: this.state.resetPwdModal.form.id,
-          ...fieldsValue,
-        },
-      });
-
-      this.setState(Object.assign(this.state.resetPwdModal, {
-        visible: false,
-      }));
-      this.props.form.resetFields();
+    dispatch({
+      type: 'users/resetPwd',
+      payload: {
+        id: this.state.resetPwdModal.form.id,
+        ...fieldsValue,
+      },
     });
+
+    this.setState(Object.assign(this.state.resetPwdModal, {
+      visible: false,
+    }));
   }
 
   // handleAdd = () => {
@@ -386,6 +419,11 @@ export default class TableList extends PureComponent {
             />
           </div>
         </Card>
+        <ResetPwdModal
+          visible={resetPwdModal.visible}
+          onOk={this.handleResetPwdSubmit}
+          onCancel={() => this.handleResetPwdVisible()}
+        />
         <Modal
           title="添加用户"
           visible={editModal.visible}
@@ -462,28 +500,6 @@ export default class TableList extends PureComponent {
               />
             </FormItem>
           </Form>
-        </Modal>
-        <Modal
-          title="重置密码"
-          visible={resetPwdModal.visible}
-          onOk={this.handleResetPwdSubmit}
-          onCancel={() => this.handleResetPwdVisible()}
-        >
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="密码"
-          >
-            {this.props.form.getFieldDecorator('user_password', {
-              rules: [
-                { required: true, message: '请输入密码' },
-                { min: 6, message: '请输入6-18位密码' },
-                { max: 18, message: '请输入6-18位密码' },
-              ],
-            })(
-              <Input type="password" placeholder="请输入" />
-            )}
-          </FormItem>
         </Modal>
       </PageHeaderLayout>
     );
