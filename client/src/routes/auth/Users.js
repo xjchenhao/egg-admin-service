@@ -49,6 +49,101 @@ const ResetPwdModal = Form.create()((props) => {
   );
 });
 
+// 添加or编辑弹框
+const EditModal = Form.create()((props) => {
+  const { visible, onOk, onCancel, form, data } = props;
+
+  return (
+    <Modal
+      title="添加用户"
+      visible={visible}
+      onOk={(e) => {
+        e.preventDefault();
+
+        form.validateFields((err, fieldsValue) => {
+          if (err) return;
+          onOk(fieldsValue);
+        });
+      }}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+      }}
+    >
+      <Form>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="登录名"
+        >
+          <Input
+            placeholder="请输入"
+            onChange={(e) => {
+              this.handleEditInput(e, 'user_account');
+            }}
+            value={data.user_account}
+          />
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="真实姓名"
+        >
+          <Input
+            placeholder="请输入"
+            onChange={(e) => {
+              this.handleEditInput(e, 'user_name');
+            }}
+            value={data.user_name}
+          />
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="邮箱"
+        >
+          <Input
+            type="email"
+            placeholder="请输入"
+            onChange={(e) => {
+              this.handleEditInput(e, 'user_email');
+            }}
+            value={data.user_email}
+          />
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="手机号"
+        >
+          <Input
+            type="tel"
+            placeholder="请输入"
+            onChange={(e) => {
+              this.handleEditInput(e, 'user_mobile');
+            }}
+            value={data.user_mobile}
+          />
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="密码"
+        >
+          <Input
+            type="password"
+            placeholder="请输入"
+            onChange={(e) => {
+              this.handleEditInput(e, 'user_password');
+            }}
+            value={data.user_password}
+          />
+        </FormItem>
+      </Form>
+    </Modal>
+  );
+});
+
 @connect(state => ({
   users: state.users,
 }))
@@ -60,13 +155,14 @@ export default class TableList extends PureComponent {
     formQuery: {},
     resetPwdModal: {
       visible: false,
-      form: {
+      data: {
+        id: '',
         user_password: '',
       },
     },
     editModal: {
       visible: false,
-      form: {
+      data: {
         id: '',
         user_account: '',
         user_name: '',
@@ -77,13 +173,16 @@ export default class TableList extends PureComponent {
     },
   };
 
-  componentDidMount() {
+  componentDidMount () {
     const { dispatch } = this.props;
+
+    // 获取列表数据
     dispatch({
       type: 'users/fetch',
     });
   }
 
+  // 分页、排序、筛选变化时触发
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
     const { formQuery } = this.state;
@@ -110,6 +209,7 @@ export default class TableList extends PureComponent {
     });
   }
 
+  // 重置查询条件
   handleFormReset = () => {
     const { form, dispatch } = this.props;
     form.resetFields();
@@ -128,6 +228,7 @@ export default class TableList extends PureComponent {
     });
   }
 
+  // 批量操作-更多按钮
   handleMenuClick = (e) => {
     const { dispatch } = this.props;
     const { selectedRows } = this.state;
@@ -153,12 +254,14 @@ export default class TableList extends PureComponent {
     }
   }
 
+  // 选择当行数据
   handleSelectRows = (rows) => {
     this.setState({
       selectedRows: rows,
     });
   }
 
+  // 根据查询条件搜索
   handleSearch = (e) => {
     e.preventDefault();
 
@@ -167,31 +270,28 @@ export default class TableList extends PureComponent {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
 
-      const values = {
-        ...fieldsValue,
-        updatedAt: fieldsValue.updatedAt && fieldsValue.updatedAt.valueOf(),
-      };
-
       this.setState({
-        formQuery: values,
+        formQuery: fieldsValue,
       });
 
       dispatch({
         type: 'users/fetch',
-        payload: values,
+        payload: fieldsValue,
       });
     });
   }
 
+  // 显示or隐藏编辑用户信息弹框
   handleEditVisible = (flag, id) => {
     this.setState(Object.assign(this.state.editModal, {
       visible: !!flag,
     }));
-    this.setState(Object.assign(this.state.editModal.form, {
+    this.setState(Object.assign(this.state.editModal.data, {
       id,
     }));
   }
 
+  // 显示or隐藏重置密码弹框
   handleResetPwdVisible = (flag, id) => {
     if (!flag) {
       this.setState(Object.assign(this.state.resetPwdModal, {
@@ -201,31 +301,25 @@ export default class TableList extends PureComponent {
       this.setState(Object.assign(this.state.resetPwdModal, {
         visible: true,
       }));
-      this.setState(Object.assign(this.state.resetPwdModal.form, {
+      this.setState(Object.assign(this.state.resetPwdModal.data, {
         id,
       }));
     }
   }
 
-  // resetPwdModal
-
-  handleEditInput = (e, key) => {
-    this.setState(Object.assign(this.state.editModal.form, {
-      [key]: e.target.value,
-    }));
-  }
-
+  // 添加or编辑用户信息
   handleEditSubmit = () => {
-    console.log(this.state.editModal.form);
+    console.log(this.state.editModal.data);
   }
 
+  // 重置密码
   handleResetPwdSubmit = (fieldsValue) => {
     const { dispatch } = this.props;
 
     dispatch({
       type: 'users/resetPwd',
       payload: {
-        id: this.state.resetPwdModal.form.id,
+        id: this.state.resetPwdModal.data.id,
         ...fieldsValue,
       },
     });
@@ -235,21 +329,8 @@ export default class TableList extends PureComponent {
     }));
   }
 
-  // handleAdd = () => {
-  //   this.props.dispatch({
-  //     type: 'rule/add',
-  //     payload: {
-  //       description: this.state.addInputValue,
-  //     },
-  //   });
-
-  //   message.success('添加成功');
-  //   this.setState({
-  //     modalVisible: false,
-  //   });
-  // }
-
-  renderSimpleForm() {
+  // 搜索条件的展示方式———收起
+  renderSimpleForm () {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -282,7 +363,8 @@ export default class TableList extends PureComponent {
     );
   }
 
-  renderAdvancedForm() {
+  // 搜索条件的展示方式———展开
+  renderAdvancedForm () {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -331,11 +413,12 @@ export default class TableList extends PureComponent {
     );
   }
 
-  renderForm() {
+  // 选择搜索条件的展示方式
+  renderForm () {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render() {
+  render () {
     const { users: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
@@ -344,11 +427,11 @@ export default class TableList extends PureComponent {
         <Menu.Item key="remove">删除</Menu.Item>
       </Menu>
     );
+
     const columns = [
       {
         title: '序号',
-        // dataIndex: 'no',
-        render(text, record, index) {
+        render (text, record, index) {
           return index + 1;
         },
       },
@@ -382,8 +465,6 @@ export default class TableList extends PureComponent {
         ),
       },
     ];
-
-    const formEdit = editModal.form;
 
     return (
       <PageHeaderLayout title="用户管理">
@@ -424,83 +505,12 @@ export default class TableList extends PureComponent {
           onOk={this.handleResetPwdSubmit}
           onCancel={() => this.handleResetPwdVisible()}
         />
-        <Modal
-          title="添加用户"
+        <EditModal
           visible={editModal.visible}
+          data={editModal.data}
           onOk={this.handleEditSubmit}
           onCancel={() => this.handleEditVisible()}
-        >
-          <Form>
-            <FormItem
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 15 }}
-              label="登录名"
-            >
-              <Input
-                placeholder="请输入"
-                onChange={(e) => {
-                  this.handleEditInput(e, 'user_account');
-                }}
-                value={formEdit.user_account}
-              />
-            </FormItem>
-            <FormItem
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 15 }}
-              label="真实姓名"
-            >
-              <Input
-                placeholder="请输入"
-                onChange={(e) => {
-                  this.handleEditInput(e, 'user_name');
-                }}
-                value={formEdit.user_name}
-              />
-            </FormItem>
-            <FormItem
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 15 }}
-              label="邮箱"
-            >
-              <Input
-                type="email"
-                placeholder="请输入"
-                onChange={(e) => {
-                  this.handleEditInput(e, 'user_email');
-                }}
-                value={formEdit.user_email}
-              />
-            </FormItem>
-            <FormItem
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 15 }}
-              label="手机号"
-            >
-              <Input
-                type="tel"
-                placeholder="请输入"
-                onChange={(e) => {
-                  this.handleEditInput(e, 'user_mobile');
-                }}
-                value={formEdit.user_mobile}
-              />
-            </FormItem>
-            <FormItem
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 15 }}
-              label="密码"
-            >
-              <Input
-                type="password"
-                placeholder="请输入"
-                onChange={(e) => {
-                  this.handleEditInput(e, 'user_password');
-                }}
-                value={formEdit.user_password}
-              />
-            </FormItem>
-          </Form>
-        </Modal>
+        />
       </PageHeaderLayout>
     );
   }
