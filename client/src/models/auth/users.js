@@ -16,7 +16,7 @@ export default {
   },
 
   effects: {
-    *fetch ({ payload }, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -38,7 +38,7 @@ export default {
         payload: false,
       });
     },
-    *resetPwd ({ payload }, { call }) {
+    *resetPwd({ payload }, { call }) {
       const response = yield call(resetPwd, payload);
       if (response.code === '0') {
         message.success('密码重置成功');
@@ -46,7 +46,7 @@ export default {
         message.error(response.msg);
       }
     },
-    *getUserInfo ({ payload, callback }, { call, put }) {
+    *getUserInfo({ payload, callback }, { call, put }) {
       const response = yield call(getUserInfo, payload);
 
       yield put({
@@ -57,7 +57,7 @@ export default {
       if (callback) callback();
     },
 
-    *editUserInfo ({ payload, callback }, { call }) {
+    *editUserInfo({ payload, callback }, { call }) {
       const response = yield call(editUserInfo, {
         ...payload,
       });
@@ -70,7 +70,7 @@ export default {
       if (callback) callback();
     },
 
-    *addUserInfo ({ payload, callback }, { call }) {
+    *addUserInfo({ payload, callback }, { call }) {
       const response = yield call(addUserInfo, payload);
       if (response.code === '0') {
         message.success('添加成功');
@@ -81,7 +81,7 @@ export default {
       if (callback) callback();
     },
 
-    *resetUserInfo ({ callback }, { put }) {
+    *resetUserInfo({ callback }, { put }) {
       yield put({
         type: 'changeUserInfo',
         payload: {},
@@ -90,7 +90,7 @@ export default {
       if (callback) callback();
     },
 
-    *remove ({ payload, callback }, { call, put }) {
+    *remove({ payload, callback }, { call, put }) {
       let response = '';
       yield put({
         type: 'changeLoading',
@@ -120,19 +120,19 @@ export default {
   },
 
   reducers: {
-    save (state, action) {
+    save(state, action) {
       return {
         ...state,
         data: action.payload,
       };
     },
-    changeUserInfo (state, action) {
+    changeUserInfo(state, action) {
       return {
         ...state,
         userInfo: action.payload,
       };
     },
-    changeLoading (state, action) {
+    changeLoading(state, action) {
       return {
         ...state,
         loading: action.payload,
