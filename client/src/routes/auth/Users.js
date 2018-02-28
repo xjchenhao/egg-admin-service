@@ -65,7 +65,7 @@ const EditModal = connect(state => ({
 
         form.validateFields((err, fieldsValue) => {
           if (err) return;
-          onOk(fieldsValue);
+          onOk(fieldsValue, form.resetFields());
         });
       }}
       onCancel={() => {
@@ -173,7 +173,7 @@ export default class TableList extends PureComponent {
     },
   };
 
-  componentDidMount() {
+  componentDidMount () {
     const { dispatch } = this.props;
 
     // 获取列表数据
@@ -310,19 +310,29 @@ export default class TableList extends PureComponent {
   }
 
   // 添加or编辑用户信息
-  handleEditSubmit = (fieldsValue) => {
+  handleEditSubmit = (fieldsValue, resetFormCallBack) => {
     const { editModal: { isEdit } } = this.state;
     const { dispatch } = this.props;
     if (isEdit) {
       dispatch({
         type: 'users/editUserInfo',
         payload: fieldsValue,
+        callback: resetFormCallBack,
       });
+
+      this.setState(Object.assign(this.state.editModal, {
+        isVisible: false,
+      }));
     } else {
       dispatch({
         type: 'users/addUserInfo',
         payload: fieldsValue,
+        callback: resetFormCallBack,
       });
+
+      this.setState(Object.assign(this.state.editModal, {
+        isVisible: false,
+      }));
     }
   }
 
@@ -452,7 +462,7 @@ export default class TableList extends PureComponent {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render() {
+  render () {
     const { users: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
@@ -465,7 +475,7 @@ export default class TableList extends PureComponent {
     const columns = [
       {
         title: '序号',
-        render(text, record, index) {
+        render (text, record, index) {
           return index + 1;
         },
       },
