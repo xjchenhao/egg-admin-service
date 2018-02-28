@@ -19,7 +19,7 @@ export default {
             user_account: '@last',
             user_name: '@cname',
             'user_sex|18-60': 1,
-            user_mobile: '',
+            user_mobile: '--',
             user_email: '@email',
             remark: '@cword',
           },

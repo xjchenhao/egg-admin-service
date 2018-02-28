@@ -522,6 +522,10 @@ export default class TableList extends PureComponent {
         dataIndex: 'user_mobile',
       },
       {
+        title: '邮箱',
+        dataIndex: 'user_email',
+      },
+      {
         title: '操作',
         render: (text, record) => (
           <div>
