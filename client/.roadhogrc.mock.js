@@ -8,6 +8,7 @@ import { getNotices } from './mock/demo/notices';
 import { format, delay } from 'roadhog-api-doc';
 
 import users from './mock/auth/users';
+import { resultSuccess, resultRandom } from './mock/rule';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -28,21 +29,10 @@ const proxy = {
     }
   }),
   'GET /nodeApi/auth/users': users.getList,
-  'PUT /nodeApi/auth/usersPwd/:id': mockjs.mock({
-    code: '0',
-    msg: 'ok',
-    result: {}
-  }),
-  'PUT /nodeApi/auth/users/:id': mockjs.mock({
-    code: '0',
-    msg: 'ok',
-    result: {}
-  }),
-  'POST /nodeApi/auth/users': mockjs.mock({
-    code: '0',
-    msg: 'ok',
-    result: {}
-  }),
+  'PUT /nodeApi/auth/usersPwd/:id': resultSuccess,
+  'PUT /nodeApi/auth/users/:id': resultSuccess,
+  'DELETE /nodeApi/auth/users/:id': resultRandom,
+  'POST /nodeApi/auth/users': resultSuccess,
 };
 
 const demoProxy = {
