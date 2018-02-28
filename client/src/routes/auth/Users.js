@@ -173,7 +173,7 @@ export default class TableList extends PureComponent {
     },
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
 
     // 获取列表数据
@@ -353,6 +353,23 @@ export default class TableList extends PureComponent {
     }));
   }
 
+  // 删除项目
+  handleRemove = (id) => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'users/remove',
+      payload: {
+        id,
+      },
+      callback: () => {
+        this.setState({
+          selectedRows: [],
+        });
+      },
+    });
+  }
+
   // 重置查询条件
   handleFormReset = () => {
     const { form, dispatch } = this.props;
@@ -462,7 +479,7 @@ export default class TableList extends PureComponent {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render () {
+  render() {
     const { users: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
@@ -475,7 +492,7 @@ export default class TableList extends PureComponent {
     const columns = [
       {
         title: '序号',
-        render (text, record, index) {
+        render(text, record, index) {
           return index + 1;
         },
       },
@@ -509,7 +526,12 @@ export default class TableList extends PureComponent {
             >修改
             </a>
             <Divider type="vertical" />
-            <a href="">删除</a>
+            <a
+              onClick={() => {
+                this.handleRemove(record.id);
+              }}
+            >删除
+            </a>
           </div>
         ),
       },

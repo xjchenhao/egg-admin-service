@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getList, resetPwd, getUserInfo, addUserInfo, editUserInfo } from '../../services/auth/users';
+import { getList, resetPwd, getUserInfo, addUserInfo, editUserInfo, removeUser, removeUsers } from '../../services/auth/users';
 
 export default {
   namespace: 'users',
@@ -83,6 +83,34 @@ export default {
       yield put({
         type: 'changeUserInfo',
         payload: {},
+      });
+
+      if (callback) callback();
+    },
+
+    *remove({ payload, callback }, { call, put }) {
+      let response = '';
+      yield put({
+        type: 'changeLoading',
+        payload: true,
+      });
+
+      if (Array.isArray(payload.id)) {
+        response = yield call(removeUsers, {
+          idList: payload.id,
+        });
+      } else {
+        response = yield call(removeUser, payload);
+      }
+
+      if (response.code === '0') {
+        message.success('删除成功');
+      } else {
+        message.error(response.msg);
+      }
+      yield put({
+        type: 'changeLoading',
+        payload: false,
       });
 
       if (callback) callback();

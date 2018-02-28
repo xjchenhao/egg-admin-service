@@ -33,6 +33,7 @@ const proxy = {
   'PUT /nodeApi/auth/users/:id': resultSuccess,
   'DELETE /nodeApi/auth/users/:id': resultRandom,
   'POST /nodeApi/auth/users': resultSuccess,
+  'DELETE /nodeApi/auth/users': resultRandom,
 };
 
 const demoProxy = {

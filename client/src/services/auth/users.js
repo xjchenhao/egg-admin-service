@@ -41,3 +41,19 @@ export async function addUserInfo(params) {
     body: params,
   });
 }
+
+// 删除单个用户
+export async function removeUser(params) {
+  return request(`/nodeApi/auth/users/${params.id}`, {
+    method: 'DELETE',
+    body: params,
+  });
+}
+
+// 删除多个用户
+export async function removeUsers(params) {
+  return request('/nodeApi/auth/users', {
+    method: 'DELETE',
+    body: params,
+  });
+}
