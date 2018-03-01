@@ -26,7 +26,7 @@ class StandardTable extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     // clean state
-    if (nextProps.selectedRows.length === 0) {
+    if (nextProps.selectedRows && nextProps.selectedRows.length === 0) {
       const needTotalList = initTotalList(nextProps.columns);
       this.setState({
         selectedRowKeys: [],
@@ -63,7 +63,7 @@ class StandardTable extends PureComponent {
 
   render() {
     const { selectedRowKeys, needTotalList } = this.state;
-    const { data: { list, pagination }, loading, columns } = this.props;
+    const { data: { list, pagination }, loading, columns, selectedRows } = this.props;
 
     const paginationProps = {
       showSizeChanger: true,
@@ -71,41 +71,43 @@ class StandardTable extends PureComponent {
       ...pagination,
     };
 
-    const rowSelection = {
+    const rowSelection = selectedRows ? {
       selectedRowKeys,
       onChange: this.handleRowSelectChange,
       getCheckboxProps: record => ({
         disabled: record.disabled,
       }),
-    };
+    } : null;
 
     return (
       <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
-          <Alert
-            message={(
-              <Fragment>
+        {selectedRows ? (
+          <div className={styles.tableAlert}>
+            <Alert
+              message={(
+                <Fragment>
                 已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-                {
+                  {
                   needTotalList.map(item => (
                     <span style={{ marginLeft: 8 }} key={item.dataIndex}>{item.title}总计&nbsp;
                       <span style={{ fontWeight: 600 }}>
                         {item.render ? item.render(item.total) : item.total}
                       </span>
                     </span>
-                    )
+                  )
                   )
                 }
-                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>清空</a>
-              </Fragment>
+                  <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>清空</a>
+                </Fragment>
             )}
-            type="info"
-            showIcon
-          />
-        </div>
+              type="info"
+              showIcon
+            />
+          </div>
+) : ''}
         <Table
           loading={loading}
-          rowKey={record => record.key}
+          rowKey={record => record.id}
           rowSelection={rowSelection}
           dataSource={list}
           columns={columns}

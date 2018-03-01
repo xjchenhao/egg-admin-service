@@ -12,6 +12,10 @@ const menuData = [{
     name: '用户管理',
     icon: 'user',
     path: 'users',
+  }, {
+    name: '用户组管理',
+    icon: 'team',
+    path: 'group',
   }],
 }, {
   name: 'demo',
