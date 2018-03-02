@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider } from 'antd';
-import StandardTable from '../../components/StandardTable';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table } from 'antd';
+// import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Users.less';
@@ -184,7 +184,7 @@ export default class TableList extends PureComponent {
     },
   };
 
-  componentDidMount() {
+  componentDidMount () {
     const { dispatch } = this.props;
 
     // 获取列表数据
@@ -380,35 +380,41 @@ export default class TableList extends PureComponent {
     );
   }
 
-  render() {
+  render () {
     const { users: { loading: ruleLoading, data } } = this.props;
     const { editModal, resetPwdModal } = this.state;
 
     const columns = [
       {
         title: '序号',
-        render(text, record, index) {
+        key: 'index',
+        render (text, record, index) {
           return index + 1;
         },
       },
       {
         title: '用户名',
+        key: 'user_account',
         dataIndex: 'user_account',
       },
       {
         title: '真实姓名',
+        key: 'user_name',
         dataIndex: 'user_name',
       },
       {
         title: '手机号',
+        key: 'user_mobile',
         dataIndex: 'user_mobile',
       },
       {
         title: '邮箱',
+        key: 'user_email',
         dataIndex: 'user_email',
       },
       {
         title: '操作',
+        key: 'action',
         render: (text, record) => (
           <div>
             <a
@@ -448,10 +454,16 @@ export default class TableList extends PureComponent {
                 添加
               </Button>
             </div>
-            <StandardTable
+            <Table
               loading={ruleLoading}
-              data={data}
+              dataSource={data.list}
+              rowKey={record => record.id}
               columns={columns}
+              pagination={{
+                showSizeChanger: true,
+                showQuickJumper: true,
+                ...data.pagination,
+              }}
               onChange={this.handleStandardTableChange}
             />
           </div>
