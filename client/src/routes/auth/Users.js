@@ -52,9 +52,9 @@ const ResetPwdModal = Form.create()((props) => {
 
 // 添加or编辑弹框
 const EditModal = connect(state => ({
-  users: state.users,
+  pageModel: state.users,
 }))(Form.create()((props) => {
-  const { visible, onOk, onCancel, form, isEdit, users: { userInfo: data } } = props;
+  const { visible, onOk, onCancel, form, isEdit, pageModel: { details: data } } = props;
 
   return (
     <Modal
@@ -63,9 +63,22 @@ const EditModal = connect(state => ({
       onOk={(e) => {
         e.preventDefault();
 
+        if (data.id) {
+          form.setFieldsValue({
+            user_password: '0',
+          });
+        }
+
         form.validateFields((err, fieldsValue) => {
           if (err) return;
-          onOk(fieldsValue);
+          if (isEdit) {
+            onOk({
+              id: data.id,
+              ...fieldsValue,
+            }, form.resetFields);
+          } else {
+            onOk(fieldsValue, form.resetFields);
+          }
         });
       }}
       onCancel={() => {
@@ -152,7 +165,7 @@ const EditModal = connect(state => ({
 }));
 
 @connect(state => ({
-  users: state.users,
+  pageModel: state.users,
 }))
 @Form.create()
 export default class TableList extends PureComponent {
@@ -270,7 +283,7 @@ export default class TableList extends PureComponent {
       // 根据有没有传id判断是否是编辑弹窗
       if (id) {
         dispatch({
-          type: 'users/getUserInfo',
+          type: 'users/details',
           payload: {
             id,
           },
@@ -294,7 +307,7 @@ export default class TableList extends PureComponent {
         isVisible: false,
       }));
       dispatch({
-        type: 'users/resetUserInfo',
+        type: 'users/reset',
       });
     }
   }
@@ -310,19 +323,29 @@ export default class TableList extends PureComponent {
   }
 
   // 添加or编辑用户信息
-  handleEditSubmit = (fieldsValue) => {
+  handleEditSubmit = (fieldsValue, resetFormCallBack) => {
     const { editModal: { isEdit } } = this.state;
     const { dispatch } = this.props;
     if (isEdit) {
       dispatch({
-        type: 'users/editUserInfo',
+        type: 'users/edit',
         payload: fieldsValue,
+        callback: resetFormCallBack,
       });
+
+      this.setState(Object.assign(this.state.editModal, {
+        isVisible: false,
+      }));
     } else {
       dispatch({
-        type: 'users/addUserInfo',
+        type: 'users/add',
         payload: fieldsValue,
+        callback: resetFormCallBack,
       });
+
+      this.setState(Object.assign(this.state.editModal, {
+        isVisible: false,
+      }));
     }
   }
 
@@ -341,6 +364,23 @@ export default class TableList extends PureComponent {
     this.setState(Object.assign(this.state.resetPwdModal, {
       isVisible: false,
     }));
+  }
+
+  // 删除项目
+  handleRemove = (id) => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'users/remove',
+      payload: {
+        id,
+      },
+      callback: () => {
+        this.setState({
+          selectedRows: [],
+        });
+      },
+    });
   }
 
   // 重置查询条件
@@ -453,7 +493,7 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    const { users: { loading: ruleLoading, data } } = this.props;
+    const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
     const menu = (
@@ -482,6 +522,10 @@ export default class TableList extends PureComponent {
         dataIndex: 'user_mobile',
       },
       {
+        title: '邮箱',
+        dataIndex: 'user_email',
+      },
+      {
         title: '操作',
         render: (text, record) => (
           <div>
@@ -499,7 +543,12 @@ export default class TableList extends PureComponent {
             >修改
             </a>
             <Divider type="vertical" />
-            <a href="">删除</a>
+            <a
+              onClick={() => {
+                this.handleRemove(record.id);
+              }}
+            >删除
+            </a>
           </div>
         ),
       },

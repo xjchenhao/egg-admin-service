@@ -2,16 +2,20 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [{
   name: 'home',
-  icon: 'dashboard',
+  icon: 'home',
   path: 'home',
 }, {
   name: '权限管理',
-  icon: 'dashboard',
+  icon: 'solution',
   path: 'auth',
   children: [{
     name: '用户管理',
     icon: 'user',
     path: 'users',
+  }, {
+    name: '用户组管理',
+    icon: 'team',
+    path: 'group',
   }],
 }, {
   name: 'demo',

@@ -68,9 +68,9 @@ export default function request(url, options) {
   return fetch(url, newOptions)
     .then(checkStatus)
     .then((response) => {
-      if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
-      }
+      // if (newOptions.method === 'DELETE' || response.status === 204) {
+      //   return response.text();
+      // }
       return response.json();
     })
     .catch((e) => {

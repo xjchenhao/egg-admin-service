@@ -79,6 +79,9 @@ export const getRouterData = (app) => {
     '/auth/users': {
       component: dynamicWrapper(app, ['auth/users'], () => import('../routes/auth/Users')),
     },
+    '/auth/group': {
+      component: dynamicWrapper(app, ['auth/group'], () => import('../routes/auth/Group')),
+    },
   };
   const demoRouterData = {
 
