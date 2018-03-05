@@ -2,7 +2,7 @@ import mockjs from 'mockjs';
 import { parse } from 'url';
 
 export default {
-  getList(req, res, u) {
+  list(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
       url = req.url; // eslint-disable-line
@@ -16,8 +16,8 @@ export default {
         [`list|${pageSize}`]: [
           {
             'id|1-1000': 95,
-            role_name: '@last',
-            role_summary: '@cword',
+            role_name: '@ctitle',
+            role_summary: '@csentence',
             role_addtime: '--',
             role_addip: '@email',
           },
@@ -34,5 +34,12 @@ export default {
       return result;
     }
   },
-  // postRule,
+  details: mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {
+      role_name: '@ctitle',
+      role_summary: '@csentence',
+    },
+  }),
 };

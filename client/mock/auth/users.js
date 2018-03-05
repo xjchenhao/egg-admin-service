@@ -2,7 +2,7 @@ import mockjs from 'mockjs';
 import { parse } from 'url';
 
 export default {
-  getList(req, res, u) {
+  list (req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
       url = req.url; // eslint-disable-line
@@ -36,5 +36,17 @@ export default {
       return result;
     }
   },
-  // postRule,
+  details: mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {
+      'id|1-1000': 95,
+      user_account: '@last',
+      user_name: '@cname',
+      'user_sex|18-60': 1,
+      user_mobile: '',
+      user_email: '@email',
+      remark: '@cword',
+    },
+  }),
 };

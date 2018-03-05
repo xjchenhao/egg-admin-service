@@ -16,16 +16,10 @@ const EditModal = connect(state => ({
 
   return (
     <Modal
-      title={isEdit ? '编辑用户' : '添加用户'}
+      title={isEdit ? '编辑用户组' : '添加用户组'}
       visible={visible}
       onOk={(e) => {
         e.preventDefault();
-
-        if (data.id) {
-          form.setFieldsValue({
-            user_password: '0',
-          });
-        }
 
         form.validateFields((err, fieldsValue) => {
           if (err) return;
@@ -48,10 +42,10 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="登录名"
+          label="用户组"
         >
-          {form.getFieldDecorator('user_account', {
-            initialValue: data.user_account,
+          {form.getFieldDecorator('role_name', {
+            initialValue: data.role_name,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -62,10 +56,10 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="真实姓名"
+          label="描述"
         >
-          {form.getFieldDecorator('user_name', {
-            initialValue: data.user_name,
+          {form.getFieldDecorator('role_summary', {
+            initialValue: data.role_summary,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -73,50 +67,6 @@ const EditModal = connect(state => ({
             <Input placeholder="请输入" />
           )}
         </FormItem>
-        <FormItem
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
-          label="邮箱"
-        >
-          {form.getFieldDecorator('user_email', {
-            initialValue: data.user_email,
-            rules: [
-              { required: true, message: '该项为必填项' },
-            ],
-          })(
-            <Input placeholder="请输入" />
-          )}
-        </FormItem>
-        <FormItem
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
-          label="手机号"
-        >
-          {form.getFieldDecorator('user_mobile', {
-            initialValue: data.user_mobile,
-            rules: [
-              { required: true, message: '该项为必填项' },
-            ],
-          })(
-            <Input placeholder="请输入" />
-          )}
-        </FormItem>
-        {!isEdit ? (
-          <FormItem
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 15 }}
-            label="密码"
-          >
-            {form.getFieldDecorator('user_password', {
-              initialValue: data.user_password,
-              rules: [
-                { required: true, message: '该项为必填项' },
-              ],
-            })(
-              <Input type="password" placeholder="请输入" />
-            )}
-          </FormItem>
-        ) : ''}
       </Form>
     </Modal>
   );
@@ -223,7 +173,7 @@ export default class TableList extends PureComponent {
         isVisible: false,
       }));
       dispatch({
-        type: 'group/details',
+        type: 'group/reset',
       });
     }
   }
