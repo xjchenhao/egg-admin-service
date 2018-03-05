@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getList, resetPwd, getUserInfo, addUserInfo, editUserInfo, removeUser, removeUsers } from '../../services/auth/users';
+import { getList, getGroupsInfo, editGroupInfo, addGroup, removeGroup } from '../../services/auth/group';
 
 export default {
   namespace: 'group',
@@ -9,14 +9,14 @@ export default {
       list: [],
       pagination: {},
     },
-    userInfo: {
+    details: {
 
     },
     loading: true,
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {
+    *fetch ({ payload }, { call, put }) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -38,27 +38,19 @@ export default {
         payload: false,
       });
     },
-    *resetPwd({ payload }, { call }) {
-      const response = yield call(resetPwd, payload);
-      if (response.code === '0') {
-        message.success('密码重置成功');
-      } else {
-        message.error(response.msg);
-      }
-    },
-    *getUserInfo({ payload, callback }, { call, put }) {
-      const response = yield call(getUserInfo, payload);
+    *details ({ payload, callback }, { call, put }) {
+      const response = yield call(getGroupsInfo, payload);
 
       yield put({
-        type: 'changeUserInfo',
+        type: 'changeDetails',
         payload: response.result,
       });
 
       if (callback) callback();
     },
 
-    *editUserInfo({ payload, callback }, { call }) {
-      const response = yield call(editUserInfo, {
+    *edit ({ payload, callback }, { call }) {
+      const response = yield call(editGroupInfo, {
         ...payload,
       });
       if (response.code === '0') {
@@ -70,8 +62,8 @@ export default {
       if (callback) callback();
     },
 
-    *addUserInfo({ payload, callback }, { call }) {
-      const response = yield call(addUserInfo, payload);
+    *add ({ payload, callback }, { call }) {
+      const response = yield call(addGroup, payload);
       if (response.code === '0') {
         message.success('添加成功');
       } else {
@@ -81,16 +73,16 @@ export default {
       if (callback) callback();
     },
 
-    *resetUserInfo({ callback }, { put }) {
+    *reset ({ callback }, { put }) {
       yield put({
-        type: 'changeUserInfo',
+        type: 'changeDetails',
         payload: {},
       });
 
       if (callback) callback();
     },
 
-    *remove({ payload, callback }, { call, put }) {
+    *remove ({ payload, callback }, { call, put }) {
       let response = '';
       yield put({
         type: 'changeLoading',
@@ -98,11 +90,11 @@ export default {
       });
 
       if (Array.isArray(payload.id)) {
-        response = yield call(removeUsers, {
+        response = yield call(removeGroup, {
           idList: payload.id,
         });
       } else {
-        response = yield call(removeUser, payload);
+        response = yield call(removeGroup, payload);
       }
 
       if (response.code === '0') {
@@ -120,19 +112,19 @@ export default {
   },
 
   reducers: {
-    save(state, action) {
+    save (state, action) {
       return {
         ...state,
         data: action.payload,
       };
     },
-    changeUserInfo(state, action) {
+    changeDetails (state, action) {
       return {
         ...state,
-        userInfo: action.payload,
+        details: action.payload,
       };
     },
-    changeLoading(state, action) {
+    changeLoading (state, action) {
       return {
         ...state,
         loading: action.payload,

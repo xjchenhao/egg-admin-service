@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table } from 'antd';
-// import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Users.less';
@@ -9,52 +8,11 @@ import styles from './Users.less';
 const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
-// 重置密码弹框
-const ResetPwdModal = Form.create()((props) => {
-  const { visible, form, onCancel, onOk } = props;
-
-  return (
-    <Modal
-      title="重置密码"
-      visible={visible}
-      onOk={(e) => {
-        e.preventDefault();
-
-        form.validateFields((err, fieldsValue) => {
-          if (err) return;
-          onOk(fieldsValue);
-        });
-        form.resetFields();
-      }}
-      onCancel={() => {
-        onCancel();
-        form.resetFields();
-      }}
-    >
-      <FormItem
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 15 }}
-        label="密码"
-      >
-        {form.getFieldDecorator('user_password', {
-          rules: [
-            { required: true, message: '请输入密码' },
-            { min: 6, message: '请输入6-18位密码' },
-            { max: 18, message: '请输入6-18位密码' },
-          ],
-        })(
-          <Input type="password" placeholder="请输入" />
-        )}
-      </FormItem>
-    </Modal>
-  );
-});
-
 // 添加or编辑弹框
 const EditModal = connect(state => ({
-  users: state.users,
+  pageModel: state.group,
 }))(Form.create()((props) => {
-  const { visible, onOk, onCancel, form, isEdit, users: { userInfo: data } } = props;
+  const { visible, onOk, onCancel, form, isEdit, pageModel: { details: data } } = props;
 
   return (
     <Modal
@@ -165,19 +123,12 @@ const EditModal = connect(state => ({
 }));
 
 @connect(state => ({
-  users: state.users,
+  pageModel: state.group,
 }))
 @Form.create()
 export default class TableList extends PureComponent {
   state = {
     formQuery: {},
-    resetPwdModal: {
-      isVisible: false,
-      data: {
-        id: '',
-        user_password: '',
-      },
-    },
     editModal: {
       isVisible: false,
       isEdit: false,
@@ -189,7 +140,7 @@ export default class TableList extends PureComponent {
 
     // 获取列表数据
     dispatch({
-      type: 'users/fetch',
+      type: 'group/fetch',
     });
   }
 
@@ -215,7 +166,7 @@ export default class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'users/fetch',
+      type: 'group/fetch',
       payload: params,
     });
   }
@@ -234,7 +185,7 @@ export default class TableList extends PureComponent {
       });
 
       dispatch({
-        type: 'users/fetch',
+        type: 'group/fetch',
         payload: fieldsValue,
       });
     });
@@ -248,7 +199,7 @@ export default class TableList extends PureComponent {
       // 根据有没有传id判断是否是编辑弹窗
       if (id) {
         dispatch({
-          type: 'users/getUserInfo',
+          type: 'group/details',
           payload: {
             id,
           },
@@ -272,19 +223,9 @@ export default class TableList extends PureComponent {
         isVisible: false,
       }));
       dispatch({
-        type: 'users/resetUserInfo',
+        type: 'group/details',
       });
     }
-  }
-
-  // 显示or隐藏重置密码弹框
-  handleResetPwdVisible = (flag, id = '') => {
-    this.setState(Object.assign(this.state.resetPwdModal, {
-      isVisible: flag,
-    }));
-    this.setState(Object.assign(this.state.resetPwdModal.data, {
-      id,
-    }));
   }
 
   // 添加or编辑用户信息
@@ -293,7 +234,7 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     if (isEdit) {
       dispatch({
-        type: 'users/editUserInfo',
+        type: 'group/details',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
@@ -303,7 +244,7 @@ export default class TableList extends PureComponent {
       }));
     } else {
       dispatch({
-        type: 'users/addUserInfo',
+        type: 'group/add',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
@@ -314,29 +255,12 @@ export default class TableList extends PureComponent {
     }
   }
 
-  // 重置密码
-  handleResetPwdSubmit = (fieldsValue) => {
-    const { dispatch } = this.props;
-
-    dispatch({
-      type: 'users/resetPwd',
-      payload: {
-        id: this.state.resetPwdModal.data.id,
-        ...fieldsValue,
-      },
-    });
-
-    this.setState(Object.assign(this.state.resetPwdModal, {
-      isVisible: false,
-    }));
-  }
-
   // 删除项目
   handleRemove = (id) => {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'users/remove',
+      type: 'group/remove',
       payload: {
         id,
       },
@@ -351,7 +275,7 @@ export default class TableList extends PureComponent {
       formQuery: {},
     });
     dispatch({
-      type: 'users/fetch',
+      type: 'group/fetch',
       payload: {},
     });
   }
@@ -381,8 +305,8 @@ export default class TableList extends PureComponent {
   }
 
   render () {
-    const { users: { loading: ruleLoading, data } } = this.props;
-    const { editModal, resetPwdModal } = this.state;
+    const { pageModel: { loading: ruleLoading, data } } = this.props;
+    const { editModal } = this.state;
 
     const columns = [
       {
@@ -393,24 +317,14 @@ export default class TableList extends PureComponent {
         },
       },
       {
-        title: '用户名',
-        key: 'user_account',
-        dataIndex: 'user_account',
+        title: '组名称',
+        key: 'role_name',
+        dataIndex: 'role_name',
       },
       {
-        title: '真实姓名',
-        key: 'user_name',
-        dataIndex: 'user_name',
-      },
-      {
-        title: '手机号',
-        key: 'user_mobile',
-        dataIndex: 'user_mobile',
-      },
-      {
-        title: '邮箱',
-        key: 'user_email',
-        dataIndex: 'user_email',
+        title: '描述',
+        key: 'role_summary',
+        dataIndex: 'role_summary',
       },
       {
         title: '操作',
@@ -419,9 +333,16 @@ export default class TableList extends PureComponent {
           <div>
             <a
               onClick={() => {
-                this.handleResetPwdVisible(true, record.id);
+                // this.handleEditVisible(true, record.id);
               }}
-            >重置密码
+            >权限管理
+            </a>
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                // this.handleEditVisible(true, record.id);
+              }}
+            >成员管理
             </a>
             <Divider type="vertical" />
             <a
@@ -468,11 +389,6 @@ export default class TableList extends PureComponent {
             />
           </div>
         </Card>
-        <ResetPwdModal
-          visible={resetPwdModal.isVisible}
-          onOk={this.handleResetPwdSubmit}
-          onCancel={() => this.handleResetPwdVisible()}
-        />
         <EditModal
           visible={editModal.isVisible}
           isEdit={editModal.isEdit}

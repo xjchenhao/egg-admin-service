@@ -8,6 +8,7 @@ import { getNotices } from './mock/demo/notices';
 import { format, delay } from 'roadhog-api-doc';
 
 import users from './mock/auth/users';
+import authGroup from './mock/auth/group';
 import { resultSuccess, resultRandom } from './mock/rule';
 
 // 是否禁用代理
@@ -34,6 +35,7 @@ const proxy = {
   'DELETE /nodeApi/auth/users/:id': resultRandom,
   'POST /nodeApi/auth/users': resultSuccess,
   'DELETE /nodeApi/auth/users': resultRandom,
+  'GET /nodeApi/auth/groups': authGroup.getList,
 };
 
 const demoProxy = {
