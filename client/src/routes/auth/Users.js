@@ -52,9 +52,9 @@ const ResetPwdModal = Form.create()((props) => {
 
 // 添加or编辑弹框
 const EditModal = connect(state => ({
-  users: state.users,
+  pageModel: state.users,
 }))(Form.create()((props) => {
-  const { visible, onOk, onCancel, form, isEdit, users: { userInfo: data } } = props;
+  const { visible, onOk, onCancel, form, isEdit, pageModel: { details: data } } = props;
 
   return (
     <Modal
@@ -165,7 +165,7 @@ const EditModal = connect(state => ({
 }));
 
 @connect(state => ({
-  users: state.users,
+  pageModel: state.users,
 }))
 @Form.create()
 export default class TableList extends PureComponent {
@@ -283,7 +283,7 @@ export default class TableList extends PureComponent {
       // 根据有没有传id判断是否是编辑弹窗
       if (id) {
         dispatch({
-          type: 'users/getUserInfo',
+          type: 'users/details',
           payload: {
             id,
           },
@@ -307,7 +307,7 @@ export default class TableList extends PureComponent {
         isVisible: false,
       }));
       dispatch({
-        type: 'users/resetUserInfo',
+        type: 'users/reset',
       });
     }
   }
@@ -328,7 +328,7 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     if (isEdit) {
       dispatch({
-        type: 'users/editUserInfo',
+        type: 'users/edit',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
@@ -338,7 +338,7 @@ export default class TableList extends PureComponent {
       }));
     } else {
       dispatch({
-        type: 'users/addUserInfo',
+        type: 'users/add',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
@@ -493,7 +493,7 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    const { users: { loading: ruleLoading, data } } = this.props;
+    const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal } = this.state;
 
     const menu = (

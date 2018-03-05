@@ -9,7 +9,7 @@ export default {
       list: [],
       pagination: {},
     },
-    userInfo: {
+    details: {
 
     },
     loading: true,
@@ -46,18 +46,18 @@ export default {
         message.error(response.msg);
       }
     },
-    *getUserInfo({ payload, callback }, { call, put }) {
+    *details({ payload, callback }, { call, put }) {
       const response = yield call(getUserInfo, payload);
 
       yield put({
-        type: 'changeUserInfo',
+        type: 'changeDetails',
         payload: response.result,
       });
 
       if (callback) callback();
     },
 
-    *editUserInfo({ payload, callback }, { call }) {
+    *edit({ payload, callback }, { call }) {
       const response = yield call(editUserInfo, {
         ...payload,
       });
@@ -70,7 +70,7 @@ export default {
       if (callback) callback();
     },
 
-    *addUserInfo({ payload, callback }, { call }) {
+    *add({ payload, callback }, { call }) {
       const response = yield call(addUserInfo, payload);
       if (response.code === '0') {
         message.success('添加成功');
@@ -81,9 +81,9 @@ export default {
       if (callback) callback();
     },
 
-    *resetUserInfo({ callback }, { put }) {
+    *reset({ callback }, { put }) {
       yield put({
-        type: 'changeUserInfo',
+        type: 'changeDetails',
         payload: {},
       });
 
@@ -126,10 +126,10 @@ export default {
         data: action.payload,
       };
     },
-    changeUserInfo(state, action) {
+    changeDetails(state, action) {
       return {
         ...state,
-        userInfo: action.payload,
+        details: action.payload,
       };
     },
     changeLoading(state, action) {
