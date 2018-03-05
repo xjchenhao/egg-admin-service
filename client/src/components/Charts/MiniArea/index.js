@@ -11,6 +11,7 @@ export default class MiniArea extends React.Component {
       data = [],
       forceFit = true,
       color = 'rgba(24, 144, 255, 0.2)',
+      borderColor = '#1089ff',
       scale = {},
       borderWidth = 2,
       line,
@@ -18,8 +19,6 @@ export default class MiniArea extends React.Component {
       yAxis,
       animate = true,
     } = this.props;
-
-    const borderColor = this.props.borderColor || color;
 
     const padding = [36, 5, 30, 5];
 
@@ -57,8 +56,24 @@ export default class MiniArea extends React.Component {
               data={data}
               padding={padding}
             >
-              <Axis name="x" label={false} line={false} tickLine={false} grid={false} {...xAxis} />
-              <Axis name="y" label={false} line={false} tickLine={false} grid={false} {...yAxis} />
+              <Axis
+                key="axis-x"
+                name="x"
+                label={false}
+                line={false}
+                tickLine={false}
+                grid={false}
+                {...xAxis}
+              />
+              <Axis
+                key="axis-y"
+                name="y"
+                label={false}
+                line={false}
+                tickLine={false}
+                grid={false}
+                {...yAxis}
+              />
               <Tooltip showTitle={false} crosshairs={false} />
               <Geom
                 type="area"

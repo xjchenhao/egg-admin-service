@@ -1,18 +1,51 @@
 import mockjs from 'mockjs';
-import { getRule, postRule } from './mock/rule';
-import { getActivities, getNotice, getFakeList } from './mock/api';
-import { getFakeChartData } from './mock/chart';
-import { imgMap } from './mock/utils';
-import { getProfileBasicData } from './mock/profile';
-import { getProfileAdvancedData } from './mock/profile';
-import { getNotices } from './mock/notices';
+import { getRule, postRule } from './mock/demo/rule';
+import { getActivities, getNotice, getFakeList } from './mock/demo/api';
+import { getFakeChartData } from './mock/demo/chart';
+import { getProfileBasicData } from './mock/demo/profile';
+import { getProfileAdvancedData } from './mock/demo/profile';
+import { getNotices } from './mock/demo/notices';
 import { format, delay } from 'roadhog-api-doc';
+
+import users from './mock/auth/users';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
 
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
+  'GET /nodeApi/auth/users/:id/edit': mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {
+      'id|1-1000': 95,
+      user_account: '@last',
+      user_name: '@cname',
+      'user_sex|18-60': 1,
+      user_mobile: '',
+      user_email: '@email',
+      remark: '@cword',
+    }
+  }),
+  'GET /nodeApi/auth/users': users.getList,
+  'PUT /nodeApi/auth/usersPwd/:id': mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {}
+  }),
+  'PUT /nodeApi/auth/users/:id': mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {}
+  }),
+  'POST /nodeApi/auth/users': mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {}
+  }),
+};
+
+const demoProxy = {
   // 支持值为 Object 和 Array
   'GET /api/currentUser': {
     $desc: "获取当前用户接口",
@@ -70,13 +103,30 @@ const proxy = {
   'GET /api/profile/advanced': getProfileAdvancedData,
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
+    if (password === '888888' && userName === 'admin') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'admin'
+      });
+      return;
+    }
+    if (password === '123456' && userName === 'user') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'user'
+      });
+      return;
+    }
     res.send({
-      status: password === '888888' && userName === 'admin' ? 'ok' : 'error',
+      status: 'error',
       type,
+      currentAuthority: 'guest'
     });
   },
   'POST /api/register': (req, res) => {
-    res.send({ status: 'ok' });
+    res.send({ status: 'ok', currentAuthority: 'user' });
   },
   'GET /api/notices': getNotices,
   'GET /api/500': (req, res) => {
@@ -106,6 +156,15 @@ const proxy = {
       "path": "/base/category/list"
     });
   },
+  'GET /api/401': (req, res) => {
+    res.status(401).send({
+      "timestamp": 1513932555104,
+      "status": 401,
+      "error": "Unauthorized",
+      "message": "Unauthorized",
+      "path": "/base/category/list"
+    });
+  },
 };
 
-export default noProxy ? {} : delay(proxy, 1000);
+export default noProxy ? {} : delay(Object.assign(demoProxy, proxy), 1000);
