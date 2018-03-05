@@ -7,7 +7,7 @@ import { getProfileAdvancedData } from './mock/demo/profile';
 import { getNotices } from './mock/demo/notices';
 import { format, delay } from 'roadhog-api-doc';
 
-import users from './mock/auth/users';
+import authUsers from './mock/auth/users';
 import authGroup from './mock/auth/group';
 import { resultSuccess, resultRandom } from './mock/rule';
 
@@ -16,8 +16,8 @@ const noProxy = process.env.NO_PROXY === 'true';
 
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
-  'GET /nodeApi/auth/users/:id/edit': users.details,
-  'GET /nodeApi/auth/users': users.list,
+  'GET /nodeApi/auth/users/:id/edit': authUsers.details,
+  'GET /nodeApi/auth/users': authUsers.list,
   'PUT /nodeApi/auth/usersPwd/:id': resultSuccess,
   'PUT /nodeApi/auth/users/:id': resultSuccess,
   'DELETE /nodeApi/auth/users/:id': resultRandom,
@@ -28,6 +28,10 @@ const proxy = {
   'PUT /nodeApi/auth/groups/:id': resultSuccess,
   'DELETE /nodeApi/auth/groups/:id': resultRandom,
   'POST /nodeApi/auth/groups': resultSuccess,
+  'GET /nodeApi/auth/groupModules': authGroup.modules,
+  'PUT /nodeApi/auth/groupModules': resultSuccess,
+  'GET /nodeApi/auth/groupUsers': authGroup.users,
+  'PUT /nodeApi/auth/groupUsers': resultSuccess,
 };
 
 const demoProxy = {

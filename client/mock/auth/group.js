@@ -42,4 +42,20 @@ export default {
       role_summary: '@csentence',
     },
   }),
+  modules: mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {
+      role_name: '@ctitle',
+      role_summary: '@csentence',
+    },
+  }),
+  users: mockjs.mock({
+    code: '0',
+    msg: 'ok',
+    result: {
+      role_name: '@ctitle',
+      role_summary: '@csentence',
+    },
+  }),
 };

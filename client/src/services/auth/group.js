@@ -15,6 +15,7 @@ import request from '../../utils/request';
 export async function getList(params) {
   return request(`/nodeApi/auth/groups?${stringify(params)}`);
 }
+
 // 获取用户组详情
 export async function getGroupsInfo({ id }) {
   return request(`/nodeApi/auth/groups/${id}/edit`);
@@ -42,4 +43,24 @@ export async function removeGroup(params) {
     method: 'DELETE',
     body: params,
   });
+}
+
+// 查看用户组权限
+export async function getAuth(params) {
+  return request(`/nodeApi/auth/groupModules?${stringify(params)}`);
+}
+
+// 设置用户组权限
+export async function setAuth(params) {
+  return request(`/nodeApi/auth/groupModules?${stringify(params)}`);
+}
+
+// 查看用户组成员
+export async function getUsers(params) {
+  return request(`/nodeApi/auth/groupUsers?${stringify(params)}`);
+}
+
+// 设置用户组成员
+export async function setUsers(params) {
+  return request(`/nodeApi/auth/groupUsers?${stringify(params)}`);
 }
