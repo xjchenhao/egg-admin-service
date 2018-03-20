@@ -79,17 +79,12 @@ module.exports = app => {
         }
 
         * logout (ctx) {
-            if (ctx.acceptJSON) {
-                ctx.session = null;
+            ctx.session = null;
 
-                ctx.body = {
-                    "code": "0",
-                    "msg": "退出登录成功",
-                    "result": {}
-                }
-            } else {
-                ctx.session = null;
-                ctx.redirect('/login?redirect=' + encodeURIComponent('/'));
+            ctx.body = {
+                "code": "0",
+                "msg": "退出登录成功",
+                "result": {}
             }
         }
 

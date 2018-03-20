@@ -4,7 +4,7 @@
   "description": "基于eggjs的nodeserver，用来做前后端分离的后台管理系统的后端服务。",
   "private": true,
   "dependencies": {
-    "egg": "^2.0.0",
+    "egg": "^2.5.0",
     "egg-mysql": "^3.0.0",
     "egg-passport": "^2.0.1",
     "egg-scripts": "^2.1.0",
