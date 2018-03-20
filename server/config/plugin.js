@@ -26,7 +26,7 @@ exports.passport = {
   package: 'egg-passport',
 };
 
-// // 角色管理
-// exports.userrole = {
-//   package: 'egg-userrole',
-// };
+// 角色管理
+exports.userrole = {
+  package: 'egg-userrole',
+};

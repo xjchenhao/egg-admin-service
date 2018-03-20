@@ -5,14 +5,6 @@ module.exports = () => {
     let { req, res, app } = ctx;
     await next();
 
-    await app.passport.authenticate('local', async function (err, user, info) {
-      ctx.body = {
-        code: '0',
-        msg: 'ok',
-        result: {
-
-        },
-      };
-    })(ctx, next);
+    // await app.passport.authenticate('local', { successRedirect: '/nodeApi/auth/users',failureRedirect: '/nodeApi/auth/users' })(ctx, next);
   };
 }

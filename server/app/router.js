@@ -4,7 +4,7 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-  const passportMiddleware = app.middleware.passportLocal();
+  // const passportMiddleware = app.middleware.passportLocal();
 
   // let passportMiddleware = async function (ctx, next) {
   //   let { req, res } = ctx;
@@ -77,7 +77,7 @@ module.exports = app => {
 
   /* 系统级接口 */
   app.get('sysLogout', '/nodeApi/sys/logout', 'sys.main.logout');           // 登录接口
-  app.get('sysLogin', '/nodeApi/sys/login', 'sys.main.login');              // 登录接口
+  // app.get('sysLogin', '/nodeApi/sys/login', 'sys.main.login');              // 登录接口
   app.get('sysUserInfo', '/nodeApi/sys/userInfo', 'sys.main.userInfo');     // 获取用户信息
   app.get('sysSidebar', '/nodeApi/sys/sidebar', 'sys.main.sidebar');        // 查看系统菜单
 
@@ -87,10 +87,10 @@ module.exports = app => {
 
 
   /* passport测试 */
-  // app.post('/nodeApi/passport/login', app.passport.authenticate('local', {              // 登录接口
-  //   successRedirect: '/nodeApi/passport/success',
-  //   failureRedirect: '/nodeApi/passport/failure'
-  // }));
-  // app.get('/nodeApi/passport/success', );
-  app.post('/nodeApi/sys/aaa', passportMiddleware);
+  app.get('/nodeApi/sys/login', app.passport.authenticate('local', {              // 登录接口
+    successRedirect: '/nodeApi/passport/success',
+    failureRedirect: '/nodeApi/passport/failure'
+  }));
+  app.get('/nodeApi/passport/success', 'sys.passport.success');
+  app.get('/nodeApi/passport/failure', 'sys.passport.failure');
 };

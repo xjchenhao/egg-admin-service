@@ -34,6 +34,11 @@ module.exports = app => {
         });
 
         if (list.length) {
+            ctx.session.userInfo = {
+                id: list[0].id,
+                name: list[0].user_name,
+            };
+            
             return user;
         } else {
             return false;
