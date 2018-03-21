@@ -6,9 +6,8 @@
 module.exports = app => {
 
   const can = app.middleware.role;
-  
-  // ------------------------------------------------------------------------------------------------【api路由】
 
+  // ------------------------------------------------------------------------------------------------【api路由】
 
   /* 用户管理 */
   app.get('/nodeApi/auth/users', can('auth.user.index'), 'auth.user.index');                      // 用户列表
@@ -38,8 +37,6 @@ module.exports = app => {
   app.get('/nodeApi/auth/modules/system', can('auth.module.system'), 'auth.module.system');       // 系统级模块列表
 
   /* 系统级接口 */
-  app.get('sysLogout', '/nodeApi/sys/logout', 'sys.main.logout');           // 登录接口
-  // app.get('sysLogin', '/nodeApi/sys/login', 'sys.main.login');              // 登录接口
   app.get('sysUserInfo', '/nodeApi/sys/userInfo', 'sys.main.userInfo');     // 获取用户信息
   app.get('sysSidebar', '/nodeApi/sys/sidebar', 'sys.main.sidebar');        // 查看系统菜单
 
@@ -49,10 +46,11 @@ module.exports = app => {
 
 
   /* passport */
-  app.get('/nodeApi/sys/login', app.passport.authenticate('local', {              // 登录接口
+  app.get('/nodeApi/sys/login', app.passport.authenticate('local', {              // 登录
     successRedirect: '/nodeApi/passport/success',
     failureRedirect: '/nodeApi/passport/failure'
   }));
+  app.get('sysLogout', '/nodeApi/sys/logout', 'sys.passport.logout');           // 退出登录  
   app.get('/nodeApi/passport/success', 'sys.passport.success');
   app.get('/nodeApi/passport/failure', 'sys.passport.failure');
 };

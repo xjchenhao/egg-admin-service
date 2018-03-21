@@ -5,6 +5,8 @@ const crypto = require('crypto');
 module.exports = app => {
     // 挂载 strategy
     app.passport.use('local', new LocalStrategy({
+        usernameField: 'username',
+        passwordField: 'password',
         passReqToCallback: true,
     }, (req, username, password, done) => {
 
@@ -20,7 +22,7 @@ module.exports = app => {
         if (!password) {
             return done(null, false, { message: '请输入密码' });
         }
-
+        done(null, user);
         app.passport.doVerify(req, user, done);
     }));
 
@@ -34,16 +36,17 @@ module.exports = app => {
         });
 
         if (list.length) {
-            ctx.session.userInfo = {
-                id: list[0].id,
-                name: list[0].user_name,
-            };
-            
             return user;
         } else {
             return false;
         }
     });
-    app.passport.serializeUser(async (ctx, user) => { });
-    app.passport.deserializeUser(async (ctx, user) => { });
+    app.passport.serializeUser(async (ctx, user) => {
+        // console.log('serializeUser',user);
+        return user;
+    });
+    app.passport.deserializeUser(async (ctx, user) => {
+        // console.log('deserializeUser',user);
+        return user;
+    });
 };

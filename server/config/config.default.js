@@ -7,7 +7,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1515465031562_6723';
 
   // add your config here
-  config.middleware = ['passportLocal'];
+  // config.middleware = ['passportLocal'];
 
   return config;
 };

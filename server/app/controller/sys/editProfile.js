@@ -7,13 +7,14 @@ module.exports = app => {
 
         * edit(ctx) {
             const query = ctx.params;
+            const userInfo = ctx.user;
 
-            if (ctx.session.userInfo.id !== Number(query.id)) {
+            if (userInfo.id !== Number(query.id)) {
                 ctx.body = {
                     code: ctx.helper.errorCode.PERMISSION,
                     msg: 'sorry，该用户无权限访问',
                     result: {
-                        userId: ctx.session.userInfo,
+                        userId: userInfo,
                         uri: '',
                     },
                 };
