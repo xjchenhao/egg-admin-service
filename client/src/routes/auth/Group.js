@@ -141,7 +141,7 @@ export default class TableList extends PureComponent {
     });
   }
 
-  // 显示or隐藏编辑用户信息弹框
+  // 显示or隐藏编辑弹框
   handleEditVisible = (flag, id = '') => {
     const { dispatch } = this.props;
 
@@ -178,7 +178,7 @@ export default class TableList extends PureComponent {
     }
   }
 
-  // 添加or编辑用户信息
+  // 添加or编辑
   handleEditSubmit = (fieldsValue, resetFormCallBack) => {
     const { editModal: { isEdit } } = this.state;
     const { dispatch } = this.props;
