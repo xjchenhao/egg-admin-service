@@ -5,10 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Egg",
             "type": "node",
             "request": "launch",
-            "name": "启动程序",
-            "program": "${workspaceFolder}/client/.roadhogrc.mock.js"
+            "cwd": "${workspaceRoot}/server",
+            "runtimeExecutable": "npm",
+            "windows": {
+                "runtimeExecutable": "npm.cmd"
+            },
+            "runtimeArgs": [
+                "run",
+                "debug",
+                "--",
+                "--inspect-brk"
+            ],
+            "console": "integratedTerminal",
+            "protocol": "auto",
+            "restart": true,
+            "port": 9229,
+            "autoAttachChildProcesses": true
         }
     ]
 }

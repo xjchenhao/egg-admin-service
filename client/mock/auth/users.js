@@ -2,7 +2,7 @@ import mockjs from 'mockjs';
 import { parse } from 'url';
 
 export default {
-  list (req, res, u) {
+  list(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
       url = req.url; // eslint-disable-line

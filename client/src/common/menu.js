@@ -18,6 +18,20 @@ const menuData = [{
     path: 'group',
   }],
 }, {
+  name: '账户',
+  icon: 'user',
+  path: 'user',
+  children: [{
+    name: '登录',
+    path: 'login',
+  }, {
+    name: '注册',
+    path: 'register',
+  }, {
+    name: '注册结果',
+    path: 'register-result',
+  }],
+}, {
   name: 'demo',
   icon: 'book',
   path: 'demo',

@@ -85,7 +85,7 @@ export default class TableList extends PureComponent {
     },
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
 
     // 获取列表数据
@@ -254,7 +254,7 @@ export default class TableList extends PureComponent {
     );
   }
 
-  render () {
+  render() {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { editModal } = this.state;
 
@@ -262,7 +262,7 @@ export default class TableList extends PureComponent {
       {
         title: '序号',
         key: 'index',
-        render (text, record, index) {
+        render(text, record, index) {
           return index + 1;
         },
       },

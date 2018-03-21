@@ -82,6 +82,15 @@ export const getRouterData = (app) => {
     '/auth/group': {
       component: dynamicWrapper(app, ['auth/group'], () => import('../routes/auth/Group')),
     },
+    '/user/login': {
+      component: dynamicWrapper(app, ['demo/login'], () => import('../routes/demo/User/Login')),
+    },
+    '/user/register': {
+      component: dynamicWrapper(app, ['demo/register'], () => import('../routes/demo/User/Register')),
+    },
+    '/user/register-result': {
+      component: dynamicWrapper(app, [], () => import('../routes/demo/User/RegisterResult')),
+    },
   };
   const demoRouterData = {
 

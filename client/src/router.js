@@ -22,7 +22,7 @@ function RouterConfig({ history, app }) {
       <ConnectedRouter history={history}>
         <Switch>
           <Route
-            path="/demo/user"
+            path="/user"
             component={UserLayout}
           />
           <AuthorizedRoute
