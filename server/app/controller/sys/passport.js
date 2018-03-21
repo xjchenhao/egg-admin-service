@@ -14,6 +14,7 @@ module.exports = app => {
                 "msg": "退出登录成功",
                 "result": {}
             }
+            ctx.status = 200;
         }
 
         async login (ctx) {
@@ -33,15 +34,19 @@ module.exports = app => {
                 ctx.body = {
                     "code": "0",
                     "msg": "登录成功",
-                    "result": {}
+                    "result": {
+                        id: userInfo.id,
+                        userName: userInfo.user_name
+                    }
                 }
+                ctx.status = 200;
             } else {
                 ctx.body = {
                     "code": '1',
                     "msg": "账号或密码错误",
                     "result": {}
                 }
-
+                ctx.status = 200;
             }
         }
     }

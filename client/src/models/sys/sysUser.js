@@ -18,7 +18,7 @@ export default {
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === '0') {
         reloadAuthorized();
         yield put(routerRedux.push('/'));
       }
@@ -47,7 +47,7 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      setAuthority(payload.result.userName);
       return {
         ...state,
         status: payload.status,
