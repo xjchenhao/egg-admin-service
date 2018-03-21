@@ -4,7 +4,7 @@ let _ = require('underscore');
 
 module.exports = app => {
     class authUserController extends app.Controller {
-        * index(ctx) {
+        * index (ctx) {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
@@ -26,7 +26,7 @@ module.exports = app => {
             };
         }
 
-        * create(ctx) {
+        * create (ctx) {
             const query = ctx.request.body;
 
             const createRule = {
@@ -59,10 +59,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    code: ctx.helper.errorCode.FORMAT,
-                    msg: err.message,
-                    result: err.errors,
+                    "code": '400',
+                    "msg": ctx.helper.errorCode['400'],
+                    "result": err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }
@@ -79,7 +80,7 @@ module.exports = app => {
 
         }
 
-        * destroy(ctx) {
+        * destroy (ctx) {
             const query = ctx.params;
 
             yield ctx.service.auth.user.destroy(query.id);
@@ -91,19 +92,20 @@ module.exports = app => {
             }
         }
 
-        * edit(ctx) {
+        * edit (ctx) {
             const query = ctx.params;
 
             const result = yield ctx.service.auth.user.edit(query.id);
 
             if (!result) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.FOUND,
-                    msg: '未找到对应id',
-                    result: {}
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id: query.id
+                    }
                 };
-
-                ctx.logger.error(`未找到对应id`);
+                ctx.status = 404;
 
                 return false;
             }
@@ -115,7 +117,7 @@ module.exports = app => {
             }
         }
 
-        * update(ctx) {
+        * update (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -145,10 +147,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    code: ctx.helper.errorCode.FORMAT,
-                    msg: err.message,
-                    result: err.errors
+                    "code": '400',
+                    "msg": ctx.helper.errorCode['400'],
+                    "result": err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }
@@ -157,12 +160,13 @@ module.exports = app => {
 
             if (!result.affectedRows) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.FOUND,
-                    msg: '未找到对应id',
-                    result: {}
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id,
+                    }
                 };
-
-                ctx.logger.error(`未找到对应id`);
+                ctx.status = 404;
 
                 return false;
             }
@@ -174,7 +178,7 @@ module.exports = app => {
             }
         }
 
-        * setPassword(ctx) {
+        * setPassword (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -190,10 +194,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    code: ctx.helper.errorCode.FORMAT,
-                    msg: err.message,
-                    result: err.errors
+                    "code": '400',
+                    "msg": ctx.helper.errorCode['400'],
+                    "result": err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }
@@ -202,12 +207,13 @@ module.exports = app => {
 
             if (!result.affectedRows) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.FOUND,
-                    msg: '未找到对应id',
-                    result: {}
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id
+                    }
                 };
-
-                ctx.logger.error(`未找到对应id`);
+                ctx.status = 404;
 
                 return false;
             }

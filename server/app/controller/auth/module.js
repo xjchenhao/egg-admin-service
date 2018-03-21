@@ -73,10 +73,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    "code": ctx.helper.errorCode.FORMAT,
-                    "msg": err.message,
-                    "result": err.errors
+                  "code": '400',
+                  "msg": ctx.helper.errorCode['400'],
+                  "result": err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }
@@ -165,10 +166,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    "code": ctx.helper.errorCode.FORMAT,
-                    "msg": err.message,
-                    "result": err.errors
+                  "code": '400',
+                  "msg": ctx.helper.errorCode['400'],
+                  "result": err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }

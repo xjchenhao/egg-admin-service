@@ -9,10 +9,11 @@ module.exports = app => {
         async userInfo (ctx) {
             if (!ctx.isAuthenticated()) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.NOTLOGIN,
-                    msg: '账号未登录',
+                    code: '401',
+                    msg: ctx.helper.errorCode['401'],
                     result: ctx.user,
                 };
+                ctx.status = 401;
 
                 return false;
             }
@@ -28,16 +29,17 @@ module.exports = app => {
         async sidebar (ctx) {
             if (!ctx.isAuthenticated()) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.NOTLOGIN,
-                    msg: '账号未登录',
+                    code: '401',
+                    msg: ctx.helper.errorCode['401'],
                     result: ctx.user,
                 };
+                ctx.status = 401;
 
                 return false;
             }
 
             // 使用 mysql.escape 方法,做复杂的表关联查询
-            const result = await ctx.app.mysql.get('back').query('select distinct bm.* from back_role_module rm left join back_module bm on rm.module_id=bm.id left join back_user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.module_show=1', [ctx.isAuthenticated().id]);
+            const result = await ctx.app.mysql.get('back').query('select distinct bm.* from back_role_module rm left join back_module bm on rm.module_id=bm.id left join back_user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.module_show=1', [ctx.user.id]);
 
             // 根据父级id遍历子集
             const subset = function (parentId) {

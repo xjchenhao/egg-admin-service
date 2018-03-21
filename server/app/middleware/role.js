@@ -10,14 +10,14 @@ module.exports = (action) => {
         if (!isLogin) {
             if (ctx.acceptJSON) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.NOTLOGIN,
-                    msg: '账号未登录',
+                    code: '401',
+                    msg: ctx.helper.errorCode['401'],
                     result: {
                         userId: userInfo,
                         uri: action,
                     },
                 };
-                ctx.status = 200;
+                ctx.status = 401;
             } else {
                 ctx.redirect('/login?redirect=' + encodeURIComponent(ctx.originalUrl));
             }

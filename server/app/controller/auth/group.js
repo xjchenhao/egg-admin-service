@@ -3,11 +3,11 @@ let _ = require('underscore');
 
 module.exports = app => {
   class authGroupController extends app.Controller {
-    * index(ctx) {
+    * index (ctx) {
       const query = ctx.request.query;
 
       // 获取传参中指定的key，且过滤掉为`空`的条件。
-      let where = _.pick(_.pick(query, ...[ 'role_name' ]), (value) => {
+      let where = _.pick(_.pick(query, ...['role_name']), (value) => {
         return value !== '' && value !== undefined;
       });
 
@@ -19,14 +19,14 @@ module.exports = app => {
           "msg": "OK",
           "result": Object.assign(result, {
             list: result.list.map((obj) => {
-              return _.pick(obj, ...[ 'id', 'role_name', 'role_summary' ]);
+              return _.pick(obj, ...['id', 'role_name', 'role_summary']);
             })
           })
         }
       }
     }
 
-    * create(ctx) {
+    * create (ctx) {
       const query = ctx.request.body;
 
       const createRule = {
@@ -45,10 +45,11 @@ module.exports = app => {
       } catch (err) {
 
         this.ctx.body = {
-          "code": ctx.helper.errorCode.FORMAT,
-          "msg": err.message,
+          "code": '400',
+          "msg": ctx.helper.errorCode['400'],
           "result": err.errors
         };
+        ctx.status = 400;
 
         return;
       }
@@ -67,7 +68,7 @@ module.exports = app => {
 
     }
 
-    * destroy(ctx) {
+    * destroy (ctx) {
       const query = ctx.params;
 
       const result = yield ctx.service.auth.group.destroy(query.id);
@@ -79,19 +80,18 @@ module.exports = app => {
       }
     }
 
-    * edit(ctx) {
+    * edit (ctx) {
       const query = ctx.params;
 
       const result = yield ctx.service.auth.group.edit(query.id);
 
       if (!result) {
         ctx.body = {
-          code: ctx.helper.errorCode.FOUND,
-          msg: '未找到对应id',
+          code: '404',
+          msg: ctx.helper.errorCode['404'],
           result: {}
         };
-
-        ctx.logger.error(`未找到对应id`);
+        ctx.status = 404;
 
         return false;
       }
@@ -99,24 +99,23 @@ module.exports = app => {
       ctx.body = {
         "code": "0",
         "msg": "OK",
-        "result": _.pick(result, ...[ 'id', 'role_name', 'role_summary' ])
+        "result": _.pick(result, ...['id', 'role_name', 'role_summary'])
       }
     }
 
-    * update(ctx) {
+    * update (ctx) {
       const id = ctx.params.id;
       const query = ctx.request.body;
 
-      const result = yield ctx.service.auth.group.update(id, _.pick(query, ...[ 'role_name', 'role_summary' ]));
+      const result = yield ctx.service.auth.group.update(id, _.pick(query, ...['role_name', 'role_summary']));
 
       if (!result.affectedRows) {
         ctx.body = {
-          code: ctx.helper.errorCode.FOUND,
-          msg: '未找到对应id',
+          code: '404',
+          msg: ctx.helper.errorCode['404'],
           result: {}
         };
-
-        ctx.logger.error(`未找到对应id`);
+        ctx.status = 404;
 
         return false;
       }
@@ -128,7 +127,7 @@ module.exports = app => {
       }
     }
 
-    * getUser(ctx) {
+    * getUser (ctx) {
       const query = ctx.params;
 
       let addResult = yield this.app.mysql.get('back').select('back_user_role', {
@@ -162,7 +161,7 @@ module.exports = app => {
       }
     }
 
-    * setUser(ctx) {
+    * setUser (ctx) {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList ? ctx.request.body.idList.split(',') : [];
 
@@ -175,14 +174,13 @@ module.exports = app => {
         let userResult = yield this.app.mysql.get('back').select('back_user');
         if (!roleResult) {
           ctx.body = {
-            code: ctx.helper.errorCode.FOUND,
-            msg: '未找到对应id',
+            code: '404',
+            msg: ctx.helper.errorCode['404'],
             result: {
               id: roleId
             }
           };
-
-          ctx.logger.error(`没有这个角色id`);
+          ctx.status = 404;
 
           return false;
         }
@@ -211,14 +209,13 @@ module.exports = app => {
 
         if (!isExistUserId) {
           ctx.body = {
-            code: ctx.helper.errorCode.FOUND,
-            msg: '未找到对应id',
+            code: '404',
+            msg: ctx.helper.errorCode['404'],
             result: {
               idList
             }
           };
-
-          ctx.logger.error(`用户id异常：${idList}`);
+          ctx.status = 404;
 
           return false;
         }
@@ -233,7 +230,7 @@ module.exports = app => {
       for (let i = 0, l = idList.length; i < l; i++) {
         yield this.app.mysql.get('back').insert('back_user_role', {
           role_id: roleId,
-          user_id: idList[ i ]
+          user_id: idList[i]
         });
       }
 
@@ -244,7 +241,7 @@ module.exports = app => {
       }
     }
 
-    * getModule(ctx) {
+    * getModule (ctx) {
       const query = ctx.params;
 
       let addResult = yield this.app.mysql.get('back').select('back_role_module', {
@@ -272,7 +269,7 @@ module.exports = app => {
       }
     }
 
-    * setModule(ctx) {
+    * setModule (ctx) {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList ? ctx.request.body.idList.split(',') : [];
 
@@ -285,14 +282,13 @@ module.exports = app => {
         let userResult = yield this.app.mysql.get('back').select('back_module');
         if (!roleResult) {
           ctx.body = {
-            code: ctx.helper.errorCode.FOUND,
-            msg: '未找到对应id',
+            code: '404',
+            msg: ctx.helper.errorCode['404'],
             result: {
               id: roleId
             }
           };
-
-          ctx.logger.error(`没有这个模块id`);
+          ctx.status = 404;
 
           return false;
         }
@@ -321,14 +317,13 @@ module.exports = app => {
 
         if (!isExistModuleId) {
           ctx.body = {
-            code: ctx.helper.errorCode.FOUND,
-            msg: '未找到对应id',
+            code: '404',
+            msg: ctx.helper.errorCode['404'],
             result: {
               idList
             }
           };
-
-          ctx.logger.error(`用户id异常：${idList}`);
+          ctx.status = 404;
 
           return false;
         }
@@ -340,7 +335,7 @@ module.exports = app => {
       for (let i = 0, l = idList.length; i < l; i++) {
         yield this.app.mysql.get('back').insert('back_role_module', {
           role_id: roleId,
-          module_id: idList[ i ]
+          module_id: idList[i]
         });
       }
 

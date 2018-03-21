@@ -5,19 +5,20 @@ let _ = require('underscore');
 module.exports = app => {
     class authUserController extends app.Controller {
 
-        * edit(ctx) {
+        * edit (ctx) {
             const query = ctx.params;
             const userInfo = ctx.user;
 
             if (userInfo.id !== Number(query.id)) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.PERMISSION,
-                    msg: 'sorry，该用户无权限访问',
+                    code: '403',
+                    msg: ctx.helper.errorCode['403'],
                     result: {
                         userId: userInfo,
                         uri: '',
                     },
                 };
+                ctx.status = 403;
                 return false;
             }
 
@@ -26,12 +27,13 @@ module.exports = app => {
 
             if (!result) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.FOUND,
-                    msg: '未找到对应id',
-                    result: {}
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id: query.id
+                    }
                 };
-
-                ctx.logger.error(`未找到对应id`);
+                ctx.status = 404;
 
                 return false;
             }
@@ -43,7 +45,7 @@ module.exports = app => {
             }
         }
 
-        * update(ctx) {
+        * update (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -73,10 +75,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    code: ctx.helper.errorCode.FORMAT,
-                    msg: err.message,
+                    code: '400',
+                    msg: ctx.helper.errorCode['400'],
                     result: err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }
@@ -85,12 +88,13 @@ module.exports = app => {
 
             if (!result.affectedRows) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.FOUND,
-                    msg: '未找到对应id',
-                    result: {}
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id,
+                    }
                 };
-
-                ctx.logger.error(`未找到对应id`);
+                ctx.status = 404;
 
                 return false;
             }
@@ -102,7 +106,7 @@ module.exports = app => {
             }
         }
 
-        * setPassword(ctx) {
+        * setPassword (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -118,10 +122,11 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                    code: ctx.helper.errorCode.FORMAT,
-                    msg: err.message,
+                    code: '400',
+                    msg: ctx.helper.errorCode['400'],
                     result: err.errors
                 };
+                this.ctx.status = 400;
 
                 return;
             }
@@ -130,12 +135,13 @@ module.exports = app => {
 
             if (!result.affectedRows) {
                 ctx.body = {
-                    code: ctx.helper.errorCode.FOUND,
-                    msg: '未找到对应id',
-                    result: {}
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id,
+                    }
                 };
-
-                ctx.logger.error(`未找到对应id`);
+                ctx.status = 404;
 
                 return false;
             }
