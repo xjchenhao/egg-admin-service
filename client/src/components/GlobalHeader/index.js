@@ -104,7 +104,7 @@ export default class GlobalHeader extends PureComponent {
               <Icon type="question-circle-o" />
             </a >
           </Tooltip>
-          <NoticeIcon
+          {/* <NoticeIcon
             className={styles.action}
             count={currentUser.notifyCount}
             onItemClick={(item, tabProps) => {
@@ -133,15 +133,15 @@ export default class GlobalHeader extends PureComponent {
               emptyText="你已完成所有待办"
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
-          </NoticeIcon>
-          {currentUser.name ? (
+          </NoticeIcon> */}
+          {/* {currentUser.name ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
                 <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
                 <span className={styles.name}>{currentUser.name}</span>
               </span>
             </Dropdown>
-          ) : <Spin size="small" style={{ marginLeft: 8 }} />}
+          ) : <Spin size="small" style={{ marginLeft: 8 }} />} */}
         </div>
       </div>
     );

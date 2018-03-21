@@ -11,6 +11,12 @@
       ]
     }
   },
+  "proxy": {
+    "/nodeApi": {
+      "target": "http://localhost:7001/",
+      "changeOrigin": true
+    }
+  },
   "ignoreMomentLocale": true,
   "theme": "./src/theme.js",
   "html": {

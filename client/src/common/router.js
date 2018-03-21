@@ -83,13 +83,13 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['auth/group'], () => import('../routes/auth/Group')),
     },
     '/user/login': {
-      component: dynamicWrapper(app, ['demo/login'], () => import('../routes/demo/User/Login')),
+      component: dynamicWrapper(app, ['sys/sysUser'], () => import('../routes/sys/User/Login')),
     },
     '/user/register': {
-      component: dynamicWrapper(app, ['demo/register'], () => import('../routes/demo/User/Register')),
+      component: dynamicWrapper(app, ['sys/register'], () => import('../routes/sys/User/Register')),
     },
     '/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/demo/User/RegisterResult')),
+      component: dynamicWrapper(app, [], () => import('../routes/sys/User/RegisterResult')),
     },
   };
   const demoRouterData = {
