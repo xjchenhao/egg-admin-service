@@ -10,8 +10,8 @@ module.exports = app => {
   // ------------------------------------------------------------------------------------------------【api路由】
 
   /* 用户管理 */
-  app.get('/nodeApi/auth/users', can('auth.user.index'), 'auth.user.index');                      // 用户列表
-  app.post('/nodeApi/auth/users', can('auth.user.create'), 'auth.user.create');                   // 新建用户
+  app.get('aaa','/nodeApi/auth/users', can('auth.user.index'), 'auth.user.index');                      // 用户列表
+  app.post('aaa','/nodeApi/auth/users', can('auth.user.create'), 'auth.user.create');                   // 新建用户
   app.delete('/nodeApi/auth/users/:id', can('auth.user.destroy'), 'auth.user.destroy');           // 删除用户
   app.get('/nodeApi/auth/users/:id/edit', can('auth.user.edit'), 'auth.user.edit');               // 用户详情
   app.put('/nodeApi/auth/users/:id', can('auth.user.update'), 'auth.user.update');                // 修改用户详情

@@ -36,17 +36,26 @@ module.exports = app => {
         });
 
         if (list.length) {
-            return user;
+            return list[0];
         } else {
             return false;
         }
     });
     app.passport.serializeUser(async (ctx, user) => {
-        // console.log('serializeUser',user);
+        console.log('serializeUser', user);
         return user;
     });
     app.passport.deserializeUser(async (ctx, user) => {
-        // console.log('deserializeUser',user);
-        return user;
+        const [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
+            where: {
+                user_account: user.username,
+                user_password: crypto.createHash('md5').update(user.password).digest('hex'),
+            },
+        });
+
+        return {
+            id: userInfo.id,
+            userName: userInfo.user_name
+        };
     });
 };
