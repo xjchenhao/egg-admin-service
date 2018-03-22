@@ -19,8 +19,8 @@ module.exports = app => {
       return {
         list: result,
         currentPage: Number(pageNumber),
-        pages: Math.ceil(result.length / pageSize),
-        total: totalCount,
+        total: Math.ceil(result.length / pageSize),
+        pageSize: totalCount,
       };
     }
 

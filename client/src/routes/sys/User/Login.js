@@ -11,8 +11,8 @@ const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
   console.log(obj);
 
   return {
-    login: obj.sysUser,
-    submitting: obj.loading.effects['sysUser/login'],
+    login: obj.login,
+    submitting: obj.loading.effects['login/login'],
   };
 })
 export default class LoginPage extends Component {
@@ -29,7 +29,7 @@ export default class LoginPage extends Component {
     const { type } = this.state;
     if (!err) {
       this.props.dispatch({
-        type: 'sysUser/login',
+        type: 'login/login',
         payload: {
           ...values,
           type,

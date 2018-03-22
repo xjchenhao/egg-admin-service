@@ -71,10 +71,10 @@ function getFlatMenuData(menus) {
 export const getRouterData = (app) => {
   const mainRouterData = {
     '/': {
-      component: dynamicWrapper(app, ['demo/user', 'demo/login'], () => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(app, ['sys/user', 'sys/login'], () => import('../layouts/BasicLayout')),
     },
     '/home': {
-      component: dynamicWrapper(app, ['demo/user', 'demo/login'], () => import('../routes/home/Index')),
+      component: dynamicWrapper(app, ['sys/user', 'sys/login'], () => import('../routes/home/Index')),
     },
     '/auth/users': {
       component: dynamicWrapper(app, ['auth/users'], () => import('../routes/auth/Users')),
@@ -82,8 +82,11 @@ export const getRouterData = (app) => {
     '/auth/group': {
       component: dynamicWrapper(app, ['auth/group'], () => import('../routes/auth/Group')),
     },
+    '/user': {
+      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
+    },
     '/user/login': {
-      component: dynamicWrapper(app, ['sys/sysUser'], () => import('../routes/sys/User/Login')),
+      component: dynamicWrapper(app, ['sys/login'], () => import('../routes/sys/User/Login')),
     },
     '/user/register': {
       component: dynamicWrapper(app, ['sys/register'], () => import('../routes/sys/User/Register')),
@@ -169,21 +172,6 @@ export const getRouterData = (app) => {
     '/demo/exception/trigger': {
       component: dynamicWrapper(app, ['demo/error'], () => import('../routes/demo/Exception/triggerException')),
     },
-    '/demo/user': {
-      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
-    },
-    '/demo/user/login': {
-      component: dynamicWrapper(app, ['demo/login'], () => import('../routes/demo/User/Login')),
-    },
-    '/demo/user/register': {
-      component: dynamicWrapper(app, ['demo/register'], () => import('../routes/demo/User/Register')),
-    },
-    '/demo/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/demo/User/RegisterResult')),
-    },
-    // '/user/:id': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/demo/User/SomeComponent')),
-    // },
   };
   // Get name from ./menu.js or just set it in the router data.
   const routerConfig = Object.assign(mainRouterData, demoRouterData);

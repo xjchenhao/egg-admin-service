@@ -133,20 +133,6 @@ const menuData = [{
         path: 'trigger',
       }],
     }, {
-      name: '账户',
-      icon: 'user',
-      path: 'user',
-      children: [{
-        name: '登录',
-        path: 'login',
-      }, {
-        name: '注册',
-        path: 'register',
-      }, {
-        name: '注册结果',
-        path: 'register-result',
-      }],
-    }, {
       name: '使用文档',
       icon: 'book',
       path: 'http://pro.ant.design/docs/getting-started',

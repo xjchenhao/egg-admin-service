@@ -4,7 +4,7 @@ import { setAuthority } from '../../utils/authority';
 import { reloadAuthorized } from '../../utils/Authorized';
 
 export default {
-  namespace: 'sysUser',
+  namespace: 'login',
 
   state: {
     status: undefined,
