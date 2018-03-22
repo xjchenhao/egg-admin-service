@@ -8,8 +8,6 @@ import styles from './Login.less';
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
 @connect((obj) => {
-  console.log(obj);
-
   return {
     login: obj.login,
     submitting: obj.loading.effects['login/login'],
