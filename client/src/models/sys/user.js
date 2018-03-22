@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent } from '../../services/user';
+import { info as queryUsers, info as queryCurrent } from '../../services/sys/user';
 
 export default {
   namespace: 'user',
@@ -20,7 +20,11 @@ export default {
       const response = yield call(queryCurrent);
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: {
+          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+          id: response.result.id,
+          name: response.result.userName,
+        },
       });
     },
   },

@@ -21,7 +21,7 @@ module.exports = app => {
             ctx.body = {
                 "code": "0",
                 "msg": "OK",
-                "result": ctx.isAuthenticated()
+                "result": ctx.user
             }
             ctx.realStatus = 200;
         }
