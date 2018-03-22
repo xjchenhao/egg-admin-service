@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import { login } from '../../services/sys/user';
+import { login, logout } from '../../services/sys/user';
 import { setAuthority } from '../../utils/authority';
 import { reloadAuthorized } from '../../utils/Authorized';
 
@@ -25,7 +25,8 @@ export default {
         yield put(routerRedux.push('/'));
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { put, select, call }) {
+      yield call(logout);
       try {
         // get location pathname
         const urlParams = new URL(window.location.href);
