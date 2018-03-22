@@ -6,6 +6,7 @@ export default {
 
   state: {
     data: {
+      query: {},
       list: [],
       pagination: {},
     },
@@ -22,6 +23,11 @@ export default {
         payload: true,
       });
       const response = yield call(getList, payload);
+
+      if (!response) {
+        return;
+      }
+
       yield put({
         type: 'save',
         payload: {
@@ -41,6 +47,10 @@ export default {
     *details({ payload, callback }, { call, put }) {
       const response = yield call(getGroupsInfo, payload);
 
+      if (!response) {
+        return;
+      }
+
       yield put({
         type: 'changeDetails',
         payload: response.result,
@@ -49,26 +59,44 @@ export default {
       if (callback) callback();
     },
 
-    *edit({ payload, callback }, { call }) {
+    *edit({ payload, callback }, { call, select, put }) {
       const response = yield call(editGroupInfo, {
         ...payload,
       });
+
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('编辑成功');
       } else {
         message.error(response.msg);
       }
 
+      // 刷新
+      const query = yield select(state => state.group.data.query);
+      yield put({ type: 'fetch', payload: query });
+
       if (callback) callback();
     },
 
-    *add({ payload, callback }, { call }) {
+    *add({ payload, callback }, { call, select, put }) {
       const response = yield call(addGroup, payload);
+
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('添加成功');
       } else {
         message.error(response.msg);
       }
+
+      // 刷新
+      const query = yield select(state => state.group.data.query);
+      yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
     },
@@ -82,7 +110,7 @@ export default {
       if (callback) callback();
     },
 
-    *remove({ payload, callback }, { call, put }) {
+    *remove({ payload, callback }, { call, put, select }) {
       let response = '';
       yield put({
         type: 'changeLoading',
@@ -97,6 +125,10 @@ export default {
         response = yield call(removeGroup, payload);
       }
 
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('删除成功');
       } else {
@@ -106,6 +138,10 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
+
+      // 刷新
+      const query = yield select(state => state.group.data.query);
+      yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
     },

@@ -6,7 +6,7 @@ export default {
 
   state: {
     data: {
-      filterQuery: {},
+      query: {},
       list: [],
       pagination: {},
     },
@@ -23,10 +23,15 @@ export default {
         payload: true,
       });
       const response = yield call(getList, payload);
+
+      if (!response) {
+        return;
+      }
+
       yield put({
         type: 'save',
         payload: {
-          filterQuery: payload,
+          query: payload,
           list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
           pagination: {
             currentPage: response.result.currentPage,
@@ -35,6 +40,7 @@ export default {
           },
         },
       });
+
       yield put({
         type: 'changeLoading',
         payload: false,
@@ -42,6 +48,11 @@ export default {
     },
     *resetPwd({ payload }, { call }) {
       const response = yield call(resetPwd, payload);
+
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('密码重置成功');
       } else {
@@ -50,6 +61,10 @@ export default {
     },
     *details({ payload, callback }, { call, put }) {
       const response = yield call(getUserInfo, payload);
+
+      if (!response) {
+        return;
+      }
 
       yield put({
         type: 'changeDetails',
@@ -63,6 +78,11 @@ export default {
       const response = yield call(editUserInfo, {
         ...payload,
       });
+
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('编辑成功');
       } else {
@@ -70,14 +90,19 @@ export default {
       }
 
       // 刷新
-      const filterQuery = yield select(state => state.users.data.filterQuery);
-      yield put({ type: 'fetch', payload: filterQuery });
+      const query = yield select(state => state.users.data.query);
+      yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
     },
 
     *add({ payload, callback }, { call, put, select }) {
       const response = yield call(addUserInfo, payload);
+
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('添加成功');
       } else {
@@ -85,8 +110,8 @@ export default {
       }
 
       // 刷新
-      const filterQuery = yield select(state => state.users.data.filterQuery);
-      yield put({ type: 'fetch', payload: filterQuery });
+      const query = yield select(state => state.users.data.query);
+      yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
     },
@@ -115,6 +140,10 @@ export default {
         response = yield call(removeUser, payload);
       }
 
+      if (!response) {
+        return;
+      }
+
       if (response.code === '0') {
         message.success('删除成功');
       } else {
@@ -126,8 +155,8 @@ export default {
       });
 
       // 刷新
-      const filterQuery = yield select(state => state.users.data.filterQuery);
-      yield put({ type: 'fetch', payload: filterQuery });
+      const query = yield select(state => state.users.data.query);
+      yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
     },

@@ -15,7 +15,9 @@ export default {
       const response = yield call(login, payload);
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: {
+          currentAuthority: response.result.userName,
+        },
       });
       // Login successfully
       if (response.code === '0') {
@@ -47,7 +49,7 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.result.userName);
+      setAuthority(payload.currentAuthority);
       return {
         ...state,
         status: payload.status,
