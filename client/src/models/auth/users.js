@@ -6,6 +6,7 @@ export default {
 
   state: {
     data: {
+      filterQuery: {},
       list: [],
       pagination: {},
     },
@@ -25,6 +26,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
+          filterQuery: payload,
           list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
           pagination: {
             currentPage: response.result.currentPage,
@@ -57,7 +59,7 @@ export default {
       if (callback) callback();
     },
 
-    *edit({ payload, callback }, { call }) {
+    *edit({ payload, callback }, { call, put, select }) {
       const response = yield call(editUserInfo, {
         ...payload,
       });
@@ -67,16 +69,24 @@ export default {
         message.error(response.msg);
       }
 
+      // 刷新
+      const filterQuery = yield select(state => state.users.data.filterQuery);
+      yield put({ type: 'fetch', payload: filterQuery });
+
       if (callback) callback();
     },
 
-    *add({ payload, callback }, { call }) {
+    *add({ payload, callback }, { call, put, select }) {
       const response = yield call(addUserInfo, payload);
       if (response.code === '0') {
         message.success('添加成功');
       } else {
         message.error(response.msg);
       }
+
+      // 刷新
+      const filterQuery = yield select(state => state.users.data.filterQuery);
+      yield put({ type: 'fetch', payload: filterQuery });
 
       if (callback) callback();
     },
@@ -90,7 +100,7 @@ export default {
       if (callback) callback();
     },
 
-    *remove({ payload, callback }, { call, put }) {
+    *remove({ payload, callback }, { call, put, select }) {
       let response = '';
       yield put({
         type: 'changeLoading',
@@ -114,6 +124,10 @@ export default {
         type: 'changeLoading',
         payload: false,
       });
+
+      // 刷新
+      const filterQuery = yield select(state => state.users.data.filterQuery);
+      yield put({ type: 'fetch', payload: filterQuery });
 
       if (callback) callback();
     },
