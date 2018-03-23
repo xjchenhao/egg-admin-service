@@ -64,6 +64,7 @@ module.exports = app => {
             id: result.insertId
           }
         }
+        ctx.status = 201;
       }
 
     }
@@ -78,6 +79,7 @@ module.exports = app => {
         "msg": "OK",
         "result": {}
       }
+      ctx.status = 204;
     }
 
     * edit (ctx) {

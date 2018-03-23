@@ -102,6 +102,7 @@ module.exports = app => {
                 "msg": "OK",
                 "result": {}
             }
+            ctx.status = 204;
         }
 
         * edit(ctx) {
@@ -180,8 +181,11 @@ module.exports = app => {
             ctx.body = {
                 "code": "0",
                 "msg": "OK",
-                "result": {}
+                "result": {
+                    id: result.insertId
+                }
             }
+            ctx.status = 201;
         }
 
         * system(ctx) {
