@@ -184,7 +184,7 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     if (isEdit) {
       dispatch({
-        type: 'group/details',
+        type: 'group/edit',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
