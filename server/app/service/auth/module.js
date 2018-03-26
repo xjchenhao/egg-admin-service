@@ -4,7 +4,7 @@
 module.exports = app => {
     class moduleService extends app.Service {
 
-        * index(pageNumber = 1, pageSize = 20, query) {
+        * index(pageNumber = 1, pageSize = 10, query) {
 
 
             let where = '';
@@ -30,13 +30,12 @@ module.exports = app => {
 
                 totalCount = yield this.app.mysql.get('back').query(`SELECT * FROM back_module`);
             }
-
-            return {
-                list: result,
+            return this.ctx.response.format.paging({
+                totalList: totalCount,
+                resultList: result,
+                pageSize,
                 currentPage: Number(pageNumber),
-                total: Math.ceil(result.length / pageSize),
-                pageSize: totalCount.length
-            };
+            });
         }
 
         * create(data) {
