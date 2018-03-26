@@ -3,20 +3,20 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table } from 'antd';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
-import styles from './Group.less';
+import styles from './Modules.less';
 
 const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
 // 添加or编辑弹框
 const EditModal = connect(state => ({
-  pageModel: state.group,
+  pageModel: state.modules,
 }))(Form.create()((props) => {
   const { visible, onOk, onCancel, form, isEdit, pageModel: { details: data } } = props;
 
   return (
     <Modal
-      title={isEdit ? '编辑用户组' : '添加用户组'}
+      title={isEdit ? '编辑模块' : '添加模块'}
       visible={visible}
       onOk={(e) => {
         e.preventDefault();
@@ -73,7 +73,7 @@ const EditModal = connect(state => ({
 }));
 
 @connect(state => ({
-  pageModel: state.group,
+  pageModel: state.modules,
 }))
 @Form.create()
 export default class TableList extends PureComponent {
@@ -90,7 +90,7 @@ export default class TableList extends PureComponent {
 
     // 获取列表数据
     dispatch({
-      type: 'group/fetch',
+      type: 'modules/fetch',
     });
   }
 
@@ -116,7 +116,7 @@ export default class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'group/fetch',
+      type: 'modules/fetch',
       payload: params,
     });
   }
@@ -135,7 +135,7 @@ export default class TableList extends PureComponent {
       });
 
       dispatch({
-        type: 'group/fetch',
+        type: 'modules/fetch',
         payload: fieldsValue,
       });
     });
@@ -149,7 +149,7 @@ export default class TableList extends PureComponent {
       // 根据有没有传id判断是否是编辑弹窗
       if (id) {
         dispatch({
-          type: 'group/details',
+          type: 'modules/details',
           payload: {
             id,
           },
@@ -173,7 +173,7 @@ export default class TableList extends PureComponent {
         isVisible: false,
       }));
       dispatch({
-        type: 'group/reset',
+        type: 'modules/reset',
       });
     }
   }
@@ -184,7 +184,7 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     if (isEdit) {
       dispatch({
-        type: 'group/edit',
+        type: 'modules/edit',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
@@ -194,7 +194,7 @@ export default class TableList extends PureComponent {
       }));
     } else {
       dispatch({
-        type: 'group/add',
+        type: 'modules/add',
         payload: fieldsValue,
         callback: resetFormCallBack,
       });
@@ -210,7 +210,7 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'group/remove',
+      type: 'modules/remove',
       payload: {
         id,
       },
@@ -225,7 +225,7 @@ export default class TableList extends PureComponent {
       formQuery: {},
     });
     dispatch({
-      type: 'group/fetch',
+      type: 'modules/fetch',
       payload: {},
     });
   }
@@ -267,34 +267,40 @@ export default class TableList extends PureComponent {
         },
       },
       {
-        title: '组名称',
+        title: '菜单名称',
+        key: 'module_name',
+        dataIndex: 'module_name',
+      },
+      {
+        title: '父菜单',
         key: 'role_name',
         dataIndex: 'role_name',
       },
       {
-        title: '描述',
-        key: 'role_summary',
-        dataIndex: 'role_summary',
+        title: 'url地址',
+        key: 'module_url',
+        dataIndex: 'module_url',
+      },
+      {
+        title: '权限标识',
+        key: 'module_uri',
+        dataIndex: 'module_uri',
+      },
+      {
+        title: '显示',
+        key: 'module_show',
+        dataIndex: 'module_show',
+      },
+      {
+        title: '排序',
+        key: 'module_sort',
+        dataIndex: 'module_sort',
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <div>
-            <a
-              onClick={() => {
-                // this.handleEditVisible(true, record.id);
-              }}
-            >权限管理
-            </a>
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                // this.handleEditVisible(true, record.id);
-              }}
-            >成员管理
-            </a>
-            <Divider type="vertical" />
             <a
               onClick={() => {
                 this.handleEditVisible(true, record.id);
@@ -314,7 +320,7 @@ export default class TableList extends PureComponent {
     ];
 
     return (
-      <PageHeaderLayout title="用户组管理">
+      <PageHeaderLayout title="功能模块管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>
