@@ -48,7 +48,7 @@ export default class LoginPage extends Component {
     );
   }
 
-  render () {
+  render() {
     const { login, submitting } = this.props;
     const { type } = this.state;
     return (

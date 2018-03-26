@@ -165,7 +165,7 @@ module.exports = app => {
 
     * setUser (ctx) {
       const roleId = ctx.params.id;
-      const idList = ctx.request.body.idList ? ctx.request.body.idList.split(',') : [];
+      const idList = ctx.request.body.idList;
 
       // 错误捕捉
       {
@@ -199,7 +199,7 @@ module.exports = app => {
             .value();
 
           idList.forEach((id) => {
-            if (sysUserList.indexOf(id) === -1) {
+            if (sysUserList.indexOf(String(id)) === -1) {
               exist = false;
 
               return false;

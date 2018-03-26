@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table, Transfer } from 'antd';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Group.less';
@@ -72,6 +72,57 @@ const EditModal = connect(state => ({
   );
 }));
 
+// 成员管理弹框
+const MemberModal = connect(state => ({
+  pageModel: state.group,
+}))(Form.create()((props) => {
+  const { visible, onOk, onCancel, form, pageModel: { member: data }, dispatch } = props;
+
+  const handleChange = (targetKeys, direction, moveKeys) => {
+    if (direction === 'right') {
+      dispatch({
+        type: 'group/changeMember',
+        payload: {
+          ...data,
+          addList: data.addList.concat(moveKeys),
+        },
+      });
+    }
+    if (direction === 'left') {
+      dispatch({
+        type: 'group/changeMember',
+        payload: {
+          ...data,
+          addList: data.addList.filter(item => moveKeys.indexOf(item) < 0),
+        },
+      });
+    }
+  };
+
+  return (
+    <Modal
+      title="成员管理"
+      visible={visible}
+      onOk={(e) => {
+        e.preventDefault();
+        onOk(data.addList);
+      }}
+      onCancel={() => {
+        onCancel();
+        form.resetFields();
+      }}
+    >
+      <Transfer
+        dataSource={data.allList}
+        titles={['未添加', '已添加']}
+        targetKeys={data.addList}
+        onChange={handleChange}
+        render={item => item.label}
+      />
+    </Modal>
+  );
+}));
+
 @connect(state => ({
   pageModel: state.group,
 }))
@@ -82,6 +133,10 @@ export default class TableList extends PureComponent {
     editModal: {
       isVisible: false,
       isEdit: false,
+    },
+    memberModal: {
+      id: '',
+      isVisible: false,
     },
   };
 
@@ -205,6 +260,51 @@ export default class TableList extends PureComponent {
     }
   }
 
+  // 显示or隐藏成员管理弹框
+  handleMemberVisible = (flag, id = ' ') => {
+    const { dispatch } = this.props;
+
+    if (flag) {
+      dispatch({
+        type: 'group/getMember',
+        payload: {
+          id,
+        },
+      });
+      this.setState(Object.assign(this.state.memberModal, {
+        id,
+        isVisible: true,
+      }));
+    } else {
+      this.setState(Object.assign(this.state.memberModal, {
+        id: '',
+        isVisible: false,
+      }));
+      dispatch({
+        type: 'group/resetMember',
+      });
+    }
+  }
+
+  // 修改成员管理
+  handleMemberSubmit = async (addIdList) => {
+    const { memberModal: { id } } = this.state;
+    const { dispatch } = this.props;
+
+    await dispatch({
+      type: 'group/setMember',
+      payload: {
+        id,
+        idList: addIdList,
+      },
+    });
+    await dispatch({
+      type: 'group/resetMember',
+    });
+
+    this.handleMemberVisible(false);
+  }
+
   // 删除项目
   handleRemove = (id) => {
     const { dispatch } = this.props;
@@ -256,7 +356,7 @@ export default class TableList extends PureComponent {
 
   render() {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
-    const { editModal } = this.state;
+    const { editModal, memberModal } = this.state;
 
     const columns = [
       {
@@ -290,7 +390,7 @@ export default class TableList extends PureComponent {
             <Divider type="vertical" />
             <a
               onClick={() => {
-                // this.handleEditVisible(true, record.id);
+                this.handleMemberVisible(true, record.id);
               }}
             >成员管理
             </a>
@@ -344,6 +444,11 @@ export default class TableList extends PureComponent {
           isEdit={editModal.isEdit}
           onOk={this.handleEditSubmit}
           onCancel={() => this.handleEditVisible()}
+        />
+        <MemberModal
+          visible={memberModal.isVisible}
+          onOk={this.handleMemberSubmit}
+          onCancel={() => this.handleMemberVisible()}
         />
       </PageHeaderLayout>
     );

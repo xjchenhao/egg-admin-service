@@ -47,20 +47,23 @@ export async function removeGroup(params) {
 
 // 查看用户组权限
 export async function getAuth(params) {
-  return request(`/nodeApi/auth/groupModules?${stringify(params)}`);
+  return request(`/nodeApi/auth/groupModules/${params.id}`);
 }
 
 // 设置用户组权限
 export async function setAuth(params) {
-  return request(`/nodeApi/auth/groupModules?${stringify(params)}`);
+  return request(`/nodeApi/auth/groupModules/${params.id}`);
 }
 
 // 查看用户组成员
 export async function getUsers(params) {
-  return request(`/nodeApi/auth/groupUsers?${stringify(params)}`);
+  return request(`/nodeApi/auth/groupUsers/${params.id}`);
 }
 
 // 设置用户组成员
 export async function setUsers(params) {
-  return request(`/nodeApi/auth/groupUsers?${stringify(params)}`);
+  return request(`/nodeApi/auth/groupUsers/${params.id}`, {
+    method: 'PUT',
+    body: params,
+  });
 }
