@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getList, getGroupsInfo, editGroupInfo, addGroup, removeGroup, getUsers, setUsers } from '../../services/auth/group';
+import { getList, getGroupsInfo, editGroupInfo, addGroup, removeGroup, getUsers, setUsers, setAuth, getAuth } from '../../services/auth/group';
 
 export default {
   namespace: 'group',
@@ -11,6 +11,9 @@ export default {
       pagination: {},
     },
     details: {
+
+    },
+    authority: {
 
     },
     member: {
@@ -179,6 +182,37 @@ export default {
 
       if (callback) callback();
     },
+    *getAuth({ payload, callback }, { call, put }) {
+      const response = yield call(getAuth, payload);
+
+      if (!response) {
+        return;
+      }
+
+      yield put({
+        type: 'changeAuth',
+        payload: response.result,
+      });
+
+      if (callback) callback();
+    },
+    *setAuth({ payload, callback }, { call }) {
+      const response = yield call(setAuth, payload);
+
+      if (!response) {
+        return;
+      }
+
+      if (callback) callback();
+    },
+    *resetAuth({ callback }, { put }) {
+      yield put({
+        type: 'changeAuth',
+        payload: {},
+      });
+
+      if (callback) callback();
+    },
   },
 
   reducers: {
@@ -186,6 +220,12 @@ export default {
       return {
         ...state,
         data: action.payload,
+      };
+    },
+    changeAuth(state, action) {
+      return {
+        ...state,
+        authority: action.payload,
       };
     },
     changeMember(state, action) {

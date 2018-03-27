@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table, Transfer } from 'antd';
+import { Row, Col, Card, Form, Input, Button, Modal, Divider, Transfer, Table, Tree } from 'antd';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Group.less';
 
 const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
+
+const { TreeNode } = Tree;
 
 // 添加or编辑弹框
 const EditModal = connect(state => ({
@@ -75,8 +77,8 @@ const EditModal = connect(state => ({
 // 成员管理弹框
 const MemberModal = connect(state => ({
   pageModel: state.group,
-}))(Form.create()((props) => {
-  const { visible, onOk, onCancel, form, pageModel: { member: data }, dispatch } = props;
+}))((props) => {
+  const { visible, onOk, onCancel, pageModel: { member: data }, dispatch } = props;
 
   const handleChange = (targetKeys, direction, moveKeys) => {
     if (direction === 'right') {
@@ -109,7 +111,6 @@ const MemberModal = connect(state => ({
       }}
       onCancel={() => {
         onCancel();
-        form.resetFields();
       }}
     >
       <Transfer
@@ -121,7 +122,67 @@ const MemberModal = connect(state => ({
       />
     </Modal>
   );
-}));
+});
+
+// 权限管理弹框
+const AuthModal = connect(state => ({
+  pageModel: state.group,
+}))((props) => {
+  const { visible, onOk, onCancel, pageModel: { authority: data }, dispatch } = props;
+
+  const handleChange = (selectedKeys) => {
+    dispatch({
+      type: 'group/changeAuth',
+      payload: {
+        ...data,
+        addList: selectedKeys,
+      },
+    });
+  };
+
+  const loop = (allList) => {
+    return allList.map((item) => {
+      if (item.children && item.children.length) {
+        return (
+          <TreeNode title={item.module_name} key={item.id} dataRef={item}>
+            {loop(item.children)}
+          </TreeNode>
+        );
+      }
+      return <TreeNode title={item.module_name} key={item.id} dataRef={item} />;
+    });
+  };
+
+  return (
+    <Modal
+      title="权限管理"
+      visible={visible}
+      onOk={(e) => {
+        e.preventDefault();
+        onOk(data.addList);
+      }}
+      onCancel={() => {
+        onCancel();
+      }}
+    >
+      <div style={{ height: '300px', overflowY: 'auto' }}>
+        {
+          data.allList ? (
+            <Tree
+              checkable
+              defaultExpandedKeys={data.addList.map(item => String(item))}
+              defaultSelectedKeys={data.addList.map(item => String(item))}
+              defaultCheckedKeys={data.addList.map(item => String(item))}
+              onCheck={handleChange}
+            >
+              {loop(data.allList)}
+            </Tree>
+          ) : ''
+        }
+      </div>
+    </Modal>
+  );
+});
 
 @connect(state => ({
   pageModel: state.group,
@@ -135,6 +196,10 @@ export default class TableList extends PureComponent {
       isEdit: false,
     },
     memberModal: {
+      id: '',
+      isVisible: false,
+    },
+    authModal: {
       id: '',
       isVisible: false,
     },
@@ -305,6 +370,51 @@ export default class TableList extends PureComponent {
     this.handleMemberVisible(false);
   }
 
+  // 显示or隐藏权限管理弹框
+  handleAuthVisible = (flag, id = ' ') => {
+    const { dispatch } = this.props;
+
+    if (flag) {
+      dispatch({
+        type: 'group/getAuth',
+        payload: {
+          id,
+        },
+      });
+      this.setState(Object.assign(this.state.authModal, {
+        id,
+        isVisible: true,
+      }));
+    } else {
+      this.setState(Object.assign(this.state.authModal, {
+        id: '',
+        isVisible: false,
+      }));
+      dispatch({
+        type: 'group/resetAuth',
+      });
+    }
+  }
+
+  // 修改权限管理
+  handleAuthSubmit = async (addIdList) => {
+    const { authModal: { id } } = this.state;
+    const { dispatch } = this.props;
+
+    await dispatch({
+      type: 'group/setAuth',
+      payload: {
+        id,
+        idList: addIdList,
+      },
+    });
+    await dispatch({
+      type: 'group/resetAuth',
+    });
+
+    this.handleAuthVisible(false);
+  }
+
   // 删除项目
   handleRemove = (id) => {
     const { dispatch } = this.props;
@@ -356,7 +466,7 @@ export default class TableList extends PureComponent {
 
   render() {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
-    const { editModal, memberModal } = this.state;
+    const { editModal, memberModal, authModal } = this.state;
 
     const columns = [
       {
@@ -383,7 +493,7 @@ export default class TableList extends PureComponent {
           <div>
             <a
               onClick={() => {
-                // this.handleEditVisible(true, record.id);
+                this.handleAuthVisible(true, record.id);
               }}
             >权限管理
             </a>
@@ -449,6 +559,11 @@ export default class TableList extends PureComponent {
           visible={memberModal.isVisible}
           onOk={this.handleMemberSubmit}
           onCancel={() => this.handleMemberVisible()}
+        />
+        <AuthModal
+          visible={authModal.isVisible}
+          onOk={this.handleAuthSubmit}
+          onCancel={() => this.handleAuthVisible()}
         />
       </PageHeaderLayout>
     );

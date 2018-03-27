@@ -52,7 +52,10 @@ export async function getAuth(params) {
 
 // 设置用户组权限
 export async function setAuth(params) {
-  return request(`/nodeApi/auth/groupModules/${params.id}`);
+  return request(`/nodeApi/auth/groupModules/${params.id}`, {
+    method: 'PUT',
+    body: params,
+  });
 }
 
 // 查看用户组成员

@@ -273,7 +273,7 @@ module.exports = app => {
 
     * setModule (ctx) {
       const roleId = ctx.params.id;
-      const idList = ctx.request.body.idList ? ctx.request.body.idList.split(',') : [];
+      const idList = ctx.request.body.idList;
 
       // 错误捕捉
       {
