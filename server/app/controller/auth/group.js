@@ -79,7 +79,7 @@ module.exports = app => {
         "msg": "OK",
         "result": {}
       }
-      ctx.status = 204;
+      ctx.status = 200;
     }
 
     * edit (ctx) {
