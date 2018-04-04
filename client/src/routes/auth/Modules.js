@@ -24,7 +24,7 @@ const EditModal = connect(state => ({
     return list.map((obj) => {
       return {
         label: obj.module_name,
-        value: obj.id,
+        value: String(obj.id),
         key: obj.id,
         children: transform(obj.children),
       };
@@ -48,7 +48,7 @@ const EditModal = connect(state => ({
     if (isEdit) {
       if (parentId !== 0) {
         return (form.getFieldDecorator('module_parent_id', {
-          initialValue: parentId,
+          initialValue: String(parentId),
         })(
           <TreeSelect
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
@@ -75,8 +75,9 @@ const EditModal = connect(state => ({
           if (err) return;
           if (isEdit) {
             onOk({
-              id: data.id,
               ...fieldsValue,
+              id: data.id,
+              module_parent_id: Number(fieldsValue.module_parent_id),
             }, form.resetFields);
           } else {
             onOk({
