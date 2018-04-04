@@ -37,6 +37,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
+          query: payload,
           list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
           pagination: {
             currentPage: response.result.currentPage,

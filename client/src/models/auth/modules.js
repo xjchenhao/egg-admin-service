@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getList, getDetails, editDetails, add, remove } from '../../services/auth/modules';
+import { getList, getDetails, editDetails, add, remove, getSystemTree } from '../../services/auth/modules';
 
 export default {
   namespace: 'modules',
@@ -9,6 +9,14 @@ export default {
       query: {},
       list: [],
       pagination: {},
+    },
+    breadcrumb: [{
+      id: '',
+      name: 'Root',
+    }],
+    systemTree: {
+      checkedId: 0,
+      data: [],
     },
     details: {
 
@@ -31,11 +39,14 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
-          pagination: {
-            currentPage: response.result.currentPage,
-            pageSize: response.result.pages,
-            total: response.result.total,
+          data: {
+            query: payload,
+            list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
+            pagination: {
+              currentPage: response.result.currentPage,
+              pageSize: response.result.pages,
+              total: response.result.total,
+            },
           },
         },
       });
@@ -75,7 +86,7 @@ export default {
       }
 
       // 刷新
-      const query = yield select(state => state.group.data.query);
+      const query = yield select(state => state.modules.data.query);
       yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
@@ -95,7 +106,7 @@ export default {
       }
 
       // 刷新
-      const query = yield select(state => state.group.data.query);
+      const query = yield select(state => state.modules.data.query);
       yield put({ type: 'fetch', payload: query });
 
       if (callback) callback();
@@ -140,8 +151,74 @@ export default {
       });
 
       // 刷新
-      const query = yield select(state => state.group.data.query);
+      const query = yield select(state => state.modules.data.query);
       yield put({ type: 'fetch', payload: query });
+
+      if (callback) callback();
+    },
+
+    *intoModule({ payload: { id, name }, callback }, { put, select }) {
+      const query = yield select(state => state.modules.data.query);
+      yield put({
+        type: 'fetch',
+        payload: {
+          ...query,
+          module_parent_id: id,
+        },
+      });
+
+      yield put({
+        type: 'pushBreadcrumb',
+        payload: {
+          id,
+          name,
+        },
+      });
+
+      if (callback) callback();
+    },
+
+    *outModule({ payload: { id }, callback }, { put, select }) {
+      const query = yield select(state => state.modules.data.query);
+      yield put({
+        type: 'fetch',
+        payload: {
+          ...query,
+          module_parent_id: id,
+        },
+      });
+
+      yield put({
+        type: 'popBreadcrumb',
+        payload: {
+          id,
+        },
+      });
+
+      if (callback) callback();
+    },
+    *getSystemTree({ payload, callback }, { put, call }) {
+      const response = yield call(getSystemTree, payload);
+
+      yield put({
+        type: 'save',
+        payload: {
+          systemTree: {
+            checkedId: 0,
+            data: response.result,
+          },
+        },
+      });
+
+      if (callback) callback();
+    },
+    *setSystemTreeCheckedId({ payload: { id }, callback }, { put }) {
+      yield put({
+        type: 'changeSystemTreeCheckedId',
+        payload: {
+          id,
+        },
+      });
 
       if (callback) callback();
     },
@@ -151,7 +228,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data: action.payload,
+        ...action.payload,
       };
     },
     changeDetails(state, action) {
@@ -164,6 +241,41 @@ export default {
       return {
         ...state,
         loading: action.payload,
+      };
+    },
+    pushBreadcrumb(state, action) {
+      const { breadcrumb } = state;
+
+      breadcrumb.push(action.payload);
+
+      return {
+        ...state,
+        breadcrumb,
+      };
+    },
+    popBreadcrumb(state, action) {
+      const { breadcrumb } = state;
+      const { id } = action.payload;
+      let index = 0; // 该下标后面的面包屑数组将会被pop掉
+
+      breadcrumb.forEach((item, i) => {
+        if (item.id === id) {
+          index = i;
+        }
+      });
+
+      return {
+        ...state,
+        breadcrumb: breadcrumb.slice(0, index + 1),
+      };
+    },
+    changeSystemTreeCheckedId(state, action) {
+      return {
+        ...state,
+        systemTree: {
+          checkedId: action.payload.id,
+          data: state.systemTree.data,
+        },
       };
     },
   },

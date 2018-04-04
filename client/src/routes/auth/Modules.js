@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Button, Modal, Divider, Table } from 'antd';
+import { Row, Col, Card, Form, Input, InputNumber, Button, Modal, Divider, Table, Breadcrumb, TreeSelect } from 'antd';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Modules.less';
@@ -12,11 +12,61 @@ const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 const EditModal = connect(state => ({
   pageModel: state.modules,
 }))(Form.create()((props) => {
-  const { visible, onOk, onCancel, form, isEdit, pageModel: { details: data } } = props;
+  const { visible, onOk, onCancel, form, isEdit, dispatch,
+    pageModel: { details: data, breadcrumb: breadcrumbData, systemTree } } = props;
+  const moduleParent = breadcrumbData[breadcrumbData.length - 1];
+
+  const transform = (list) => {
+    if (!list || !list.length) {
+      return [];
+    }
+
+    return list.map((obj) => {
+      return {
+        label: obj.module_name,
+        value: obj.id,
+        key: obj.id,
+        children: transform(obj.children),
+      };
+    });
+  };
+
+  const treeData = transform(systemTree.data);
+
+  const onChange = (value) => {
+    dispatch({
+      type: 'modules/changeSystemTreeCheckedId',
+      payload: {
+        id: value,
+      },
+    });
+  };
+
+  const renderModuleParentItem = (parentId) => {
+    const moduleParentName = moduleParent.name;
+
+    if (isEdit) {
+      if (parentId !== 0) {
+        return (form.getFieldDecorator('module_parent_id', {
+          initialValue: parentId,
+        })(
+          <TreeSelect
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={treeData}
+            onChange={onChange}
+          />
+        ));
+      } else {
+        return breadcrumbData[0].name;
+      }
+    } else {
+      return moduleParentName;
+    }
+  };
 
   return (
     <Modal
-      title={isEdit ? '编辑模块' : '添加模块'}
+      title={isEdit ? '修改菜单' : '添加同级菜单'}
       visible={visible}
       onOk={(e) => {
         e.preventDefault();
@@ -29,7 +79,10 @@ const EditModal = connect(state => ({
               ...fieldsValue,
             }, form.resetFields);
           } else {
-            onOk(fieldsValue, form.resetFields);
+            onOk({
+              ...fieldsValue,
+              module_parent_id: moduleParent.id,
+            }, form.resetFields);
           }
         });
       }}
@@ -42,10 +95,17 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="用户组"
+          label="父菜单"
         >
-          {form.getFieldDecorator('role_name', {
-            initialValue: data.role_name,
+          {renderModuleParentItem(data.module_parent_id)}
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="菜单名称"
+        >
+          {form.getFieldDecorator('module_name', {
+            initialValue: data.module_name,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -56,15 +116,78 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="描述"
+          label="url地址"
         >
-          {form.getFieldDecorator('role_summary', {
-            initialValue: data.role_summary,
+          {form.getFieldDecorator('module_url', {
+            initialValue: data.module_url,
+          })(
+            <Input placeholder="请输入" />
+          )}
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="权限标识"
+        >
+          {form.getFieldDecorator('module_uri', {
+            initialValue: data.module_uri,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
           })(
             <Input placeholder="请输入" />
+          )}
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="iconfont图标"
+        >
+          {form.getFieldDecorator('module_iconfont', {
+            initialValue: data.module_iconfont,
+          })(
+            <Input placeholder="请输入" />
+          )}
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="描述"
+        >
+          {form.getFieldDecorator('module_describe', {
+            initialValue: data.module_describe,
+          })(
+            <Input placeholder="请输入" />
+          )}
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="是否显示"
+        >
+          {form.getFieldDecorator('module_show', {
+            initialValue: data.module_show,
+            rules: [
+              { required: true, message: '该项为必填项' },
+            ],
+          })(
+            <InputNumber placeholder="请输入" />
+          )}
+        </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="排序"
+        >
+          {form.getFieldDecorator('module_sort', {
+            initialValue: data.module_sort,
+            rules: [{
+              type: 'number', message: '请输入数字',
+            },
+            { required: true, message: '该项为必填项' },
+            ],
+          })(
+            <InputNumber placeholder="请输入" />
           )}
         </FormItem>
       </Form>
@@ -87,6 +210,12 @@ export default class TableList extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
+
+    // 获取系统树，用来编辑菜单的时候用
+    dispatch({
+      type: 'modules/getSystemTree',
+      payload: {},
+    });
 
     // 获取列表数据
     dispatch({
@@ -215,6 +344,10 @@ export default class TableList extends PureComponent {
         id,
       },
     });
+    dispatch({
+      type: 'modules/getSystemTree',
+      payload: {},
+    });
   }
 
   // 重置查询条件
@@ -230,6 +363,59 @@ export default class TableList extends PureComponent {
     });
   }
 
+  // 进入模块
+  handleIntoModule = (id, name) => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'modules/intoModule',
+      payload: {
+        id,
+        name,
+      },
+    });
+  }
+
+  // 退出模块
+  handleOutModule = (id) => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'modules/outModule',
+      payload: {
+        id,
+      },
+    });
+  }
+
+  // 模块管理面包屑
+  renderBreadcrumb = () => {
+    const { pageModel: { breadcrumb } } = this.props;
+    const { length } = breadcrumb;
+
+    return (
+      <Breadcrumb>
+        {
+          breadcrumb.map((item, i) => {
+            if (i !== length - 1) {
+              return (
+                <Breadcrumb.Item key={item.id}>
+                  <a onClick={() => {
+                    this.handleOutModule(item.id);
+                  }}
+                  >{item.name}
+                  </a>
+                </Breadcrumb.Item>
+              );
+            } else {
+              return (<Breadcrumb.Item key={item.id}>{item.name}</Breadcrumb.Item>);
+            }
+          })
+        }
+      </Breadcrumb>
+    );
+  }
+
   // 选择搜索条件的展示方式
   renderForm = () => {
     const { getFieldDecorator } = this.props.form;
@@ -237,8 +423,15 @@ export default class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="组名称">
-              {getFieldDecorator('role_name')(
+            <FormItem label="菜单名称">
+              {getFieldDecorator('module_name')(
+                <Input placeholder="请输入" />
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="菜单Url">
+              {getFieldDecorator('module_url')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -270,11 +463,13 @@ export default class TableList extends PureComponent {
         title: '菜单名称',
         key: 'module_name',
         dataIndex: 'module_name',
-      },
-      {
-        title: '父菜单',
-        key: 'role_name',
-        dataIndex: 'role_name',
+        render: (text, record) => (
+          <a
+            onClick={() => {
+              this.handleIntoModule(record.id, text);
+            }}
+          >{text}
+          </a>),
       },
       {
         title: 'url地址',
@@ -327,9 +522,14 @@ export default class TableList extends PureComponent {
               {this.renderForm()}
             </div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>
-                添加
-              </Button>
+              <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+                <Col md={12} sm={24}>
+                  {this.renderBreadcrumb()}
+                </Col>
+                <Col md={12} sm={24}>
+                  <div style={{ textAlign: 'right' }}><Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>添加同级菜单</Button></div>
+                </Col>
+              </Row>
             </div>
             <Table
               loading={ruleLoading}

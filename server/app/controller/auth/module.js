@@ -3,7 +3,7 @@ let _ = require('underscore');
 
 module.exports = app => {
     class authMenuController extends app.Controller {
-        * index(ctx) {
+        * index (ctx) {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
@@ -24,8 +24,12 @@ module.exports = app => {
             }
         }
 
-        * create(ctx) {
+        * create (ctx) {
             const query = ctx.request.body;
+
+            if (!query.module_parent_id) {
+                query.module_parent_id = 0;
+            }
 
             const createRule = {
                 module_name: {
@@ -73,9 +77,9 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                  "code": '400',
-                  "msg": ctx.helper.errorCode['400'],
-                  "result": err.errors
+                    "code": '400',
+                    "msg": ctx.helper.errorCode['400'],
+                    "result": err.errors
                 };
                 this.ctx.status = 400;
 
@@ -92,7 +96,7 @@ module.exports = app => {
 
         }
 
-        * destroy(ctx) {
+        * destroy (ctx) {
             const query = ctx.params;
 
             const result = yield ctx.service.auth.module.destroy(query.id);
@@ -105,7 +109,7 @@ module.exports = app => {
             ctx.status = 200;
         }
 
-        * edit(ctx) {
+        * edit (ctx) {
             const query = ctx.params;
 
             const result = yield ctx.service.auth.module.edit(query.id);
@@ -117,7 +121,7 @@ module.exports = app => {
             }
         }
 
-        * update(ctx) {
+        * update (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -167,9 +171,9 @@ module.exports = app => {
             } catch (err) {
 
                 this.ctx.body = {
-                  "code": '400',
-                  "msg": ctx.helper.errorCode['400'],
-                  "result": err.errors
+                    "code": '400',
+                    "msg": ctx.helper.errorCode['400'],
+                    "result": err.errors
                 };
                 this.ctx.status = 400;
 
@@ -188,7 +192,7 @@ module.exports = app => {
             ctx.status = 201;
         }
 
-        * system(ctx) {
+        * system (ctx) {
             const query = ctx.request.query;
 
             const result = yield ctx.service.auth.module.system({
