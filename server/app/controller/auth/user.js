@@ -4,7 +4,7 @@ let _ = require('underscore');
 
 module.exports = app => {
     class authUserController extends app.Controller {
-        * index (ctx) {
+        async index (ctx) {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
@@ -12,7 +12,7 @@ module.exports = app => {
                 return value !== '' && value !== undefined;
             });
 
-            const result = yield ctx.service.auth.user.index(query.currentPage, query.pageSize, where);
+            const result = await ctx.service.auth.user.index(query.currentPage, query.pageSize, where);
 
             ctx.body = {
                 code: '0',
@@ -25,7 +25,7 @@ module.exports = app => {
             };
         }
 
-        * create (ctx) {
+        async create (ctx) {
             const query = ctx.request.body;
 
             const createRule = {
@@ -67,7 +67,7 @@ module.exports = app => {
                 return;
             }
 
-            const result = yield ctx.service.auth.user.create(_.pick(query, ...Object.keys(createRule)));
+            const result = await ctx.service.auth.user.create(_.pick(query, ...Object.keys(createRule)));
 
             if (result) {
                 ctx.body = {
@@ -82,10 +82,10 @@ module.exports = app => {
 
         }
 
-        * destroy (ctx) {
+        async destroy (ctx) {
             const query = ctx.params;
 
-            yield ctx.service.auth.user.destroy(query.id);
+            await ctx.service.auth.user.destroy(query.id);
 
             if (!result) {
                 ctx.body = {
@@ -108,10 +108,10 @@ module.exports = app => {
             ctx.status = 200;
         }
 
-        * edit (ctx) {
+        async edit (ctx) {
             const query = ctx.params;
 
-            const result = yield ctx.service.auth.user.edit(query.id);
+            const result = await ctx.service.auth.user.edit(query.id);
 
             if (!result) {
                 ctx.body = {
@@ -133,7 +133,7 @@ module.exports = app => {
             }
         }
 
-        * update (ctx) {
+        async update (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -172,7 +172,7 @@ module.exports = app => {
                 return;
             }
 
-            const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
+            const result = await ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
 
             if (!result) {
                 ctx.body = {
@@ -194,7 +194,7 @@ module.exports = app => {
             }
         }
 
-        * setPassword (ctx) {
+        async setPassword (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -219,7 +219,7 @@ module.exports = app => {
                 return;
             }
 
-            const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
+            const result = await ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
 
             if (!result) {
                 ctx.body = {
