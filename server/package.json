@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "egg": "^2.5.0",
+    "egg-mongoose": "^2.2.0",
     "egg-mysql": "^3.0.0",
     "egg-passport": "^2.0.1",
     "egg-scripts": "^2.1.0",

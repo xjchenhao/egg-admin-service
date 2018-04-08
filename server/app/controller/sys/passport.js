@@ -18,12 +18,17 @@ module.exports = app => {
         }
 
         async login (ctx) {
-            let [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
-                where: {
-                    user_account: ctx.query.username,
-                    user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
-                },
-            });
+            // let [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
+            //     where: {
+            //         user_account: ctx.query.username,
+            //         user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+            //     },
+            // });
+
+            let userInfo = await ctx.model.AuthUser.find({
+                account: ctx.query.username,
+                user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+            })
 
             if (userInfo) {
                 ctx.login({

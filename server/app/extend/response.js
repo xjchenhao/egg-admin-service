@@ -2,12 +2,12 @@
 
 module.exports = {
     format: {
-        paging ({ resultList, totalList, pageSize, currentPage }) {
+        paging ({ resultList, totalLength, pageSize, currentPage }) {
             return {
                 list: resultList,
                 pages: Number(pageSize),
                 currentPage: Number(currentPage),
-                total: totalList.length
+                total: totalLength
             };
         }
     }

@@ -8,19 +8,18 @@ module.exports = app => {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
-            const where = _.pick(_.pick(query, ...['user_account', 'user_name', 'user_mobile', 'user_email']), (value) => {
+            const where = _.pick(_.pick(query, ...['account', 'name', 'mobile', 'email']), (value) => {
                 return value !== '' && value !== undefined;
             });
 
             const result = yield ctx.service.auth.user.index(query.currentPage, query.pageSize, where);
-
 
             ctx.body = {
                 code: '0',
                 msg: 'OK',
                 result: Object.assign(result, {
                     list: result.list.map((obj) => {
-                        return _.pick(obj, ...['id', 'user_account', 'user_name', 'user_sex', 'user_mobile', 'user_email', 'remark']);
+                        return _.pick(obj, ...['id', 'account', 'name', 'sex', 'mobile', 'email', 'remark']);
                     }),
                 }),
             };
@@ -30,25 +29,25 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                user_account: {
+                account: {
                     type: 'string',
                     required: true,
                 },
-                user_name: {
+                name: {
                     type: 'string',
                     required: true,
                 },
-                user_mobile: {
+                mobile: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                user_email: {
+                email: {
                     type: 'email',
                     required: false,
                     allowEmpty: true,
                 },
-                user_password: {
+                password: {
                     type: 'string',
                     required: true,
                 },
@@ -88,6 +87,19 @@ module.exports = app => {
 
             yield ctx.service.auth.user.destroy(query.id);
 
+            if (!result) {
+                ctx.body = {
+                    code: '404',
+                    msg: ctx.helper.errorCode['404'],
+                    result: {
+                        id: query.id
+                    }
+                };
+                ctx.status = 404;
+
+                return false;
+            }
+
             ctx.body = {
                 code: '0',
                 msg: 'OK',
@@ -117,7 +129,7 @@ module.exports = app => {
             ctx.body = {
                 code: '0',
                 msg: 'OK',
-                result: _.pick(result, ...['id', 'user_account', 'user_name', 'user_sex', 'user_mobile', 'user_email', 'remark'])
+                result: _.pick(result, ...['id', 'account', 'name', 'sex', 'mobile', 'email', 'remark'])
             }
         }
 
@@ -126,20 +138,20 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                user_account: {
+                account: {
                     type: 'string',
                     required: true
                 },
-                user_name: {
+                name: {
                     type: 'string',
                     required: true
                 },
-                user_mobile: {
+                mobile: {
                     type: 'string',
                     required: false,
                     allowEmpty: true
                 },
-                user_email: {
+                email: {
                     type: 'email',
                     required: false,
                     allowEmpty: true
@@ -162,7 +174,7 @@ module.exports = app => {
 
             const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
 
-            if (!result.affectedRows) {
+            if (!result) {
                 ctx.body = {
                     code: '404',
                     msg: ctx.helper.errorCode['404'],
@@ -187,7 +199,7 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                user_password: {
+                password: {
                     type: 'string',
                     required: true,
                 },
@@ -209,7 +221,7 @@ module.exports = app => {
 
             const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
 
-            if (!result.affectedRows) {
+            if (!result) {
                 ctx.body = {
                     code: '404',
                     msg: ctx.helper.errorCode['404'],
