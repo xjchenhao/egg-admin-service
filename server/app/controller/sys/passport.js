@@ -18,16 +18,10 @@ module.exports = app => {
         }
 
         async login (ctx) {
-            // let [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
-            //     where: {
-            //         user_account: ctx.query.username,
-            //         user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
-            //     },
-            // });
 
-            let userInfo = await ctx.model.AuthUser.find({
+            let userInfo = await ctx.model.AuthUser.findOne({
                 account: ctx.query.username,
-                user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+                password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
             })
 
             if (userInfo) {
@@ -40,8 +34,8 @@ module.exports = app => {
                     "code": "0",
                     "msg": "登录成功",
                     "result": {
-                        id: userInfo.id,
-                        userName: userInfo.user_name
+                        id: userInfo._id,
+                        userName: userInfo.name,
                     }
                 }
                 ctx.status = 200;

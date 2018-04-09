@@ -8,6 +8,10 @@ module.exports = {
         },
     },
 
+    logger: {
+        consoleLevel: 'DEBUG',
+    },
+
     // mysql: {
     //     clients: {
     //         back: {

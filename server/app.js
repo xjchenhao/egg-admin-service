@@ -28,40 +28,37 @@ module.exports = app => {
 
     // 验证用户信息
     app.passport.verify(async (ctx, user) => {
-        let list = await ctx.app.mysql.get('back').select('back_user', {
-            where: {
-                user_account: user.username,
-                user_password: crypto.createHash('md5').update(user.password).digest('hex'),
-            },
-        });
+        ctx.logger.debug('user',user);
+        
+        let userInfo = await ctx.model.AuthUser.findOne({
+            account: ctx.query.username,
+            password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+        })
+        ctx.logger.debug('verify',userInfo);
 
-        if (list.length) {
-            return list[0];
+        if (userInfo) {
+            return userInfo;
         } else {
             return false;
         }
     });
     app.passport.serializeUser(async (ctx, user) => {
-        console.log('serializeUser', user);
-        return user;
+        ctx.logger.debug('serializeUser', user);
+        return {
+            username: user.username,
+            password: crypto.createHash('md5').update(user.password).digest('hex'),
+        };
     });
     app.passport.deserializeUser(async (ctx, user) => {
-        // const [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
-        //     where: {
-        //         user_account: user.username,
-        //         user_password: crypto.createHash('md5').update(user.password).digest('hex'),
-        //     },
-        // });
-        let userInfo = await ctx.model.AuthUser.find({
-            account: ctx.query.username,
-            password: ctx.query.password,
-
-            // user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+        let userInfo = await ctx.model.AuthUser.findOne({
+            account: user.username,
+            password: user.password,
         })
 
+        ctx.logger.debug('deserializeUser',userInfo);
         return {
-            id: userInfo.id,
-            userName: userInfo.user_name
+            id: userInfo._id,
+            userName: userInfo.name,
         };
     });
 };

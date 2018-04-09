@@ -17,6 +17,7 @@ module.exports = app => {
 
                 return false;
             }
+            ctx.logger.debug('userInfo',ctx.user);
 
             ctx.body = {
                 "code": "0",
