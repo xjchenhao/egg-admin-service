@@ -25,7 +25,6 @@ module.exports = app => {
   });
 
   UserSchema.index({ id: 1 });
-  UserSchema.index({ update_date: -1 });
 
   return conn.model('User', UserSchema);
 };

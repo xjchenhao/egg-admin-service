@@ -4,99 +4,87 @@
 module.exports = app => {
     class moduleService extends app.Service {
 
-        * index(pageNumber = 1, pageSize = 10, query) {
+        async index (pageNumber = 1, pageSize = 20, query) {
 
+            const result = await this.ctx.model.AuthModule.find(query);
 
-            let where = '';
-
-            for (const key in query) {
-                if (where) {
-                    where += ' AND ';
-                }
-                where += 'b.' + key;
-                where += '=';
-                where += '"' + query[key] + '"';
-            }
-
-            let result = [];
-            let totalCount = [];
-
-            if (where) {
-                result = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from back_module b inner join (select id,module_name from back_module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
-
-                totalCount = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from back_module b inner join (select id,module_name from back_module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
-            } else {
-                result = yield this.app.mysql.get('back').query(`SELECT * FROM back_module ORDER BY update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
-
-                totalCount = yield this.app.mysql.get('back').query(`SELECT * FROM back_module`);
-            }
             return this.ctx.response.format.paging({
-                totalList: totalCount,
-                resultList: result,
+                resultList: await this.ctx.model.AuthModule.find(query)
+                    .skip((pageNumber - 1) * pageSize)
+                    .limit(pageSize)
+                    .exec(),
+
+                totalLength: await this.ctx.model.AuthModule.find(query).count(),
                 pageSize,
                 currentPage: Number(pageNumber),
             });
         }
 
-        * create(data) {
-
-            const result = yield this.app.mysql.get('back').insert('back_module', data);
+        async create (data) {
+            const result = this.ctx.model.AuthModule.create(data);
 
             return result;
         }
 
-        * destroy(id) {
-            const conn = yield app.mysql.get('back').beginTransaction(); // 初始化事务
-            try {
-                yield this.app.mysql.get('back').delete('back_module', {id});
-                yield this.app.mysql.get('back').delete('back_role_module', {module_id: id});
+        async destroy (id) {
+            const result = await this.ctx.model.AuthModule.remove({
+                _id: id,
+            });
 
-                yield conn.commit(); // 提交事务
-            } catch (err) {
-                // error, rollback
-                yield conn.rollback(); // 一定记得捕获异常后回滚事务！！
-                throw err;
-            }
+            return result.result.n !== 0 && result;
         }
 
-        * edit(id) {
-            const result = yield this.app.mysql.get('back').get('back_module', {
-                id,
+        async edit (id) {
+            const result = await this.ctx.model.AuthModule.findOne({
+                _id: id,
             });
 
             return result;
         }
 
-        * update(id, data) {
-            const result = yield this.app.mysql.get('back').update('back_module', Object.assign(data, {id}));
+        async update (id, data) {
 
-            return result;
+            try {
+                return await this.ctx.model.AuthModule.findByIdAndUpdate(id, data, {
+                    new: true,
+                    runValidators: true,
+                }).exec();
+            } catch (err) {
+                this.ctx.logger.error(err.message);
+                return '';
+            }
         }
 
-        * system(opts) {
-            const isAll = opts.filterHide;
+        async system (opts) {
+            const isAll = !opts.filterHide;
             const id = opts.parentId;
 
             let originalObj = null;
 
             if (isAll) {
-                originalObj = yield this.app.mysql.get('back').select('back_module', {
-                    where: {
-                        module_show: 1,
-                    },
+                originalObj = await this.ctx.model.AuthModule.find({}, {
+                    name: 1,
+                    show: 1,
+                    sort: 1,
+                    parent_id: 1,
                 });
             } else {
-                originalObj = yield this.app.mysql.get('back').select('back_module');
+                originalObj = await this.ctx.model.AuthModule.find({
+                    show: 1
+                });
             }
+            
+            // this.ctx.logger.debug(originalObj);
 
+            let aaaa = 1;
             const subset = function (parentId) {    // 根据父级id遍历子集
-                const arr = [];
+                let arr = [];
 
                 // 查询该id下的所有子集
                 originalObj.forEach(function (obj) {
-                    if (obj.module_parent_id === parentId) {
-                        arr.push(Object.assign(obj, {
-                            children: subset(obj.id),
+                    if ((obj.parent_id ? obj.parent_id.toString() : obj.parent_id) === parentId) {
+                        arr.push(Object.assign(obj.toJSON(), {
+                            children: subset(obj.id.toString()),
                         }));
                     }
                 });
@@ -108,9 +96,9 @@ module.exports = app => {
 
                 // 对子集进行排序
                 arr.sort(function (val1, val2) {
-                    if (val1.module_sort < val2.module_sort) {
+                    if (val1.sort < val2.sort) {
                         return -1;
-                    } else if (val1.module_sort > val2.module_sort) {
+                    } else if (val1.sort > val2.sort) {
                         return 1;
                     }
                     return 0;
@@ -120,7 +108,7 @@ module.exports = app => {
                 return arr;
             };
 
-            return subset(Number(id) || 0);
+            return subset(id || undefined);
         }
     }
     return moduleService;
