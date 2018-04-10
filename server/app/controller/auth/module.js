@@ -7,7 +7,7 @@ module.exports = app => {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
-            let where = _.pick(_.pick(query, ...['module_name', 'module_url', 'module_uri', 'module_parent_id']), (value) => {
+            let where = _.pick(_.pick(query, ...['name', 'url', 'uri', 'parent_id']), (value) => {
                 return value !== '' && value !== undefined;
             });
 
@@ -18,7 +18,7 @@ module.exports = app => {
                 "msg": "OK",
                 "result": Object.assign(result, {
                     list: result.list.map((obj) => {
-                        return _.pick(obj, ...['id', 'module_name', 'module_url', 'module_uri', 'module_iconfont', 'module_describe', 'module_sort', 'module_show', 'module_parent_id', 'module_parent_name']);
+                        return _.pick(obj, ...['id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id', 'parent_name']);
                     })
                 })
             }
@@ -27,45 +27,45 @@ module.exports = app => {
         * create (ctx) {
             const query = ctx.request.body;
 
-            if (!query.module_parent_id) {
-                query.module_parent_id = 0;
+            if (!query.parent_id) {
+                query.parent_id = 0;
             }
 
             const createRule = {
-                module_name: {
+                name: {
                     type: 'string',
                     required: true
                 },
-                module_url: {
+                url: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_uri: {
+                uri: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_iconfont: {
+                iconfont: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_describe: {
+                describe: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_sort: {
+                sort: {
                     type: 'number',
                     required: true
                 },
-                module_show: {
+                show: {
                     type: 'number',
                     required: false,
                     allowEmpty: true,
                 },
-                module_parent_id: {
+                parent_id: {
                     type: 'number',
                     required: false,
                     allowEmpty: true,
@@ -117,7 +117,7 @@ module.exports = app => {
             ctx.body = {
                 "code": "0",
                 "msg": "OK",
-                "result": _.pick(result, ...['id', 'module_name', 'module_url', 'module_uri', 'module_iconfont', 'module_describe', 'module_sort', 'module_show', 'module_parent_id'])
+                "result": _.pick(result, ...['id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id'])
             }
         }
 
@@ -126,40 +126,40 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                module_name: {
+                name: {
                     type: 'string',
                     required: true
                 },
-                module_url: {
+                url: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_uri: {
+                uri: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_iconfont: {
+                iconfont: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_describe: {
+                describe: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                module_sort: {
+                sort: {
                     type: 'number',
                     required: true
                 },
-                module_show: {
+                show: {
                     type: 'number',
                     required: false,
                     allowEmpty: true,
                 },
-                module_parent_id: {
+                parent_id: {
                     type: 'number',
                     required: false,
                     allowEmpty: true,
@@ -196,7 +196,7 @@ module.exports = app => {
             const query = ctx.request.query;
 
             const result = yield ctx.service.auth.module.system({
-                module_parent_id: query.module_parent_id
+                parent_id: query.parent_id
             });
 
             ctx.body = {

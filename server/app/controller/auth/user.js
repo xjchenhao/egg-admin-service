@@ -8,7 +8,7 @@ module.exports = app => {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
-            const where = _.pick(_.pick(query, ...['user_account', 'user_name', 'user_mobile', 'user_email']), (value) => {
+            const where = _.pick(_.pick(query, ...['account', 'name', 'mobile', 'email']), (value) => {
                 return value !== '' && value !== undefined;
             });
 
@@ -20,7 +20,7 @@ module.exports = app => {
                 msg: 'OK',
                 result: Object.assign(result, {
                     list: result.list.map((obj) => {
-                        return _.pick(obj, ...['id', 'user_account', 'user_name', 'user_sex', 'user_mobile', 'user_email', 'remark']);
+                        return _.pick(obj, ...['id', 'account', 'name', 'sex', 'mobile', 'email', 'remark']);
                     }),
                 }),
             };
@@ -30,25 +30,25 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                user_account: {
+                account: {
                     type: 'string',
                     required: true,
                 },
-                user_name: {
+                name: {
                     type: 'string',
                     required: true,
                 },
-                user_mobile: {
+                mobile: {
                     type: 'string',
                     required: false,
                     allowEmpty: true,
                 },
-                user_email: {
+                email: {
                     type: 'email',
                     required: false,
                     allowEmpty: true,
                 },
-                user_password: {
+                password: {
                     type: 'string',
                     required: true,
                 },
@@ -117,7 +117,7 @@ module.exports = app => {
             ctx.body = {
                 code: '0',
                 msg: 'OK',
-                result: _.pick(result, ...['id', 'user_account', 'user_name', 'user_sex', 'user_mobile', 'user_email', 'remark'])
+                result: _.pick(result, ...['id', 'account', 'name', 'sex', 'mobile', 'email', 'remark'])
             }
         }
 
@@ -126,20 +126,20 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                user_account: {
+                account: {
                     type: 'string',
                     required: true
                 },
-                user_name: {
+                name: {
                     type: 'string',
                     required: true
                 },
-                user_mobile: {
+                mobile: {
                     type: 'string',
                     required: false,
                     allowEmpty: true
                 },
-                user_email: {
+                email: {
                     type: 'email',
                     required: false,
                     allowEmpty: true
@@ -187,7 +187,7 @@ module.exports = app => {
             const query = ctx.request.body;
 
             const createRule = {
-                user_password: {
+                password: {
                     type: 'string',
                     required: true,
                 },

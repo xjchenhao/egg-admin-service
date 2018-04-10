@@ -28,10 +28,10 @@ module.exports = app => {
 
     // 验证用户信息
     app.passport.verify(async (ctx, user) => {
-        let list = await ctx.app.mysql.get('back').select('back_user', {
+        let list = await ctx.app.mysql.get('back').select('user', {
             where: {
-                user_account: user.username,
-                user_password: crypto.createHash('md5').update(user.password).digest('hex'),
+                account: user.username,
+                password: crypto.createHash('md5').update(user.password).digest('hex'),
             },
         });
 
@@ -46,16 +46,16 @@ module.exports = app => {
         return user;
     });
     app.passport.deserializeUser(async (ctx, user) => {
-        const [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
+        const [userInfo] = await ctx.app.mysql.get('back').select('user', {
             where: {
-                user_account: user.username,
-                user_password: crypto.createHash('md5').update(user.password).digest('hex'),
+                account: user.username,
+                password: crypto.createHash('md5').update(user.password).digest('hex'),
             },
         });
 
         return {
             id: userInfo.id,
-            userName: userInfo.user_name
+            userName: userInfo.name
         };
     });
 };

@@ -7,7 +7,7 @@ module.exports = app => {
       const query = ctx.request.query;
 
       // 获取传参中指定的key，且过滤掉为`空`的条件。
-      let where = _.pick(_.pick(query, ...['role_name']), (value) => {
+      let where = _.pick(_.pick(query, ...['name']), (value) => {
         return value !== '' && value !== undefined;
       });
 
@@ -19,7 +19,7 @@ module.exports = app => {
           "msg": "OK",
           "result": Object.assign(result, {
             list: result.list.map((obj) => {
-              return _.pick(obj, ...['id', 'role_name', 'role_summary']);
+              return _.pick(obj, ...['id', 'name', 'summary']);
             })
           })
         }
@@ -30,11 +30,11 @@ module.exports = app => {
       const query = ctx.request.body;
 
       const createRule = {
-        role_name: {
+        name: {
           type: 'string',
           required: true
         },
-        role_summary: {
+        summary: {
           type: 'string',
           required: false
         },
@@ -101,7 +101,7 @@ module.exports = app => {
       ctx.body = {
         "code": "0",
         "msg": "OK",
-        "result": _.pick(result, ...['id', 'role_name', 'role_summary'])
+        "result": _.pick(result, ...['id', 'name', 'summary'])
       }
     }
 
@@ -109,7 +109,7 @@ module.exports = app => {
       const id = ctx.params.id;
       const query = ctx.request.body;
 
-      const result = yield ctx.service.auth.group.update(id, _.pick(query, ...['role_name', 'role_summary']));
+      const result = yield ctx.service.auth.group.update(id, _.pick(query, ...['name', 'summary']));
 
       if (!result.affectedRows) {
         ctx.body = {
@@ -132,9 +132,9 @@ module.exports = app => {
     * getUser (ctx) {
       const query = ctx.params;
 
-      let addResult = yield this.app.mysql.get('back').select('back_user_role', {
+      let addResult = yield this.app.mysql.get('back').select('user_role', {
         where: {
-          role_id: query.id
+          id: query.id
         }
       });
 
@@ -143,7 +143,7 @@ module.exports = app => {
         addArr.push(obj.user_id)
       });
 
-      let allResult = yield this.app.mysql.get('back').select('back_user');
+      let allResult = yield this.app.mysql.get('back').select('user');
 
       let allArr = [];
       allResult.forEach((obj) => {
@@ -169,11 +169,11 @@ module.exports = app => {
 
       // 错误捕捉
       {
-        let roleResult = yield this.app.mysql.get('back').get('back_role', {
+        let roleResult = yield this.app.mysql.get('back').get('role', {
           id: roleId
         });
 
-        let userResult = yield this.app.mysql.get('back').select('back_user');
+        let userResult = yield this.app.mysql.get('back').select('user');
         if (!roleResult) {
           ctx.body = {
             code: '404',
@@ -224,14 +224,14 @@ module.exports = app => {
       }
 
       // 清空掉该用户相关的角色关联
-      yield this.app.mysql.get('back').delete('back_user_role', {
-        role_id: roleId
+      yield this.app.mysql.get('back').delete('user_role', {
+        id: roleId
       });
 
       // 建立新的角色关联
       for (let i = 0, l = idList.length; i < l; i++) {
-        yield this.app.mysql.get('back').insert('back_user_role', {
-          role_id: roleId,
+        yield this.app.mysql.get('back').insert('user_role', {
+          id: roleId,
           user_id: idList[i]
         });
       }
@@ -246,9 +246,9 @@ module.exports = app => {
     * getModule (ctx) {
       const query = ctx.params;
 
-      let addResult = yield this.app.mysql.get('back').select('back_role_module', {
+      let addResult = yield this.app.mysql.get('back').select('module', {
         where: {
-          role_id: query.id
+          id: query.id
         }
       });
 
@@ -277,11 +277,11 @@ module.exports = app => {
 
       // 错误捕捉
       {
-        let roleResult = yield this.app.mysql.get('back').get('back_role', {
+        let roleResult = yield this.app.mysql.get('back').get('role', {
           id: roleId
         });
 
-        let userResult = yield this.app.mysql.get('back').select('back_module');
+        let userResult = yield this.app.mysql.get('back').select('module');
         if (!roleResult) {
           ctx.body = {
             code: '404',
@@ -331,12 +331,12 @@ module.exports = app => {
         }
       }
 
-      yield this.app.mysql.get('back').delete('back_role_module', {
-        role_id: roleId
+      yield this.app.mysql.get('back').delete('module', {
+        id: roleId
       });
       for (let i = 0, l = idList.length; i < l; i++) {
-        yield this.app.mysql.get('back').insert('back_role_module', {
-          role_id: roleId,
+        yield this.app.mysql.get('back').insert('module', {
+          id: roleId,
           module_id: idList[i]
         });
       }

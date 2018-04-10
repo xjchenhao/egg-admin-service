@@ -18,10 +18,10 @@ module.exports = app => {
         }
 
         async login (ctx) {
-            let [userInfo] = await ctx.app.mysql.get('back').select('back_user', {
+            let [userInfo] = await ctx.app.mysql.get('back').select('user', {
                 where: {
-                    user_account: ctx.query.username,
-                    user_password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+                    account: ctx.query.username,
+                    password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
                 },
             });
 
@@ -36,7 +36,7 @@ module.exports = app => {
                     "msg": "登录成功",
                     "result": {
                         id: userInfo.id,
-                        userName: userInfo.user_name
+                        userName: userInfo.name
                     }
                 }
                 ctx.status = 200;

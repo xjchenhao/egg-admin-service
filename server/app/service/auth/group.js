@@ -7,14 +7,14 @@ module.exports = app => {
 
     * index(pageNumber = 1, pageSize = 20, query) {
 
-      const result = yield this.app.mysql.get('back').select('back_role', {
+      const result = yield this.app.mysql.get('back').select('role', {
         where: query,
         limit: Number(pageSize), // 返回数据量
         offset: (pageNumber - 1) * pageSize, // 数据偏移量
-        orders: [[ 'role_addtime', 'desc' ]], // 排序方式
+        orders: [[ 'addtime', 'desc' ]], // 排序方式
       });
 
-      const totalCount = yield this.app.mysql.get('back').count('back_role', query);
+      const totalCount = yield this.app.mysql.get('back').count('role', query);
 
       return {
         list: result,
@@ -27,8 +27,8 @@ module.exports = app => {
     * create(data) {
       const { req } = this.ctx;
 
-      const result = yield this.app.mysql.get('back').insert('back_role', Object.assign(data, {
-        role_addip: url.parse(req.url, true).query.ip || req.headers[ 'x-real-ip' ] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress,
+      const result = yield this.app.mysql.get('back').insert('role', Object.assign(data, {
+        addip: url.parse(req.url, true).query.ip || req.headers[ 'x-real-ip' ] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress,
       }));
 
       return result;
@@ -37,9 +37,9 @@ module.exports = app => {
     * destroy(id) {
       const conn = yield app.mysql.get('back').beginTransaction(); // 初始化事务
       try {
-        yield this.app.mysql.get('back').delete('back_role', { id });
-        yield this.app.mysql.get('back').delete('back_role_module', { role_id: id });
-        yield this.app.mysql.get('back').delete('back_user_role', { role_id: id });
+        yield this.app.mysql.get('back').delete('role', { id });
+        yield this.app.mysql.get('back').delete('module', { id: id });
+        yield this.app.mysql.get('back').delete('user_role', { id: id });
 
         yield conn.commit(); // 提交事务
       } catch (err) {
@@ -50,7 +50,7 @@ module.exports = app => {
     }
 
     * edit(id) {
-      const result = yield this.app.mysql.get('back').get('back_role', {
+      const result = yield this.app.mysql.get('back').get('role', {
         id,
       });
 
@@ -58,7 +58,7 @@ module.exports = app => {
     }
 
     * update(id, data) {
-      const result = yield this.app.mysql.get('back').update('back_role', Object.assign(data, { id }));
+      const result = yield this.app.mysql.get('back').update('role', Object.assign(data, { id }));
 
       return result;
     }

@@ -39,7 +39,7 @@ module.exports = app => {
             }
 
             // 使用 mysql.escape 方法,做复杂的表关联查询
-            const result = await ctx.app.mysql.get('back').query('select distinct bm.* from back_role_module rm left join back_module bm on rm.module_id=bm.id left join back_user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.module_show=1', [ctx.user.id]);
+            const result = await ctx.app.mysql.get('back').query('select distinct bm.* from role_module rm left join module bm on rm.id=bm.id left join user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.show=1', [ctx.user.id]);
 
             // 根据父级id遍历子集
             const subset = function (parentId) {
@@ -47,7 +47,7 @@ module.exports = app => {
 
                 // 查询该id下的所有子集
                 result.forEach(function (obj) {
-                    if (obj.module_parent_id === parentId) {
+                    if (obj.parent_id === parentId) {
                         arr.push(Object.assign(obj, {
                             children: subset(obj.id),
                         }));
@@ -61,9 +61,9 @@ module.exports = app => {
 
                 // 对子集进行排序
                 arr.sort(function (val1, val2) {
-                    if (val1.module_sort < val2.module_sort) {
+                    if (val1.sort < val2.sort) {
                         return -1;
-                    } else if (val1.module_sort > val2.module_sort) {
+                    } else if (val1.sort > val2.sort) {
                         return 1;
                     }
                     return 0;
@@ -77,10 +77,10 @@ module.exports = app => {
                 const arrMap = [];
                 arr.forEach(obj => {
                     arrMap.push({
-                        menuIcon: obj.module_iconfont,
-                        menuName: obj.module_name,
-                        menuUrl: obj.module_url,
-                        describe: obj.module_describe,
+                        menuIcon: obj.iconfont,
+                        menuName: obj.name,
+                        menuUrl: obj.url,
+                        describe: obj.describe,
                         childrens: obj.children && convert(obj.children),
                     });
                 });

@@ -22,13 +22,13 @@ module.exports = app => {
             let totalCount = [];
 
             if (where) {
-                result = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from back_module b inner join (select id,module_name from back_module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
+                result = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from module b inner join (select id,module_name from module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
 
-                totalCount = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from back_module b inner join (select id,module_name from back_module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
+                totalCount = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from module b inner join (select id,module_name from module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
             } else {
-                result = yield this.app.mysql.get('back').query(`SELECT * FROM back_module ORDER BY update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
+                result = yield this.app.mysql.get('back').query(`SELECT * FROM module ORDER BY update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
 
-                totalCount = yield this.app.mysql.get('back').query(`SELECT * FROM back_module`);
+                totalCount = yield this.app.mysql.get('back').query(`SELECT * FROM module`);
             }
             return this.ctx.response.format.paging({
                 totalList: totalCount,
@@ -40,7 +40,7 @@ module.exports = app => {
 
         * create(data) {
 
-            const result = yield this.app.mysql.get('back').insert('back_module', data);
+            const result = yield this.app.mysql.get('back').insert('module', data);
 
             return result;
         }
@@ -48,8 +48,8 @@ module.exports = app => {
         * destroy(id) {
             const conn = yield app.mysql.get('back').beginTransaction(); // 初始化事务
             try {
-                yield this.app.mysql.get('back').delete('back_module', {id});
-                yield this.app.mysql.get('back').delete('back_role_module', {module_id: id});
+                yield this.app.mysql.get('back').delete('module', {id});
+                yield this.app.mysql.get('back').delete('role_module', {module_id: id});
 
                 yield conn.commit(); // 提交事务
             } catch (err) {
@@ -60,7 +60,7 @@ module.exports = app => {
         }
 
         * edit(id) {
-            const result = yield this.app.mysql.get('back').get('back_module', {
+            const result = yield this.app.mysql.get('back').get('module', {
                 id,
             });
 
@@ -68,7 +68,7 @@ module.exports = app => {
         }
 
         * update(id, data) {
-            const result = yield this.app.mysql.get('back').update('back_module', Object.assign(data, {id}));
+            const result = yield this.app.mysql.get('back').update('module', Object.assign(data, {id}));
 
             return result;
         }
@@ -80,13 +80,13 @@ module.exports = app => {
             let originalObj = null;
 
             if (isAll) {
-                originalObj = yield this.app.mysql.get('back').select('back_module', {
+                originalObj = yield this.app.mysql.get('back').select('module', {
                     where: {
                         module_show: 1,
                     },
                 });
             } else {
-                originalObj = yield this.app.mysql.get('back').select('back_module');
+                originalObj = yield this.app.mysql.get('back').select('module');
             }
 
             const subset = function (parentId) {    // 根据父级id遍历子集
