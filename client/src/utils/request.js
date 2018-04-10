@@ -90,8 +90,8 @@ export default function request(url, options) {
         dispatch(routerRedux.push('/exception/500'));
         // return;
       }
-      // if (status >= 404 && status < 422) {
-      //   dispatch(routerRedux.push('/exception/404'));
-      // }
+      if (status >= 404 && status < 422) {
+        dispatch(routerRedux.push('/exception/404'));
+      }
     });
 }

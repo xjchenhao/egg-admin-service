@@ -97,6 +97,18 @@ export const getRouterData = (app) => {
     '/user/register-result': {
       component: dynamicWrapper(app, [], () => import('../routes/sys/User/RegisterResult')),
     },
+    '/exception/403': {
+      component: dynamicWrapper(app, [], () => import('../routes/exception/403')),
+    },
+    '/exception/404': {
+      component: dynamicWrapper(app, [], () => import('../routes/exception/404')),
+    },
+    '/exception/500': {
+      component: dynamicWrapper(app, [], () => import('../routes/exception/500')),
+    },
+    '/exception/trigger': {
+      component: dynamicWrapper(app, ['demo/error'], () => import('../routes/exception/triggerException')),
+    },
   };
   const demoRouterData = {
 
