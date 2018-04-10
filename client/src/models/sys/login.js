@@ -2,6 +2,7 @@ import { routerRedux } from 'dva/router';
 import { login, logout } from '../../services/sys/user';
 import { setAuthority } from '../../utils/authority';
 import { reloadAuthorized } from '../../utils/Authorized';
+import { message } from 'antd';
 
 export default {
   namespace: 'login',
@@ -13,14 +14,20 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: {
-          currentAuthority: response.result.userName,
-        },
-      });
-      // Login successfully
+      // 登录失败
+      if (response.code !== '0') {
+        message.error(response.msg);
+        return false;
+      }
+
+      // 登录成功
       if (response.code === '0') {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            currentAuthority: response.result.userName,
+          },
+        });
         reloadAuthorized();
         yield put(routerRedux.push('/'));
       }
