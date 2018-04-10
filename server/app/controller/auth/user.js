@@ -1,5 +1,6 @@
 'use strict';
 let _ = require('underscore');
+const crypto = require('crypto');
 
 
 module.exports = app => {
@@ -206,6 +207,8 @@ module.exports = app => {
 
                 return;
             }
+
+            query.password = crypto.createHash('md5').update(query.password).digest('hex');
 
             const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
 
