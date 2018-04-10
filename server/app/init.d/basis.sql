@@ -11,7 +11,7 @@
  Target Server Version : 50718
  File Encoding         : 65001
 
- Date: 10/04/2018 14:40:34
+ Date: 10/04/2018 14:43:24
 */
 
 SET NAMES utf8mb4;
@@ -161,7 +161,7 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES (84, '超级管理员', 'admin', '55511808baf7f301b5270d7334a4cec0', NULL, 1, '2017-08-17 15:02:11', '2018-04-10 14:38:51', NULL, NULL, NULL, NULL, '18711111111', 'admin@admin.com', '');
+INSERT INTO `user` VALUES (84, '超级管理员', 'admin', '123456', NULL, 1, '2017-08-17 15:02:11', '2018-04-10 14:43:01', NULL, NULL, NULL, NULL, '18711111111', 'admin@admin.com', '');
 COMMIT;
 
 -- ----------------------------
