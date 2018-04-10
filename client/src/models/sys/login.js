@@ -1,8 +1,8 @@
 import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 import { login, logout } from '../../services/sys/user';
 import { setAuthority } from '../../utils/authority';
 import { reloadAuthorized } from '../../utils/Authorized';
-import { message } from 'antd';
 
 export default {
   namespace: 'login',
