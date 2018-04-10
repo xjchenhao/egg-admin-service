@@ -98,16 +98,16 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, [], () => import('../routes/sys/User/RegisterResult')),
     },
     '/exception/403': {
-      component: dynamicWrapper(app, [], () => import('../routes/exception/403')),
+      component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/403')),
     },
     '/exception/404': {
-      component: dynamicWrapper(app, [], () => import('../routes/exception/404')),
+      component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/404')),
     },
     '/exception/500': {
-      component: dynamicWrapper(app, [], () => import('../routes/exception/500')),
+      component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/500')),
     },
     '/exception/trigger': {
-      component: dynamicWrapper(app, ['demo/error'], () => import('../routes/exception/triggerException')),
+      component: dynamicWrapper(app, ['demo/error'], () => import('../routes/sys/Exception/triggerException')),
     },
   };
   const demoRouterData = {
