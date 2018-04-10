@@ -22,9 +22,9 @@ module.exports = app => {
             let totalCount = [];
 
             if (where) {
-                result = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from module b inner join (select id,module_name from module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
+                result = yield this.app.mysql.get('back').query(`select b.*,a.name as parent_name from module b inner join (select id,name from module) a on b.parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
 
-                totalCount = yield this.app.mysql.get('back').query(`select b.*,a.module_name as module_parent_name from module b inner join (select id,module_name from module) a on b.module_parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
+                totalCount = yield this.app.mysql.get('back').query(`select b.*,a.name as parent_name from module b inner join (select id,name from module) a on b.parent_id=a.id WHERE ${where} ORDER BY b.update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
             } else {
                 result = yield this.app.mysql.get('back').query(`SELECT * FROM module ORDER BY update_date DESC LIMIT ${(pageNumber - 1) * pageSize}, ${Number(pageSize)};`);
 
@@ -49,7 +49,7 @@ module.exports = app => {
             const conn = yield app.mysql.get('back').beginTransaction(); // 初始化事务
             try {
                 yield this.app.mysql.get('back').delete('module', {id});
-                yield this.app.mysql.get('back').delete('role_module', {module_id: id});
+                yield this.app.mysql.get('back').delete('role_module', {id: id});
 
                 yield conn.commit(); // 提交事务
             } catch (err) {
@@ -82,7 +82,7 @@ module.exports = app => {
             if (isAll) {
                 originalObj = yield this.app.mysql.get('back').select('module', {
                     where: {
-                        module_show: 1,
+                        show: 1,
                     },
                 });
             } else {
@@ -94,7 +94,7 @@ module.exports = app => {
 
                 // 查询该id下的所有子集
                 originalObj.forEach(function (obj) {
-                    if (obj.module_parent_id === parentId) {
+                    if (obj.parent_id === parentId) {
                         arr.push(Object.assign(obj, {
                             children: subset(obj.id),
                         }));
@@ -108,9 +108,9 @@ module.exports = app => {
 
                 // 对子集进行排序
                 arr.sort(function (val1, val2) {
-                    if (val1.module_sort < val2.module_sort) {
+                    if (val1.sort < val2.sort) {
                         return -1;
-                    } else if (val1.module_sort > val2.module_sort) {
+                    } else if (val1.sort > val2.sort) {
                         return 1;
                     }
                     return 0;

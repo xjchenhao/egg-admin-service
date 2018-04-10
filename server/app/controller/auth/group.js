@@ -134,7 +134,7 @@ module.exports = app => {
 
       let addResult = yield this.app.mysql.get('back').select('user_role', {
         where: {
-          id: query.id
+          role_id: query.id
         }
       });
 
@@ -149,7 +149,7 @@ module.exports = app => {
       allResult.forEach((obj) => {
         allArr.push({
           key: obj.id,
-          label: obj.user_name
+          label: obj.name
         })
       });
 
@@ -225,13 +225,13 @@ module.exports = app => {
 
       // 清空掉该用户相关的角色关联
       yield this.app.mysql.get('back').delete('user_role', {
-        id: roleId
+        role_id: roleId
       });
 
       // 建立新的角色关联
       for (let i = 0, l = idList.length; i < l; i++) {
         yield this.app.mysql.get('back').insert('user_role', {
-          id: roleId,
+          role_id: roleId,
           user_id: idList[i]
         });
       }
@@ -246,9 +246,9 @@ module.exports = app => {
     * getModule (ctx) {
       const query = ctx.params;
 
-      let addResult = yield this.app.mysql.get('back').select('module', {
+      let addResult = yield this.app.mysql.get('back').select('role_module', {
         where: {
-          id: query.id
+          role_id: query.id
         }
       });
 
@@ -258,7 +258,7 @@ module.exports = app => {
       });
 
       let allResult = yield ctx.service.auth.module.system({
-        module_parent_id: query.module_parent_id
+        parent_id: query.parent_id
       });
 
       ctx.body = {
@@ -281,7 +281,7 @@ module.exports = app => {
           id: roleId
         });
 
-        let userResult = yield this.app.mysql.get('back').select('module');
+        let moduleResult = yield this.app.mysql.get('back').select('module');
         if (!roleResult) {
           ctx.body = {
             code: '404',
@@ -299,7 +299,7 @@ module.exports = app => {
         let isExistModuleId = (() => {
           let exist = true;
 
-          let sysUserList = _.chain(userResult)
+          let sysModuleList = _.chain(moduleResult)
             .pluck('id')
             .map((id) => {
               return String(id)
@@ -307,7 +307,7 @@ module.exports = app => {
             .value();
 
           idList.forEach((id) => {
-            if (sysUserList.indexOf(id) === -1) {
+            if (sysModuleList.indexOf(id) === -1) {
               exist = false;
 
               return false;
@@ -331,12 +331,12 @@ module.exports = app => {
         }
       }
 
-      yield this.app.mysql.get('back').delete('module', {
-        id: roleId
+      yield this.app.mysql.get('back').delete('role_module', {
+        role_id: roleId
       });
       for (let i = 0, l = idList.length; i < l; i++) {
-        yield this.app.mysql.get('back').insert('module', {
-          id: roleId,
+        yield this.app.mysql.get('back').insert('role_module', {
+          role_id: roleId,
           module_id: idList[i]
         });
       }

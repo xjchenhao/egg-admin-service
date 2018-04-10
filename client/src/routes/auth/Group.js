@@ -144,12 +144,12 @@ const AuthModal = connect(state => ({
     return allList.map((item) => {
       if (item.children && item.children.length) {
         return (
-          <TreeNode title={item.module_name} key={item.id} dataRef={item}>
+          <TreeNode title={item.name} key={item.id} dataRef={item}>
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.module_name} key={item.id} dataRef={item} />;
+      return <TreeNode title={item.name} key={item.id} dataRef={item} />;
     });
   };
 
