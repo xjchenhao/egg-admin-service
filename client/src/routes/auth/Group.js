@@ -530,6 +530,7 @@ export default class TableList extends PureComponent {
             <div className={styles.tableListForm}>
               {this.renderForm()}
             </div>
+            <Divider />
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>
                 添加

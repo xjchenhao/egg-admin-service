@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, InputNumber, Button, Modal, Divider, Table, Breadcrumb, TreeSelect } from 'antd';
+import { Row, Col, Card, Form, Input, InputNumber, Button, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select } from 'antd';
 import PageHeaderLayout from './../../layouts/PageHeaderLayout';
 
 import styles from './Modules.less';
 
 const FormItem = Form.Item;
+const { Option } = Select;
+
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
 // 添加or编辑弹框
@@ -66,7 +68,7 @@ const EditModal = connect(state => ({
 
   return (
     <Modal
-      title={isEdit ? '修改菜单' : '添加同级菜单'}
+      title={isEdit ? '修改模块' : '添加同级模块'}
       visible={visible}
       onOk={(e) => {
         e.preventDefault();
@@ -96,14 +98,14 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="父菜单"
+          label="父模块"
         >
           {renderModuleParentItem(data.parent_id)}
         </FormItem>
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="菜单名称"
+          label="模块名称"
         >
           {form.getFieldDecorator('name', {
             initialValue: data.name,
@@ -212,7 +214,7 @@ export default class TableList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    // 获取系统树，用来编辑菜单的时候用
+    // 获取系统树，用来编辑模块的时候用
     dispatch({
       type: 'modules/getSystemTree',
       payload: {},
@@ -389,6 +391,113 @@ export default class TableList extends PureComponent {
     });
   }
 
+  // 切换搜索条件的展示方式
+  toggleForm = () => {
+    this.setState({
+      expandForm: !this.state.expandForm,
+    });
+  }
+
+  // 功能模块查询选项
+  renderQueryModuleOption = () => {
+    const { pageModel: { systemTree } } = this.props;
+
+    return (
+      <Select>
+        <Option value="">全部</Option>
+        {
+          systemTree.data.map((item) => {
+            return <Option value={item.id} key={item.id}>{item.name}</Option>;
+          })
+        }
+      </Select>
+    );
+  }
+
+  // 搜索条件的展示方式———收起
+  renderSimpleForm = () => {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="功能模块">
+              {getFieldDecorator('parent_id', {
+                initialValue: '',
+              })(
+                this.renderQueryModuleOption()
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="模块名称">
+              {getFieldDecorator('name')(
+                <Input placeholder="请输入" />
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">查询</Button>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>重置</Button>
+              <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+                展开 <Icon type="down" />
+              </a>
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
+  // 搜索条件的展示方式———展开
+  renderAdvancedForm = () => {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="功能模块">
+              {getFieldDecorator('parent_id', {
+                initialValue: '',
+              })(
+                this.renderQueryModuleOption()
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="模块名称">
+              {getFieldDecorator('name')(
+                <Input placeholder="请输入" />
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="模块Url">
+              {getFieldDecorator('url')(
+                <Input placeholder="请输入" />
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <div style={{ overflow: 'hidden' }}>
+          <span style={{ float: 'right', marginBottom: 24 }}>
+            <Button type="primary" htmlType="submit">查询</Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>重置</Button>
+            <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
+              收起 <Icon type="up" />
+            </a>
+          </span>
+        </div>
+      </Form>
+    );
+  }
+
+  // 选择搜索条件的展示方式
+  renderForm = () => {
+    return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
+  }
+
   // 模块管理面包屑
   renderBreadcrumb = () => {
     const { pageModel: { breadcrumb } } = this.props;
@@ -417,37 +526,6 @@ export default class TableList extends PureComponent {
     );
   }
 
-  // 选择搜索条件的展示方式
-  renderForm = () => {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
-            <FormItem label="菜单名称">
-              {getFieldDecorator('name')(
-                <Input placeholder="请输入" />
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="菜单Url">
-              {getFieldDecorator('url')(
-                <Input placeholder="请输入" />
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <span className={styles.submitButtons}>
-              <Button type="primary" htmlType="submit">查询</Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>重置</Button>
-            </span>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }
-
   render() {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { editModal } = this.state;
@@ -461,7 +539,7 @@ export default class TableList extends PureComponent {
         },
       },
       {
-        title: '菜单名称',
+        title: '模块名称',
         key: 'name',
         dataIndex: 'name',
         render: (text, record) => (
@@ -522,13 +600,14 @@ export default class TableList extends PureComponent {
             <div className={styles.tableListForm}>
               {this.renderForm()}
             </div>
+            <Divider />
             <div className={styles.tableListOperator}>
               <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
                 <Col md={12} sm={24}>
                   {this.renderBreadcrumb()}
                 </Col>
                 <Col md={12} sm={24}>
-                  <div style={{ textAlign: 'right' }}><Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>添加同级菜单</Button></div>
+                  <div style={{ textAlign: 'right' }}><Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>添加同级模块</Button></div>
                 </Col>
               </Row>
             </div>
