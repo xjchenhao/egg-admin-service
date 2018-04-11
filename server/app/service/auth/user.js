@@ -30,7 +30,7 @@ module.exports = app => {
       const result = yield this.app.mysql.get('back').insert('user', Object.assign(data, {
         user_password: crypto.createHash('md5').update(data.user_password).digest('hex')
       }));
-      /*eslint-enable */
+      /* eslint-enable */
 
       return result;
     }

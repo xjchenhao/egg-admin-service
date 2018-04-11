@@ -38,8 +38,8 @@ module.exports = app => {
       const conn = yield app.mysql.get('back').beginTransaction(); // 初始化事务
       try {
         yield this.app.mysql.get('back').delete('role', { id });
-        yield this.app.mysql.get('back').delete('module', { id: id });
-        yield this.app.mysql.get('back').delete('user_role', { id: id });
+        yield this.app.mysql.get('back').delete('module', { id });
+        yield this.app.mysql.get('back').delete('user_role', { id });
 
         yield conn.commit(); // 提交事务
       } catch (err) {
