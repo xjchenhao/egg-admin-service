@@ -9,6 +9,8 @@ import { format, delay } from 'roadhog-api-doc';
 
 import authUsers from './mock/auth/users';
 import authGroup from './mock/auth/group';
+import authModule from './mock/auth/module';
+import sysUser from './mock/sys/user';
 import rule from './mock/rule';
 
 // 是否禁用代理
@@ -23,6 +25,7 @@ const proxy = {
   'DELETE /nodeApi/auth/users/:id': rule.resultRandom,
   'POST /nodeApi/auth/users': rule.resultSuccess,
   'DELETE /nodeApi/auth/users': rule.resultRandom,
+
   'GET /nodeApi/auth/groups/:id/edit': authGroup.details,
   'GET /nodeApi/auth/groups': authGroup.list,
   'PUT /nodeApi/auth/groups/:id': rule.resultSuccess,
@@ -32,6 +35,15 @@ const proxy = {
   'PUT /nodeApi/auth/groupModules': rule.resultSuccess,
   'GET /nodeApi/auth/groupUsers': authGroup.users,
   'PUT /nodeApi/auth/groupUsers': rule.resultSuccess,
+
+  'GET /nodeApi/auth/modules': authModule.list,
+  'GET /nodeApi/auth/modules/system': authModule.system,
+  'GET /nodeApi/auth/modules/:id/edit': authModule.details,
+  'PUT /nodeApi/auth/modules/:id': rule.resultSuccess,
+  'POST /nodeApi/auth/modules': rule.resultSuccess,
+  'DELETE /nodeApi/auth/modules/:id': rule.resultRandom,
+
+  'GET /nodeApi/sys/userInfo': sysUser.info,
 };
 
 const demoProxy = {
