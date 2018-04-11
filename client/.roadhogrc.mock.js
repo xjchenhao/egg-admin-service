@@ -43,6 +43,8 @@ const proxy = {
   'POST /nodeApi/auth/modules': rule.resultSuccess,
   'DELETE /nodeApi/auth/modules/:id': rule.resultRandom,
 
+  'GET /nodeApi/sys/login': rule.resultRandom,
+  'GET /nodeApi/sys/logout': rule.resultSuccess,
   'GET /nodeApi/sys/userInfo': sysUser.info,
 };
 
