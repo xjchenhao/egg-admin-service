@@ -22,7 +22,7 @@ module.exports = app => {
     }
 
     async create (data) {
-      const result = this.ctx.model.AuthUser.create(Object.assign(data, {
+      const result =await this.ctx.model.AuthUser.create(Object.assign(data, {
         password: crypto.createHash('md5').update(data.password).digest('hex')
       }))
 

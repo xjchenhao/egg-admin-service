@@ -8,7 +8,7 @@ module.exports = app => {
 
   const UserSchema = new Schema({
     name: { type: String },
-    account: { type: String },
+    account: { type: String, unique: true },
     password: { type: String },
     remark: { type: String },
     status: { type: Number },
@@ -23,8 +23,6 @@ module.exports = app => {
     usePushEach: true,
     timestamps: {createdAt: 'create_date', updatedAt: 'update_date'}
   });
-
-  UserSchema.index({ id: 1 });
 
   return conn.model('User', UserSchema);
 };

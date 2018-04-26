@@ -36,7 +36,7 @@ const ResetPwdModal = Form.create()((props) => {
         wrapperCol={{ span: 15 }}
         label="密码"
       >
-        {form.getFieldDecorator('user_password', {
+        {form.getFieldDecorator('password', {
           rules: [
             { required: true, message: '请输入密码' },
             { min: 6, message: '请输入6-18位密码' },
@@ -65,7 +65,7 @@ const EditModal = connect(state => ({
 
         if (data.id) {
           form.setFieldsValue({
-            user_password: '0',
+            password: '0',
           });
         }
 
@@ -92,8 +92,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="登录名"
         >
-          {form.getFieldDecorator('user_account', {
-            initialValue: data.user_account,
+          {form.getFieldDecorator('account', {
+            initialValue: data.account,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -106,8 +106,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="真实姓名"
         >
-          {form.getFieldDecorator('user_name', {
-            initialValue: data.user_name,
+          {form.getFieldDecorator('name', {
+            initialValue: data.name,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -120,8 +120,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="邮箱"
         >
-          {form.getFieldDecorator('user_email', {
-            initialValue: data.user_email,
+          {form.getFieldDecorator('email', {
+            initialValue: data.email,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -134,8 +134,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="手机号"
         >
-          {form.getFieldDecorator('user_mobile', {
-            initialValue: data.user_mobile,
+          {form.getFieldDecorator('mobile', {
+            initialValue: data.mobile,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -149,8 +149,8 @@ const EditModal = connect(state => ({
             wrapperCol={{ span: 15 }}
             label="密码"
           >
-            {form.getFieldDecorator('user_password', {
-              initialValue: data.user_password,
+            {form.getFieldDecorator('password', {
+              initialValue: data.password,
               rules: [
                 { required: true, message: '该项为必填项' },
               ],
@@ -177,7 +177,7 @@ export default class TableList extends PureComponent {
       isVisible: false,
       data: {
         id: '',
-        user_password: '',
+        password: '',
       },
     },
     editModal: {
@@ -411,14 +411,14 @@ export default class TableList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="登录名">
-              {getFieldDecorator('user_account')(
+              {getFieldDecorator('account')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="真实姓名">
-              {getFieldDecorator('user_name')(
+              {getFieldDecorator('name')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -445,21 +445,21 @@ export default class TableList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="登录名">
-              {getFieldDecorator('user_account')(
+              {getFieldDecorator('account')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="真实姓名">
-              {getFieldDecorator('user_name')(
+              {getFieldDecorator('name')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="邮箱">
-              {getFieldDecorator('user_email')(
+              {getFieldDecorator('email')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -468,7 +468,7 @@ export default class TableList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="手机号">
-              {getFieldDecorator('user_mobile')(
+              {getFieldDecorator('mobile')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -511,19 +511,19 @@ export default class TableList extends PureComponent {
       },
       {
         title: '用户名',
-        dataIndex: 'user_account',
+        dataIndex: 'account',
       },
       {
         title: '真实姓名',
-        dataIndex: 'user_name',
+        dataIndex: 'name',
       },
       {
         title: '手机号',
-        dataIndex: 'user_mobile',
+        dataIndex: 'mobile',
       },
       {
         title: '邮箱',
-        dataIndex: 'user_email',
+        dataIndex: 'email',
       },
       {
         title: '操作',

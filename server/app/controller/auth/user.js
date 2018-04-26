@@ -67,6 +67,23 @@ module.exports = app => {
                 return;
             }
 
+            const isAccountExist = await this.ctx.model.AuthUser.findOne({
+                account: query.account,
+            });
+
+            if (isAccountExist) {
+                ctx.body = {
+                    code: '1',
+                    msg: '用户名已存在',
+                    result: {
+                        account: query.account,
+                    }
+                }
+                ctx.status = 200;
+
+                return false;
+            }
+
             const result = await ctx.service.auth.user.create(_.pick(query, ...Object.keys(createRule)));
 
             if (result) {
@@ -85,7 +102,7 @@ module.exports = app => {
         async destroy (ctx) {
             const query = ctx.params;
 
-            await ctx.service.auth.user.destroy(query.id);
+            const result = await ctx.service.auth.user.destroy(query.id);
 
             if (!result) {
                 ctx.body = {

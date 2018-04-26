@@ -23,7 +23,7 @@ const EditModal = connect(state => ({
 
     return list.map((obj) => {
       return {
-        label: obj.module_name,
+        label: obj.name,
         value: String(obj.id),
         key: obj.id,
         children: transform(obj.children),
@@ -47,7 +47,7 @@ const EditModal = connect(state => ({
 
     if (isEdit) {
       if (parentId !== 0) {
-        return (form.getFieldDecorator('module_parent_id', {
+        return (form.getFieldDecorator('parent_id', {
           initialValue: String(parentId),
         })(
           <TreeSelect
@@ -77,12 +77,12 @@ const EditModal = connect(state => ({
             onOk({
               ...fieldsValue,
               id: data.id,
-              module_parent_id: Number(fieldsValue.module_parent_id),
+              parent_id: Number(fieldsValue.parent_id),
             }, form.resetFields);
           } else {
             onOk({
               ...fieldsValue,
-              module_parent_id: moduleParent.id,
+              parent_id: moduleParent.id,
             }, form.resetFields);
           }
         });
@@ -98,15 +98,15 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="父菜单"
         >
-          {renderModuleParentItem(data.module_parent_id)}
+          {renderModuleParentItem(data.parent_id)}
         </FormItem>
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
           label="菜单名称"
         >
-          {form.getFieldDecorator('module_name', {
-            initialValue: data.module_name,
+          {form.getFieldDecorator('name', {
+            initialValue: data.name,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -119,8 +119,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="url地址"
         >
-          {form.getFieldDecorator('module_url', {
-            initialValue: data.module_url,
+          {form.getFieldDecorator('url', {
+            initialValue: data.url,
           })(
             <Input placeholder="请输入" />
           )}
@@ -130,8 +130,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="权限标识"
         >
-          {form.getFieldDecorator('module_uri', {
-            initialValue: data.module_uri,
+          {form.getFieldDecorator('uri', {
+            initialValue: data.uri,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -144,8 +144,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="iconfont图标"
         >
-          {form.getFieldDecorator('module_iconfont', {
-            initialValue: data.module_iconfont,
+          {form.getFieldDecorator('iconfont', {
+            initialValue: data.iconfont,
           })(
             <Input placeholder="请输入" />
           )}
@@ -155,8 +155,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="描述"
         >
-          {form.getFieldDecorator('module_describe', {
-            initialValue: data.module_describe,
+          {form.getFieldDecorator('describe', {
+            initialValue: data.describe,
           })(
             <Input placeholder="请输入" />
           )}
@@ -166,8 +166,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="是否显示"
         >
-          {form.getFieldDecorator('module_show', {
-            initialValue: data.module_show,
+          {form.getFieldDecorator('show', {
+            initialValue: data.show,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -180,8 +180,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="排序"
         >
-          {form.getFieldDecorator('module_sort', {
-            initialValue: data.module_sort,
+          {form.getFieldDecorator('sort', {
+            initialValue: data.sort,
             rules: [{
               type: 'number', message: '请输入数字',
             },
@@ -425,14 +425,14 @@ export default class TableList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="菜单名称">
-              {getFieldDecorator('module_name')(
+              {getFieldDecorator('name')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="菜单Url">
-              {getFieldDecorator('module_url')(
+              {getFieldDecorator('url')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -462,8 +462,8 @@ export default class TableList extends PureComponent {
       },
       {
         title: '菜单名称',
-        key: 'module_name',
-        dataIndex: 'module_name',
+        key: 'name',
+        dataIndex: 'name',
         render: (text, record) => (
           <a
             onClick={() => {
@@ -474,23 +474,23 @@ export default class TableList extends PureComponent {
       },
       {
         title: 'url地址',
-        key: 'module_url',
-        dataIndex: 'module_url',
+        key: 'url',
+        dataIndex: 'url',
       },
       {
         title: '权限标识',
-        key: 'module_uri',
-        dataIndex: 'module_uri',
+        key: 'uri',
+        dataIndex: 'uri',
       },
       {
         title: '显示',
-        key: 'module_show',
-        dataIndex: 'module_show',
+        key: 'show',
+        dataIndex: 'show',
       },
       {
         title: '排序',
-        key: 'module_sort',
-        dataIndex: 'module_sort',
+        key: 'sort',
+        dataIndex: 'sort',
       },
       {
         title: '操作',
