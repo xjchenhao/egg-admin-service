@@ -4,7 +4,7 @@ module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
   const ObjectId = Schema.ObjectId;
-  const conn = app.mongooseDB.get('back'); 
+  const conn = app.mongooseDB.get('back');
 
   const UserSchema = new Schema({
     name: { type: String },
@@ -18,11 +18,12 @@ module.exports = app => {
     sex: { type: Number },
     address: { type: String },
     mobile: { type: String },
-    email: { type: String }
+    email: { type: String },
+    groups: { type: Array }
   }, {
-    usePushEach: true,
-    timestamps: {createdAt: 'create_date', updatedAt: 'update_date'}
-  });
+      usePushEach: true,
+      timestamps: { createdAt: 'create_date', updatedAt: 'update_date' }
+    });
 
   return conn.model('User', UserSchema);
 };

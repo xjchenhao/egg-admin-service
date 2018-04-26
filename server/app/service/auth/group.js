@@ -5,62 +5,70 @@ const url = require('url');
 module.exports = app => {
   class userService extends app.Service {
 
-    * index(pageNumber = 1, pageSize = 20, query) {
+    async index (pageNumber = 1, pageSize = 20, query) {
+      pageNumber = Number(pageNumber);
+      pageSize = Number(pageSize);
 
-      const result = yield this.app.mysql.get('back').select('role', {
-        where: query,
-        limit: Number(pageSize), // 返回数据量
-        offset: (pageNumber - 1) * pageSize, // 数据偏移量
-        orders: [[ 'addtime', 'desc' ]], // 排序方式
-      });
+      return this.ctx.response.format.paging({
+        resultList: await this.ctx.model.AuthGroup.find(query)
+          .skip((pageNumber - 1) * pageSize)
+          .limit(pageSize)
+          .exec(),
 
-      const totalCount = yield this.app.mysql.get('back').count('role', query);
-
-      return {
-        list: result,
+        totalLength: await this.ctx.model.AuthGroup.find(query).count(),
+        pageSize,
         currentPage: Number(pageNumber),
-        total: Math.ceil(totalCount / pageSize),
-        pageSize: totalCount,
-      };
+      });
     }
 
-    * create(data) {
-      const { req } = this.ctx;
+    async create (data) {
 
-      const result = yield this.app.mysql.get('back').insert('role', Object.assign(data, {
-        addip: url.parse(req.url, true).query.ip || req.headers[ 'x-real-ip' ] || req.connection.remoteAddress || req.socket.remoteAddress || req.connection.socket.remoteAddress,
-      }));
+      const result = await this.ctx.model.AuthGroup.create(data);
 
       return result;
     }
 
-    * destroy(id) {
-      const conn = yield app.mysql.get('back').beginTransaction(); // 初始化事务
-      try {
-        yield this.app.mysql.get('back').delete('role', { id });
-        yield this.app.mysql.get('back').delete('module', { id });
-        yield this.app.mysql.get('back').delete('user_role', { id });
+    async destroy (id) {
+      // const conn = await app.mysql.get('back').beginTransaction(); // 初始化事务
+      // try {
+      //   await this.app.mysql.get('back').delete('role', { id });
+      //   await this.app.mysql.get('back').delete('module', { id });
+      //   await this.app.mysql.get('back').delete('user_role', { id });
 
-        yield conn.commit(); // 提交事务
-      } catch (err) {
-        // error, rollback
-        yield conn.rollback(); // 一定记得捕获异常后回滚事务！！
-        throw err;
-      }
+      //   await conn.commit(); // 提交事务
+      // } catch (err) {
+      //   // error, rollback
+      //   await conn.rollback(); // 一定记得捕获异常后回滚事务！！
+      //   throw err;
+      // }
+
+      const result = await this.ctx.model.AuthGroup.remove({
+        _id: id,
+      });
+
+      return result.result.n !== 0 && result;
     }
 
-    * edit(id) {
-      const result = yield this.app.mysql.get('back').get('role', {
-        id,
+    async edit (id) {
+      const result = await this.ctx.model.AuthGroup.findOne({
+        _id: id,
       });
 
       return result;
     }
 
-    * update(id, data) {
-      const result = yield this.app.mysql.get('back').update('role', Object.assign(data, { id }));
+    async update (id, data) {
+      let newData = Object.assign(data, { _id: id });
 
-      return result;
+      try {
+        return await this.ctx.model.AuthGroup.findByIdAndUpdate(id, newData, {
+          new: true,
+          runValidators: true,
+        }).exec();
+      } catch (err) {
+        this.ctx.logger.error(err.message);
+        return '';
+      }
     }
   }
   return userService;

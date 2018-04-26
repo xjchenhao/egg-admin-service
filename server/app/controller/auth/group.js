@@ -3,30 +3,26 @@ const _ = require('underscore');
 
 module.exports = app => {
   class authGroupController extends app.Controller {
-    * index(ctx) {
+    async index (ctx) {
       const query = ctx.request.query;
 
       // 获取传参中指定的key，且过滤掉为`空`的条件。
-      const where = _.pick(_.pick(query, ...[ 'name' ]), value => {
+      const where = _.pick(_.pick(query, ...['name']), value => {
         return value !== '' && value !== undefined;
       });
 
-      const result = yield ctx.service.auth.group.index(query.currentPage, query.pageSize, where);
+      const result = await ctx.service.auth.group.index(query.currentPage, query.pageSize, where);
 
       if (result) {
         ctx.body = {
           code: '0',
           msg: 'OK',
-          result: Object.assign(result, {
-            list: result.list.map(obj => {
-              return _.pick(obj, ...[ 'id', 'name', 'summary' ]);
-            }),
-          }),
+          result: result,
         };
       }
     }
 
-    * create(ctx) {
+    async create (ctx) {
       const query = ctx.request.body;
 
       const createRule = {
@@ -54,7 +50,24 @@ module.exports = app => {
         return;
       }
 
-      const result = yield ctx.service.auth.group.create(_.pick(query, ...Object.keys(createRule)));
+      const isExist = await this.ctx.model.AuthGroup.findOne({
+        name: query.name,
+      });
+
+      if (isExist) {
+        ctx.body = {
+          code: '-1',
+          msg: '组名已存在',
+          result: {
+            name: query.name,
+          }
+        }
+        ctx.status = 200;
+
+        return false;
+      }
+
+      const result = await ctx.service.auth.group.create(_.pick(query, ...Object.keys(createRule)));
 
       if (result) {
         ctx.body = {
@@ -69,10 +82,10 @@ module.exports = app => {
 
     }
 
-    * destroy(ctx) {
+    async destroy (ctx) {
       const query = ctx.params;
 
-      yield ctx.service.auth.group.destroy(query.id);
+      await ctx.service.auth.group.destroy(query.id);
 
       ctx.body = {
         code: '0',
@@ -82,10 +95,10 @@ module.exports = app => {
       ctx.status = 200;
     }
 
-    * edit(ctx) {
+    async edit (ctx) {
       const query = ctx.params;
 
-      const result = yield ctx.service.auth.group.edit(query.id);
+      const result = await ctx.service.auth.group.edit(query.id);
 
       if (!result) {
         ctx.body = {
@@ -101,17 +114,36 @@ module.exports = app => {
       ctx.body = {
         code: '0',
         msg: 'OK',
-        result: _.pick(result, ...[ 'id', 'name', 'summary' ]),
+        result: _.pick(result, ...['id', 'name', 'summary']),
       };
     }
 
-    * update(ctx) {
+    async update (ctx) {
       const id = ctx.params.id;
       const query = ctx.request.body;
 
-      const result = yield ctx.service.auth.group.update(id, _.pick(query, ...[ 'name', 'summary' ]));
+      const isExist = await this.ctx.model.AuthGroup.findOne({
+        _id: {
+          '$ne': id,
+        },
+        name: query.name,
+      });
+      if (isExist) {
+        ctx.body = {
+          code: '-1',
+          msg: '组名已存在',
+          result: {
+            name: query.name,
+          }
+        }
+        ctx.status = 200;
 
-      if (!result.affectedRows) {
+        return false;
+      }
+
+      const result = await ctx.service.auth.group.update(id, _.pick(query, ...['name', 'describe']));
+
+      if (!result) {
         ctx.body = {
           code: '404',
           msg: ctx.helper.errorCode['404'],
@@ -129,26 +161,19 @@ module.exports = app => {
       };
     }
 
-    * getUser(ctx) {
+    async getUser (ctx) {
       const query = ctx.params;
 
-      const addResult = yield this.app.mysql.get('back').select('user_role', {
-        where: {
-          role_id: query.id,
-        },
-      });
+      const addArr = (await ctx.model.AuthGroup.findOne({
+        _id: query.id
+      })).users;
 
-      const addArr = [];
-      addResult.forEach(obj => {
-        addArr.push(obj.user_id);
-      });
-
-      const allResult = yield this.app.mysql.get('back').select('user');
+      const allResult = await ctx.model.AuthGroup.find();
 
       const allArr = [];
       allResult.forEach(obj => {
         allArr.push({
-          key: obj.id,
+          key: obj._id,
           label: obj.name,
         });
       });
@@ -157,83 +182,54 @@ module.exports = app => {
         code: '0',
         msg: 'OK',
         result: {
-          addList: addArr,
+          addList: addArr ? addArr : [],
           allList: allArr,
         },
       };
     }
 
-    * setUser(ctx) {
+    async setUser (ctx) {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList;
 
-      // 错误捕捉
-      {
-        const roleResult = yield this.app.mysql.get('back').get('role', {
-          id: roleId,
-        });
-
-        const userResult = yield this.app.mysql.get('back').select('user');
-        if (!roleResult) {
-          ctx.body = {
-            code: '404',
-            msg: ctx.helper.errorCode['404'],
-            result: {
-              id: roleId,
-            },
-          };
-          ctx.status = 404;
-
-          return false;
+      // 给用户组集合插入user信息
+      const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
+        $set: {
+          users: idList
         }
-
-
-        const isExistUserId = (() => {
-          let exist = true;
-
-          const sysUserList = _.chain(userResult)
-            .pluck('id')
-            .map(id => {
-              return String(id);
-            })
-            .value();
-
-          idList.forEach(id => {
-            if (sysUserList.indexOf(String(id)) === -1) {
-              exist = false;
-
-              return false;
-            }
-          });
-
-          return exist;
-        })();
-
-        if (!isExistUserId) {
-          ctx.body = {
-            code: '404',
-            msg: ctx.helper.errorCode['404'],
-            result: {
-              idList,
-            },
-          };
-          ctx.status = 404;
-
-          return false;
-        }
-      }
-
-      // 清空掉该用户相关的角色关联
-      yield this.app.mysql.get('back').delete('user_role', {
-        role_id: roleId,
       });
 
-      // 建立新的角色关联
+      if (result === null) {
+        ctx.body = {
+          code: '404',
+          msg: ctx.helper.errorCode['404'],
+          result: {
+            idList,
+          },
+        };
+        ctx.status = 404;
+
+        return false;
+      }
+
+      // 给用户集合插入groups信息
       for (let i = 0, l = idList.length; i < l; i++) {
-        yield this.app.mysql.get('back').insert('user_role', {
-          role_id: roleId,
-          user_id: idList[i],
-        });
+        let userGroups = await ctx.model.AuthUser.find({
+          _id: idList[i]
+        }).groups;
+
+        userGroups = userGroups ? userGroups : [];
+
+        if (userGroups.indexOf(roleId) === -1) {
+          userGroups.push(roleId)
+        }
+        await ctx.model.AuthUser.findByIdAndUpdate({
+          _id: idList[i]
+        }, {
+            $set: {
+              groups: userGroups,
+            }
+          });
       }
 
       ctx.body = {
@@ -243,102 +239,75 @@ module.exports = app => {
       };
     }
 
-    * getModule(ctx) {
+    async getModule (ctx) {
       const query = ctx.params;
 
-      const addResult = yield this.app.mysql.get('back').select('role_module', {
-        where: {
-          role_id: query.id,
-        },
-      });
+      const addArr = (await ctx.model.AuthGroup.findOne({
+        _id: query.id
+      })).modules;
 
-      const addArr = [];
-      addResult.forEach(obj => {
-        addArr.push(obj.module_id);
-      });
+      const allResult = await ctx.model.AuthModule.find();
 
-      const allResult = yield ctx.service.auth.module.system({
-        parent_id: query.parent_id,
+      const allArr = [];
+      allResult.forEach(obj => {
+        allArr.push({
+          key: obj._id,
+          label: obj.name,
+        });
       });
 
       ctx.body = {
         code: '0',
         msg: 'OK',
         result: {
-          addList: addArr,
-          allList: allResult,
+          addList: addArr ? addArr : [],
+          allList: allArr,
         },
       };
     }
 
-    * setModule(ctx) {
+    async setModule (ctx) {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList;
 
-      // 错误捕捉
-      {
-        const roleResult = yield this.app.mysql.get('back').get('role', {
-          id: roleId,
-        });
-
-        const moduleResult = yield this.app.mysql.get('back').select('module');
-        if (!roleResult) {
-          ctx.body = {
-            code: '404',
-            msg: ctx.helper.errorCode['404'],
-            result: {
-              id: roleId,
-            },
-          };
-          ctx.status = 404;
-
-          return false;
+      // 给用户组集合插入user信息
+      const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
+        $set: {
+          modules: idList
         }
+      });
 
+      if (result === null) {
+        ctx.body = {
+          code: '404',
+          msg: ctx.helper.errorCode['404'],
+          result: {
+            idList,
+          },
+        };
+        ctx.status = 404;
 
-        const isExistModuleId = (() => {
-          let exist = true;
-
-          const sysModuleList = _.chain(moduleResult)
-            .pluck('id')
-            .map(id => {
-              return String(id);
-            })
-            .value();
-
-          idList.forEach(id => {
-            if (sysModuleList.indexOf(id) === -1) {
-              exist = false;
-
-              return false;
-            }
-          });
-
-          return exist;
-        })();
-
-        if (!isExistModuleId) {
-          ctx.body = {
-            code: '404',
-            msg: ctx.helper.errorCode['404'],
-            result: {
-              idList,
-            },
-          };
-          ctx.status = 404;
-
-          return false;
-        }
+        return false;
       }
 
-      yield this.app.mysql.get('back').delete('role_module', {
-        role_id: roleId,
-      });
+      // 给用户集合插入groups信息
       for (let i = 0, l = idList.length; i < l; i++) {
-        yield this.app.mysql.get('back').insert('role_module', {
-          role_id: roleId,
-          module_id: idList[i],
-        });
+        let userGroups = await ctx.model.AuthModule.find({
+          _id: idList[i]
+        }).groups;
+
+        userGroups = userGroups ? userGroups : [];
+
+        if (userGroups.indexOf(roleId) === -1) {
+          userGroups.push(roleId)
+        }
+        await ctx.model.AuthModule.findByIdAndUpdate({
+          _id: idList[i]
+        }, {
+            $set: {
+              groups: userGroups,
+            }
+          });
       }
 
       ctx.body = {
