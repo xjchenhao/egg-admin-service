@@ -421,28 +421,17 @@ export default class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-<<<<<<< HEAD
-            <FormItem label="菜单名称">
-              {getFieldDecorator('name')(
-                <Input placeholder="请输入" />
-=======
             <FormItem label="功能模块">
               {getFieldDecorator('parent_id', {
                 initialValue: '',
               })(
                 this.renderQueryModuleOption()
->>>>>>> master
               )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
-<<<<<<< HEAD
-            <FormItem label="菜单Url">
-              {getFieldDecorator('url')(
-=======
             <FormItem label="模块名称">
               {getFieldDecorator('name')(
->>>>>>> master
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -550,11 +539,7 @@ export default class TableList extends PureComponent {
         },
       },
       {
-<<<<<<< HEAD
-        title: '菜单名称',
-=======
         title: '模块名称',
->>>>>>> master
         key: 'name',
         dataIndex: 'name',
         render: (text, record) => (

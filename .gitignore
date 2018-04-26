@@ -11,7 +11,4 @@ run/
 *.sw*
 *.un~
 db/
-<<<<<<< HEAD
 egg-admin-server.code-workspace
-=======
->>>>>>> master
