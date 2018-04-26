@@ -38,6 +38,7 @@ module.exports = app => {
             const result = await this.ctx.model.AuthModule.findOne({
                 _id: id,
             });
+            return result;
         }
 
         async update (id, data) {

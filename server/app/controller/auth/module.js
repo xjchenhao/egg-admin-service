@@ -3,7 +3,7 @@ const _ = require('underscore');
 
 module.exports = app => {
     class authMenuController extends app.Controller {
-        * index (ctx) {
+        async index (ctx) {
             const query = ctx.request.query;
 
             // 获取传参中指定的key，且过滤掉为`空`的条件。
@@ -11,7 +11,7 @@ module.exports = app => {
                 return value !== '' && value !== undefined;
             });
 
-            const result = yield ctx.service.auth.module.index(Number(query.currentPage), Number(query.pageSize), where);
+            const result = await ctx.service.auth.module.index(Number(query.currentPage), Number(query.pageSize), where);
 
             ctx.body = {
                 "code": "0",
@@ -24,7 +24,7 @@ module.exports = app => {
             }
         }
 
-        * create (ctx) {
+        async create (ctx) {
             const query = ctx.request.body;
 
             const createRule = {
@@ -82,7 +82,23 @@ module.exports = app => {
                 return;
             }
 
-            const result = yield ctx.service.auth.module.create(_.pick(query, ...Object.keys(createRule)));
+            const isUriExist = await this.ctx.model.AuthModule.findOne({
+                uri: query.uri,
+            });
+            if (isUriExist) {
+                ctx.body = {
+                    code: '-1',
+                    msg: 'uri已存在',
+                    result: {
+                        uri: query.uri,
+                    }
+                }
+                ctx.status = 200;
+
+                return false;
+            }
+
+            const result = await ctx.service.auth.module.create(_.pick(query, ...Object.keys(createRule)));
 
             ctx.body = {
                 "code": "0",
@@ -92,10 +108,26 @@ module.exports = app => {
 
         }
 
-        * destroy (ctx) {
+        async destroy (ctx) {
             const query = ctx.params;
 
-            const result = yield ctx.service.auth.module.destroy(query.id);
+            const isExist = await this.ctx.model.AuthModule.findOne({
+                _id: query.id,
+            });
+            if (!isExist) {
+                ctx.body = {
+                    code: '-1',
+                    msg: 'id不存在',
+                    result: {
+                        uri: query.uri,
+                    }
+                }
+                ctx.status = 200;
+
+                return false;
+            }
+
+            const result = await ctx.service.auth.module.destroy(query.id);
 
             ctx.body = {
                 "code": "0",
@@ -105,10 +137,10 @@ module.exports = app => {
             ctx.status = 200;
         }
 
-        * edit (ctx) {
+        async edit (ctx) {
             const query = ctx.params;
 
-            const result = yield ctx.service.auth.module.edit(query.id);
+            const result = await ctx.service.auth.module.edit(query.id);
 
             ctx.body = {
                 "code": "0",
@@ -117,7 +149,7 @@ module.exports = app => {
             }
         }
 
-        * update (ctx) {
+        async update (ctx) {
             const id = ctx.params.id;
             const query = ctx.request.body;
 
@@ -176,7 +208,26 @@ module.exports = app => {
                 return;
             }
 
-            const result = yield ctx.service.auth.module.update(id, _.pick(query, ...Object.keys(createRule)));
+            const isUriExist = await this.ctx.model.AuthModule.findOne({
+                _id: {
+                    '$ne': id,
+                },
+                uri: query.uri,
+            });
+            if (isUriExist) {
+                ctx.body = {
+                    code: '-1',
+                    msg: 'uri已存在',
+                    result: {
+                        uri: query.uri,
+                    }
+                }
+                ctx.status = 200;
+
+                return false;
+            }
+
+            const result = await ctx.service.auth.module.update(id, _.pick(query, ...Object.keys(createRule)));
 
             ctx.body = {
                 "code": "0",
@@ -188,10 +239,10 @@ module.exports = app => {
             ctx.status = 201;
         }
 
-        * system (ctx) {
+        async system (ctx) {
             const query = ctx.request.query;
 
-            const result = yield ctx.service.auth.module.system({});
+            const result = await ctx.service.auth.module.system({});
 
             ctx.body = {
                 "code": "0",

@@ -74,7 +74,7 @@ module.exports = app => {
 
             if (isAccountExist) {
                 ctx.body = {
-                    code: '1',
+                    code: '-1',
                     msg: '用户名已存在',
                     result: {
                         account: query.account,
