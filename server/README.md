@@ -1,33 +1,27 @@
-# egg-admin-server
+# eas-server
 
-基于eggjs的nodeserver，用来做前后端分离的后台管理系统的后端服务。
+基于eggjs的nodeserver，用来做前后端分离的后台管理系统的后端服务。简称`Eas`。
 
-## QuickStart
+## 需要掌握
 
-<!-- add docs here for user -->
+- 为企业级框架和应用而生的node框架：[egg](https://eggjs.org/)
 
-see [egg docs][egg] for more detail.
+### 本地开发
 
-### Development
+#### 初始化数据库内容
+##### 前提
+该工程使用的数据库是mysql，请先预备好mysql，并建好一个空的库，工程默认配置的表名是：`eas_basis`。
 
-```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
-```
+##### 执行脚本
+1. 进入工程目录下`/server/app/init.d`文件夹
+2. 修改`import.sh`文件中的变量
+3. 终端执行`sudo ./import.sh`（如果是window，请复制里面*mysql语句*，替换变量后直接在终端运行）
+4. 查看原先建好的数据库是否被插入了值
 
-### Deploy
+#### 启动node服务
+1. 进入工程目录下`server`文件夹
+2. 执行`npm i`安装项目依赖
+3. 执行`npm run dev`启动node服务
 
-```bash
-$ npm start
-$ npm stop
-```
-
-### npm scripts
-
-- Use `npm run lint` to check code style.
-- Use `npm test` to run unit test.
-- Use `npm run autod` to auto detect dependencies upgrade, see [autod](https://www.npmjs.com/package/autod) for more detail.
-
-
-[egg]: https://eggjs.org
+### 后续开发
+这个工程的基本形态就是当前的样子，不会增加新的功能模块。新的模块将会起一个新的工程，作为微服务与此工程进行交互。后续大多是优化、完善为主。比如：增加单元测试、Docker化、mongodb版本的实现等。

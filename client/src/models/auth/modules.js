@@ -163,7 +163,7 @@ export default {
         type: 'fetch',
         payload: {
           ...query,
-          module_parent_id: id,
+          parent_id: id,
         },
       });
 
@@ -184,7 +184,7 @@ export default {
         type: 'fetch',
         payload: {
           ...query,
-          module_parent_id: id,
+          parent_id: id,
         },
       });
 

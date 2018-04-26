@@ -25,8 +25,11 @@ exports.passport = {
   enable: true,
   package: 'egg-passport',
 };
+<<<<<<< HEAD
 
 exports.mongoose = {
   enable: true,
   package: 'egg-mongoose',
 };
+=======
+>>>>>>> master

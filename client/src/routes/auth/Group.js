@@ -46,8 +46,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="用户组"
         >
-          {form.getFieldDecorator('role_name', {
-            initialValue: data.role_name,
+          {form.getFieldDecorator('name', {
+            initialValue: data.name,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -60,8 +60,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="描述"
         >
-          {form.getFieldDecorator('role_summary', {
-            initialValue: data.role_summary,
+          {form.getFieldDecorator('summary', {
+            initialValue: data.summary,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -144,12 +144,12 @@ const AuthModal = connect(state => ({
     return allList.map((item) => {
       if (item.children && item.children.length) {
         return (
-          <TreeNode title={item.module_name} key={item.id} dataRef={item}>
+          <TreeNode title={item.name} key={item.id} dataRef={item}>
             {loop(item.children)}
           </TreeNode>
         );
       }
-      return <TreeNode title={item.module_name} key={item.id} dataRef={item} />;
+      return <TreeNode title={item.name} key={item.id} dataRef={item} />;
     });
   };
 
@@ -448,7 +448,7 @@ export default class TableList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="组名称">
-              {getFieldDecorator('role_name')(
+              {getFieldDecorator('name')(
                 <Input placeholder="请输入" />
               )}
             </FormItem>
@@ -478,13 +478,13 @@ export default class TableList extends PureComponent {
       },
       {
         title: '组名称',
-        key: 'role_name',
-        dataIndex: 'role_name',
+        key: 'name',
+        dataIndex: 'name',
       },
       {
         title: '描述',
-        key: 'role_summary',
-        dataIndex: 'role_summary',
+        key: 'summary',
+        dataIndex: 'summary',
       },
       {
         title: '操作',
@@ -530,6 +530,7 @@ export default class TableList extends PureComponent {
             <div className={styles.tableListForm}>
               {this.renderForm()}
             </div>
+            <Divider />
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleEditVisible(true)}>
                 添加

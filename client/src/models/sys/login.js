@@ -7,19 +7,23 @@ export default {
   namespace: 'login',
 
   state: {
+    type: '',
     status: undefined,
   },
 
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
+
       yield put({
         type: 'changeLoginStatus',
         payload: {
-          currentAuthority: response.result.userName,
+          type: 'account',
+          currentAuthority: response.result.userName || 'guest',
         },
       });
-      // Login successfully
+
+      // 登录成功
       if (response.code === '0') {
         reloadAuthorized();
         yield put(routerRedux.push('/'));

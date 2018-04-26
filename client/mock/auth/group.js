@@ -16,10 +16,10 @@ export default {
         [`list|${pageSize}`]: [
           {
             'id|1-1000': 95,
-            role_name: '@ctitle',
-            role_summary: '@csentence',
-            role_addtime: '--',
-            role_addip: '@email',
+            name: '@ctitle',
+            summary: '@csentence',
+            addtime: '--',
+            addip: '@email',
           },
         ],
         currentPage: parseInt(params.currentPage, 10) || 1,
@@ -38,24 +38,24 @@ export default {
     code: '0',
     msg: 'ok',
     result: {
-      role_name: '@ctitle',
-      role_summary: '@csentence',
+      name: '@ctitle',
+      summary: '@csentence',
     },
   }),
   modules: mockjs.mock({
     code: '0',
     msg: 'ok',
     result: {
-      role_name: '@ctitle',
-      role_summary: '@csentence',
+      name: '@ctitle',
+      summary: '@csentence',
     },
   }),
   users: mockjs.mock({
     code: '0',
     msg: 'ok',
     result: {
-      role_name: '@ctitle',
-      role_summary: '@csentence',
+      name: '@ctitle',
+      summary: '@csentence',
     },
   }),
 };

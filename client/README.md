@@ -1,94 +1,15 @@
-English | [简体中文](./README.zh-CN.md)
+# eas-client
 
-# Ant Design Pro
+基于eggjs的nodeserver，用来做前后端分离的后台管理系统的后端服务。简称`Eas`。
+Eas后台使用egg当作后台框架，`antd pro`当作前端界面。
 
-[![](https://img.shields.io/travis/ant-design/ant-design-pro/master.svg?style=flat-square)](https://travis-ci.org/ant-design/ant-design-pro) [![Build status](https://ci.appveyor.com/api/projects/status/67fxu2by3ibvqtat/branch/master?svg=true)](https://ci.appveyor.com/project/afc163/ant-design-pro/branch/master)  [![Gitter](https://badges.gitter.im/ant-design/ant-design-pro.svg)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+## 需要掌握
 
-An out-of-box UI solution for enterprise applications as a React boilerplate.
+- 开箱即用的中台前端/设计解决方案：[ANT DESIGN PRO](https://pro.ant.design/index-cn)
 
-![](https://gw.alipayobjects.com/zos/rmsportal/xEdBqwSzvoSapmnSnYjU.png)
+### 本地开发
 
-- Preview: http://preview.pro.ant.design
-- Home Page: http://pro.ant.design
-- Documentation: http://pro.ant.design/docs/getting-started
-- ChangeLog: http://pro.ant.design/docs/changelog
-- FAQ: http://pro.ant.design/docs/faq
-
-## Translation Recruitment :loudspeaker:
-
-We need your help: https://github.com/ant-design/ant-design-pro/issues/120
-
-## Features
-
-- :gem: **Neat Design**: Follow [Ant Design specification](http://ant.design/)
-- :triangular_ruler: **Common Templates**: Typical templates for enterprise applications
-- :rocket: **State of The Art Development**: Newest development stack of React/dva/antd
-- :iphone: **Responsive**: Designed for varies of screen size
-- :art: **Themeing**: Customizable theme with simple config
-- :globe_with_meridians: **International**: Built-in i18n solution
-- :gear: **Best Practice**: Solid workflow make your code health
-- :1234: **Mock development**: Easy to use mock development solution
-- :white_check_mark: **UI Test**: Fly safely with unit test and e2e test
-
-## Templates
-
-```
-- Dashboard
-  - Analytic
-  - Monitor
-  - Workspace
-- Form
-  - Basic Form
-  - Step Form
-  - Advanced From
-- List
-  - Standard Table
-  - Standard List
-  - Card List
-  - Search List (Project/Applications/Article)
-- Profile
-  - Simple Profile
-  - Advanced Profile
-- Result
-  - Success
-  - Failed
-- Exception
-  - 403
-  - 404
-  - 500
-- User
-  - Login
-  - Register
-  - Register Result
-```
-
-## Usage
-
-```bash
-$ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
-$ cd ant-design-pro
-$ npm install
-$ npm start         # visit http://localhost:8000
-```
-
-Or you can use the command tool: [ant-design-pro-cli](https://github.com/ant-design/ant-design-pro-cli)
-
-```bash
-$ npm install ant-design-pro-cli -g
-$ mkdir pro-demo && cd pro-demo
-$ pro new
-```
-
-More instruction at [documentation](http://pro.ant.design/docs/getting-started).
-
-## Compatibility
-
-Modern browsers and IE11.
-
-## Contributing
-
-Any Contribution of following ways will be welcome:
-
-- Use Ant Design Pro in your daily work.
-- Submit [issue](http://github.com/ant-design/ant-design-pro/issues) to report bug or ask questions.
-- Propose [pull request](http://github.com/ant-design/ant-design-pro/pulls) to improve our code.
+### 启动客户端
+1. 进入工程目录下`client`文件夹
+2. 执行`npm i`安装项目依赖
+3. 执行`npm run dev`启动，理论上浏览器会自动打开*http://localhost:7001/*

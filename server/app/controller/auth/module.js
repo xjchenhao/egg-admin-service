@@ -1,7 +1,8 @@
 'use strict';
-let _ = require('underscore');
+const _ = require('underscore');
 
 module.exports = app => {
+<<<<<<< HEAD
     class authMenuController extends app.Controller {
         * index (ctx) {
             const query = ctx.request.query;
@@ -199,6 +200,211 @@ module.exports = app => {
                 "result": result
             }
         }
+=======
+  class authMenuController extends app.Controller {
+    * index(ctx) {
+      const query = ctx.request.query;
+
+      // 获取传参中指定的key，且过滤掉为`空`的条件。
+      const where = _.pick(_.pick(query, ...[ 'name', 'url', 'uri', 'parent_id' ]), value => {
+        return value !== '' && value !== undefined;
+      });
+
+      const result = yield ctx.service.auth.module.index(query.currentPage, query.pageSize, where);
+
+      ctx.body = {
+        code: '0',
+        msg: 'OK',
+        result: Object.assign(result, {
+          list: result.list.map(obj => {
+            return _.pick(obj, ...[ 'id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id', 'parent_name' ]);
+          }),
+        }),
+      };
+>>>>>>> master
     }
-    return authMenuController;
+
+    * create(ctx) {
+      const query = ctx.request.body;
+
+      if (!query.parent_id) {
+        query.parent_id = 0;
+      }
+
+      const createRule = {
+        name: {
+          type: 'string',
+          required: true,
+        },
+        url: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        uri: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        iconfont: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        describe: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        sort: {
+          type: 'number',
+          required: true,
+        },
+        show: {
+          type: 'number',
+          required: false,
+          allowEmpty: true,
+        },
+        parent_id: {
+          type: 'number',
+          required: false,
+          allowEmpty: true,
+        },
+      };
+
+      try {
+        ctx.validate(createRule);
+      } catch (err) {
+
+        this.ctx.body = {
+          code: '400',
+          msg: ctx.helper.errorCode['400'],
+          result: err.errors,
+        };
+        this.ctx.status = 400;
+
+        return;
+      }
+
+      yield ctx.service.auth.module.create(_.pick(query, ...Object.keys(createRule)));
+
+      ctx.body = {
+        code: '0',
+        msg: 'OK',
+        result: {},
+      };
+
+    }
+
+    * destroy(ctx) {
+      const query = ctx.params;
+
+      yield ctx.service.auth.module.destroy(query.id);
+
+      ctx.body = {
+        code: '0',
+        msg: 'OK',
+        result: {},
+      };
+      ctx.status = 200;
+    }
+
+    * edit(ctx) {
+      const query = ctx.params;
+
+      const result = yield ctx.service.auth.module.edit(query.id);
+
+      ctx.body = {
+        code: '0',
+        msg: 'OK',
+        result: _.pick(result, ...[ 'id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id' ]),
+      };
+    }
+
+    * update(ctx) {
+      const id = ctx.params.id;
+      const query = ctx.request.body;
+
+      const createRule = {
+        name: {
+          type: 'string',
+          required: true,
+        },
+        url: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        uri: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        iconfont: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        describe: {
+          type: 'string',
+          required: false,
+          allowEmpty: true,
+        },
+        sort: {
+          type: 'number',
+          required: true,
+        },
+        show: {
+          type: 'number',
+          required: false,
+          allowEmpty: true,
+        },
+        parent_id: {
+          type: 'number',
+          required: false,
+          allowEmpty: true,
+        },
+      };
+
+      try {
+        ctx.validate(createRule);
+      } catch (err) {
+
+        this.ctx.body = {
+          code: '400',
+          msg: ctx.helper.errorCode['400'],
+          result: err.errors,
+        };
+        this.ctx.status = 400;
+
+        return;
+      }
+
+      const result = yield ctx.service.auth.module.update(id, _.pick(query, ...Object.keys(createRule)));
+
+      ctx.body = {
+        code: '0',
+        msg: 'OK',
+        result: {
+          id: result.insertId,
+        },
+      };
+      ctx.status = 201;
+    }
+
+    * system(ctx) {
+      const query = ctx.request.query;
+
+      const result = yield ctx.service.auth.module.system({
+        parent_id: query.parent_id,
+      });
+
+      ctx.body = {
+        code: '0',
+        msg: 'OK',
+        result,
+      };
+    }
+  }
+  return authMenuController;
 };

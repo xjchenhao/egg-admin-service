@@ -4,7 +4,6 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "name": "Launch Egg",
             "type": "node",
@@ -18,6 +17,16 @@
             "restart": true,
             "port": 9229,
             "autoAttachChildProcesses": true
-          }
+          },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test",
+            "runtimeExecutable": "npm",
+            "windows": { "runtimeExecutable": "npm.cmd" },
+            "runtimeArgs": [ "run-script", "test-local", "--", "--inspect-brk" ],
+            "cwd": "${workspaceRoot}",
+            // "cwd": "${workspaceRoot}/awesome-micro-npm-packages/array-last"
+        },
     ]
 }
