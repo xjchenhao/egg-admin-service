@@ -48,7 +48,7 @@ const EditModal = connect(state => ({
     const moduleParentName = moduleParent.name;
 
     if (isEdit) {
-      if (parentId !== 0) {
+      if (parentId !== '') {
         return (form.getFieldDecorator('parent_id', {
           initialValue: String(parentId),
         })(
@@ -79,7 +79,7 @@ const EditModal = connect(state => ({
             onOk({
               ...fieldsValue,
               id: data.id,
-              parent_id: Number(fieldsValue.parent_id),
+              parent_id: String(fieldsValue.parent_id),
             }, form.resetFields);
           } else {
             onOk({
@@ -119,17 +119,6 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="url地址"
-        >
-          {form.getFieldDecorator('url', {
-            initialValue: data.url,
-          })(
-            <Input placeholder="请输入" />
-          )}
-        </FormItem>
-        <FormItem
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
           label="权限标识"
         >
           {form.getFieldDecorator('uri', {
@@ -144,37 +133,12 @@ const EditModal = connect(state => ({
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
-          label="iconfont图标"
-        >
-          {form.getFieldDecorator('iconfont', {
-            initialValue: data.iconfont,
-          })(
-            <Input placeholder="请输入" />
-          )}
-        </FormItem>
-        <FormItem
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
           label="描述"
         >
           {form.getFieldDecorator('describe', {
             initialValue: data.describe,
           })(
             <Input placeholder="请输入" />
-          )}
-        </FormItem>
-        <FormItem
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 15 }}
-          label="是否显示"
-        >
-          {form.getFieldDecorator('show', {
-            initialValue: data.show,
-            rules: [
-              { required: true, message: '该项为必填项' },
-            ],
-          })(
-            <InputNumber placeholder="请输入" />
           )}
         </FormItem>
         <FormItem
@@ -551,19 +515,14 @@ export default class TableList extends PureComponent {
           </a>),
       },
       {
-        title: 'url地址',
-        key: 'url',
-        dataIndex: 'url',
-      },
-      {
         title: '权限标识',
         key: 'uri',
         dataIndex: 'uri',
       },
       {
-        title: '显示',
-        key: 'show',
-        dataIndex: 'show',
+        title: '描述',
+        key: 'describe',
+        dataIndex: 'describe',
       },
       {
         title: '排序',

@@ -108,6 +108,7 @@ export default {
       // 刷新
       const query = yield select(state => state.modules.data.query);
       yield put({ type: 'fetch', payload: query });
+      yield put({ type: 'getSystemTree', payload: {} });
 
       if (callback) callback();
     },

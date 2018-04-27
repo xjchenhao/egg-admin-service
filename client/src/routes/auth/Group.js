@@ -60,8 +60,8 @@ const EditModal = connect(state => ({
           wrapperCol={{ span: 15 }}
           label="描述"
         >
-          {form.getFieldDecorator('summary', {
-            initialValue: data.summary,
+          {form.getFieldDecorator('describe', {
+            initialValue: data.describe,
             rules: [
               { required: true, message: '该项为必填项' },
             ],
@@ -483,8 +483,8 @@ export default class TableList extends PureComponent {
       },
       {
         title: '描述',
-        key: 'summary',
-        dataIndex: 'summary',
+        key: 'describe',
+        dataIndex: 'describe',
       },
       {
         title: '操作',
@@ -493,28 +493,28 @@ export default class TableList extends PureComponent {
           <div>
             <a
               onClick={() => {
-                this.handleAuthVisible(true, record.id);
+                this.handleAuthVisible(true, record.key);
               }}
             >权限管理
             </a>
             <Divider type="vertical" />
             <a
               onClick={() => {
-                this.handleMemberVisible(true, record.id);
+                this.handleMemberVisible(true, record.key);
               }}
             >成员管理
             </a>
             <Divider type="vertical" />
             <a
               onClick={() => {
-                this.handleEditVisible(true, record.id);
+                this.handleEditVisible(true, record.key);
               }}
             >修改
             </a>
             <Divider type="vertical" />
             <a
               onClick={() => {
-                this.handleRemove(record.id);
+                this.handleRemove(record.key);
               }}
             >删除
             </a>

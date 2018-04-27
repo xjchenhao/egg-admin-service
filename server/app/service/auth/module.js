@@ -63,19 +63,15 @@ module.exports = app => {
             if (isAll) {
                 originalObj = await this.ctx.model.AuthModule.find({}, {
                     name: 1,
-                    show: 1,
                     sort: 1,
                     parent_id: 1,
                 });
             } else {
-                originalObj = await this.ctx.model.AuthModule.find({
-                    show: 1
-                });
+                originalObj = await this.ctx.model.AuthModule.find();
             }
 
             // this.ctx.logger.debug(originalObj);
 
-            let aaaa = 1;
             const subset = function (parentId) {    // 根据父级id遍历子集
                 let arr = [];
 
@@ -83,6 +79,7 @@ module.exports = app => {
                 originalObj.forEach(function (obj) {
                     if ((obj.parent_id ? obj.parent_id.toString() : obj.parent_id) === parentId) {
                         arr.push(Object.assign(obj.toJSON(), {
+                            id: obj.id,
                             children: subset(obj.id.toString()),
                         }));
                     }
@@ -107,7 +104,7 @@ module.exports = app => {
                 return arr;
             };
 
-            return subset(id || undefined);
+            return subset(id || '');
         }
     }
     return moduleService;

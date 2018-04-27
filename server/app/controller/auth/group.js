@@ -17,7 +17,12 @@ module.exports = app => {
         ctx.body = {
           code: '0',
           msg: 'OK',
-          result: result,
+          result: {
+            ...result,
+            list: result.list.map((obj) => {
+              return _.pick(obj, ...['id', 'name', 'describe']);
+            })
+          },
         };
       }
     }
