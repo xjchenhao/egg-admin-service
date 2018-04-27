@@ -173,7 +173,7 @@ module.exports = app => {
         _id: query.id
       })).users;
 
-      const allResult = await ctx.model.AuthGroup.find();
+      const allResult = await ctx.model.AuthUser.find();
 
       const allArr = [];
       allResult.forEach(obj => {
@@ -198,23 +198,25 @@ module.exports = app => {
       const idList = ctx.request.body.idList;
 
       // 给用户组集合插入user信息
-      const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
-        $set: {
-          users: idList
+      {
+        const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
+          $set: {
+            users: idList
+          }
+        });
+  
+        if (result === null) {
+          ctx.body = {
+            code: '404',
+            msg: ctx.helper.errorCode['404'],
+            result: {
+              idList,
+            },
+          };
+          ctx.status = 404;
+  
+          return false;
         }
-      });
-
-      if (result === null) {
-        ctx.body = {
-          code: '404',
-          msg: ctx.helper.errorCode['404'],
-          result: {
-            idList,
-          },
-        };
-        ctx.status = 404;
-
-        return false;
       }
 
       // 给用户集合插入groups信息
@@ -228,7 +230,7 @@ module.exports = app => {
         if (userGroups.indexOf(roleId) === -1) {
           userGroups.push(roleId)
         }
-        await ctx.model.AuthUser.findByIdAndUpdate({
+        const result = await ctx.model.AuthUser.findByIdAndUpdate({
           _id: idList[i]
         }, {
             $set: {
