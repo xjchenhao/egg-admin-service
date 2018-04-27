@@ -25,7 +25,7 @@ module.exports = app => {
             return null;
         }
         return {
-            id: userInfo._id,
+            id: userInfo.id,
             userName: userInfo.name,
         };
     });

@@ -7,17 +7,21 @@ module.exports = (action) => {
         const isLogin = ctx.isAuthenticated();
         const userInfo = ctx.user;
 
+        const noAccess = () => {
+            ctx.body = {
+                code: '401',
+                msg: ctx.helper.errorCode['401'],
+                result: {
+                    userId: userInfo,
+                    uri: action,
+                },
+            };
+            ctx.status = 401;
+        }
+
         if (!isLogin) {
             if (ctx.acceptJSON) {
-                ctx.body = {
-                    code: '401',
-                    msg: ctx.helper.errorCode['401'],
-                    result: {
-                        userId: userInfo,
-                        uri: action,
-                    },
-                };
-                ctx.status = 401;
+                noAccess();
             } else {
                 ctx.redirect('/login?redirect=' + encodeURIComponent(ctx.originalUrl));
             }
@@ -25,14 +29,29 @@ module.exports = (action) => {
             return false;
         }
 
-        // const result = await (ctx.app.mysql.get('back').query('select distinct bm.* from back_role_module rm left join back_module bm on rm.module_id=bm.id left join back_user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.module_uri=?', [userInfo.id, action]));
+        const groupsData = await ctx.model.AuthUser.findOne({
+            _id: userInfo.id,
+        });
 
-        // ctx.logger.info('permission:', {
-        //     userId: userInfo.id,
-        //     action,
-        // }, '=> ' + !!result.length);
+        if (groupsData === null || !groupsData.groups.length) {
+            noAccess();
+        }
 
-        // return !!result.length;
-        return true;
+        const groupsList = groupsData.groups;
+
+        for (let i = 0, l = groupsList.length; i < l; i++) {
+            let uriId = (await ctx.model.AuthModule.findOne({
+                uri: action
+            })).id;
+            
+            let result = await ctx.model.AuthGroup.findOne({
+                _id: groupsList[i],
+                modules: uriId,
+            });
+            if (result) {
+                return true;
+            }
+        }
+        noAccess();
     };
 }

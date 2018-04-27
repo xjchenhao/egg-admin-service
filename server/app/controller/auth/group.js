@@ -251,14 +251,8 @@ module.exports = app => {
         _id: query.id
       })).modules;
 
-      const allResult = await ctx.model.AuthModule.find();
-
-      const allArr = [];
-      allResult.forEach(obj => {
-        allArr.push({
-          key: obj._id,
-          label: obj.name,
-        });
+      const allResult = await ctx.service.auth.module.system({
+        parentId: query.parent_id || '',
       });
 
       ctx.body = {
@@ -266,7 +260,7 @@ module.exports = app => {
         msg: 'OK',
         result: {
           addList: addArr ? addArr : [],
-          allList: allArr,
+          allList: allResult,
         },
       };
     }

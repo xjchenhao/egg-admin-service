@@ -151,7 +151,6 @@ const EditModal = connect(state => ({
             rules: [{
               type: 'number', message: '请输入数字',
             },
-            { required: true, message: '该项为必填项' },
             ],
           })(
             <InputNumber placeholder="请输入" />
@@ -518,11 +517,17 @@ export default class TableList extends PureComponent {
         title: '权限标识',
         key: 'uri',
         dataIndex: 'uri',
+        render: (text) => {
+          return text || '--';
+        },
       },
       {
         title: '描述',
         key: 'describe',
         dataIndex: 'describe',
+        render: (text) => {
+          return text || '--';
+        },
       },
       {
         title: '排序',

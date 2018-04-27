@@ -54,7 +54,8 @@ module.exports = app => {
                 },
                 sort: {
                     type: 'number',
-                    required: true
+                    required: false,
+                    allowEmpty: true,
                 },
                 show: {
                     type: 'number',
@@ -82,20 +83,24 @@ module.exports = app => {
                 return;
             }
 
-            const isUriExist = await this.ctx.model.AuthModule.findOne({
-                uri: query.uri,
-            });
-            if (isUriExist) {
-                ctx.body = {
-                    code: '-1',
-                    msg: 'uri已存在',
-                    result: {
-                        uri: query.uri,
-                    }
-                }
-                ctx.status = 200;
 
-                return false;
+            if (query.uri) {
+                const isExist = await this.ctx.model.AuthModule.findOne({
+                    uri: query.uri,
+                });
+
+                if (isExist) {
+                    ctx.body = {
+                        code: '-1',
+                        msg: 'uri已存在',
+                        result: {
+                            uri: query.uri,
+                        }
+                    }
+                    ctx.status = 200;
+
+                    return false;
+                }
             }
 
             const result = await ctx.service.auth.module.create(_.pick(query, ...Object.keys(createRule)));
@@ -180,7 +185,8 @@ module.exports = app => {
                 },
                 sort: {
                     type: 'number',
-                    required: true
+                    required: false,
+                    allowEmpty: true,
                 },
                 show: {
                     type: 'number',
