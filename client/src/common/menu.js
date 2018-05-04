@@ -1,5 +1,20 @@
 import { isUrl } from '../utils/utils';
 
+const authority = (groupName) => {
+  return function (currentAuthority) {
+    let groupArr = groupName;
+    if (groupName.constructor.name === 'String') {
+      groupArr = groupName.split(',');
+    }
+
+    console.log(currentAuthority);
+    for (let i = 0, l = groupArr.length; i < l; i += 1) {
+      if (currentAuthority.split(',').indexOf(groupArr[i]) > -1) {
+        return true;
+      }
+    }
+  };
+};
 const menuData = [{
   name: 'home',
   icon: 'home',
@@ -8,7 +23,7 @@ const menuData = [{
   name: '权限管理',
   icon: 'solution',
   path: 'auth',
-  // authority: 'admin',
+  authority: authority('admin'),
   children: [{
     name: '用户管理',
     icon: 'user',

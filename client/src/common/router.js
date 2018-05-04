@@ -68,59 +68,58 @@ function getFlatMenuData(menus) {
   return keys;
 }
 
-const authority = (groupName) => {
-  return function (currentAuthority) {
-    let groupArr = groupName;
-    if (groupName.constructor.name === 'String') {
-      groupArr = groupName.split(',');
-    }
+// const authority = (groupName) => {
+//   return function (currentAuthority) {
+//     let groupArr = groupName;
+//     if (groupName.constructor.name === 'String') {
+//       groupArr = groupName.split(',');
+//     }
 
-    console.log(currentAuthority);
-    for (let i = 0, l = groupArr.length; i < l; i += 1) {
-      if (currentAuthority.split(',').indexOf(groupArr[i]) > -1) {
-        return true;
-      }
-    }
-  };
-};
+//     for (let i = 0, l = groupArr.length; i < l; i += 1) {
+//       if (currentAuthority.split(',').indexOf(groupArr[i]) > -1) {
+//         return true;
+//       }
+//     }
+//   };
+// };
 
 export const getRouterData = (app) => {
   const mainRouterData = {
     '/': {
       component: dynamicWrapper(app, ['sys/user', 'sys/login'], () => import('../layouts/BasicLayout')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/home': {
       component: dynamicWrapper(app, ['sys/user', 'sys/login'], () => import('../routes/home/Index')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/auth/users': {
       component: dynamicWrapper(app, ['auth/users'], () => import('../routes/auth/Users')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/auth/group': {
       component: dynamicWrapper(app, ['auth/group'], () => import('../routes/auth/Group')),
-      authority: authority(['admin', 'test']),
+      // authority: authority(['admin', 'test']),
     },
     '/auth/modules': {
       component: dynamicWrapper(app, ['auth/modules'], () => import('../routes/auth/Modules')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/user/login': {
       component: dynamicWrapper(app, ['sys/login'], () => import('../routes/sys/User/Login')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/user/register': {
       component: dynamicWrapper(app, ['sys/register'], () => import('../routes/sys/User/Register')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/user/register-result': {
       component: dynamicWrapper(app, [], () => import('../routes/sys/User/RegisterResult')),
-      authority: authority('admin'),
+      // authority: authority('admin'),
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/403')),
@@ -147,7 +146,6 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['demo/project', 'demo/activities', 'demo/chart'], () => import('../routes/demo/Dashboard/Workplace')),
       // hideInBreadcrumb: true,
       // name: '工作台',
-      // authority: authority('admin'),
     },
     '/demo/form/basic-form': {
       component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/BasicForm')),
