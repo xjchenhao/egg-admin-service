@@ -22,7 +22,7 @@ module.exports = app => {
     }
 
     async create (data) {
-      const result =await this.ctx.model.AuthUser.create(Object.assign(data, {
+      const result = await this.ctx.model.AuthUser.create(Object.assign(data, {
         password: crypto.createHash('md5').update(data.password).digest('hex')
       }))
 
@@ -33,6 +33,13 @@ module.exports = app => {
       const result = await this.ctx.model.AuthUser.remove({
         _id: id,
       });
+
+      // 删除用户组集合中与此用户相关的数据
+      this.ctx.model.AuthGroup.update({},
+        {
+          '$pull': { 'users': id }
+        }
+      );
 
       return result.result.n !== 0 && result;
 

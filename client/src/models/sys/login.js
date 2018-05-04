@@ -14,12 +14,13 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
+      console.log(response.result);
 
       yield put({
         type: 'changeLoginStatus',
         payload: {
           type: 'account',
-          currentAuthority: response.result.userName || 'guest',
+          currentAuthority: response.result.groupName || 'guest',
         },
       });
 

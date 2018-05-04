@@ -197,46 +197,23 @@ module.exports = app => {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList;
 
-      // 给用户组集合插入user信息
-      {
-        const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
-          $set: {
-            users: idList
-          }
-        });
-  
-        if (result === null) {
-          ctx.body = {
-            code: '404',
-            msg: ctx.helper.errorCode['404'],
-            result: {
-              idList,
-            },
-          };
-          ctx.status = 404;
-  
-          return false;
+      const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
+        $set: {
+          users: idList
         }
-      }
+      });
 
-      // 给用户集合插入groups信息
-      for (let i = 0, l = idList.length; i < l; i++) {
-        let userGroups = await ctx.model.AuthUser.find({
-          _id: idList[i]
-        }).groups;
+      if (result === null) {
+        ctx.body = {
+          code: '404',
+          msg: ctx.helper.errorCode['404'],
+          result: {
+            idList,
+          },
+        };
+        ctx.status = 404;
 
-        userGroups = userGroups ? userGroups : [];
-
-        if (userGroups.indexOf(roleId) === -1) {
-          userGroups.push(roleId)
-        }
-        const result = await ctx.model.AuthUser.findByIdAndUpdate({
-          _id: idList[i]
-        }, {
-            $set: {
-              groups: userGroups,
-            }
-          });
+        return false;
       }
 
       ctx.body = {
@@ -289,26 +266,6 @@ module.exports = app => {
         ctx.status = 404;
 
         return false;
-      }
-
-      // 给用户集合插入groups信息
-      for (let i = 0, l = idList.length; i < l; i++) {
-        let userGroups = await ctx.model.AuthModule.find({
-          _id: idList[i]
-        }).groups;
-
-        userGroups = userGroups ? userGroups : [];
-
-        if (userGroups.indexOf(roleId) === -1) {
-          userGroups.push(roleId)
-        }
-        await ctx.model.AuthModule.findByIdAndUpdate({
-          _id: idList[i]
-        }, {
-            $set: {
-              groups: userGroups,
-            }
-          });
       }
 
       ctx.body = {

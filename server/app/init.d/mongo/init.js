@@ -10,10 +10,7 @@ db.users.insert({
   "create_date": ISODate("2018-04-26T06:08:03.756Z"),
   "__v": 0,
   "email": "admin@admin.com",
-  "mobile": "18711111111",
-  "groups": [
-    "5ae18d0efbbe77641966cb60"
-  ]
+  "mobile": "18711111111"
 })
 
 db.groups.insert({
@@ -25,7 +22,6 @@ db.groups.insert({
   "describe": "超级管理员",
   "users": [
     "5ae16cc3e928ed4ac5f887a0",
-    "5ae18d0efbbe77641966cb60"
   ],
   "modules": [
     "5ae2b70d772d6f2d78726acb",
@@ -64,9 +60,6 @@ db.modules.insert([
     "parent_id": "",
     "update_date": ISODate("2018-04-27T06:06:26.236Z"),
     "create_date": ISODate("2018-04-27T04:01:08.952Z"),
-    "groups": [
-      "5ae18d0efbbe77641966cb60"
-    ],
     "sort": 1,
     "__v": 0
   },
@@ -76,9 +69,6 @@ db.modules.insert([
     "parent_id": "5ae2a084dfa9080ec4bf4a6d",
     "update_date": ISODate("2018-04-27T06:43:36.160Z"),
     "create_date": ISODate("2018-04-27T05:36:38.388Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0,
     "uri": "auth.user"
@@ -90,9 +80,6 @@ db.modules.insert([
     "parent_id": "5ae2b6e6772d6f2d78726aca",
     "update_date": ISODate("2018-04-27T06:43:36.144Z"),
     "create_date": ISODate("2018-04-27T05:37:17.146Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -103,9 +90,6 @@ db.modules.insert([
     "parent_id": "5ae2b6e6772d6f2d78726aca",
     "update_date": ISODate("2018-04-27T06:43:36.147Z"),
     "create_date": ISODate("2018-04-27T05:38:09.041Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -116,9 +100,6 @@ db.modules.insert([
     "parent_id": "5ae2b6e6772d6f2d78726aca",
     "update_date": ISODate("2018-04-27T06:43:36.149Z"),
     "create_date": ISODate("2018-04-27T05:38:21.861Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -129,9 +110,6 @@ db.modules.insert([
     "parent_id": "5ae2b6e6772d6f2d78726aca",
     "update_date": ISODate("2018-04-27T06:43:36.153Z"),
     "create_date": ISODate("2018-04-27T05:38:34.611Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -142,9 +120,6 @@ db.modules.insert([
     "parent_id": "5ae2b6e6772d6f2d78726aca",
     "update_date": ISODate("2018-04-27T06:43:36.155Z"),
     "create_date": ISODate("2018-04-27T05:38:45.456Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -155,9 +130,6 @@ db.modules.insert([
     "parent_id": "5ae2b6e6772d6f2d78726aca",
     "update_date": ISODate("2018-04-27T06:43:36.158Z"),
     "create_date": ISODate("2018-04-27T05:38:55.435Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -168,9 +140,6 @@ db.modules.insert([
     "parent_id": "5ae2a084dfa9080ec4bf4a6d",
     "update_date": ISODate("2018-04-27T06:43:36.185Z"),
     "create_date": ISODate("2018-04-27T05:49:16.063Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -181,9 +150,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.163Z"),
     "create_date": ISODate("2018-04-27T05:50:05.074Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -194,9 +160,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.165Z"),
     "create_date": ISODate("2018-04-27T05:51:11.006Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -207,9 +170,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.167Z"),
     "create_date": ISODate("2018-04-27T05:51:22.059Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -220,9 +180,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.171Z"),
     "create_date": ISODate("2018-04-27T05:51:31.332Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -233,9 +190,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.173Z"),
     "create_date": ISODate("2018-04-27T05:51:41.524Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -246,9 +200,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.177Z"),
     "create_date": ISODate("2018-04-27T05:51:50.732Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -259,9 +210,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.180Z"),
     "create_date": ISODate("2018-04-27T05:52:00.707Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -272,9 +220,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.181Z"),
     "create_date": ISODate("2018-04-27T05:52:10.986Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -285,9 +230,6 @@ db.modules.insert([
     "parent_id": "5ae2b9dc06ebe130282a3968",
     "update_date": ISODate("2018-04-27T06:43:36.183Z"),
     "create_date": ISODate("2018-04-27T05:52:20.252Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -298,9 +240,6 @@ db.modules.insert([
     "parent_id": "5ae2a084dfa9080ec4bf4a6d",
     "update_date": ISODate("2018-04-27T06:06:26.232Z"),
     "create_date": ISODate("2018-04-27T05:54:07.280Z"),
-    "groups": [
-      "5ae18d0efbbe77641966cb60"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -311,9 +250,6 @@ db.modules.insert([
     "parent_id": "5ae2baff06ebe130282a3972",
     "update_date": ISODate("2018-04-27T06:43:36.188Z"),
     "create_date": ISODate("2018-04-27T05:54:27.375Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -324,9 +260,6 @@ db.modules.insert([
     "parent_id": "5ae2baff06ebe130282a3972",
     "update_date": ISODate("2018-04-27T06:43:36.192Z"),
     "create_date": ISODate("2018-04-27T05:54:38.858Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -337,9 +270,6 @@ db.modules.insert([
     "parent_id": "5ae2baff06ebe130282a3972",
     "update_date": ISODate("2018-04-27T06:06:26.223Z"),
     "create_date": ISODate("2018-04-27T05:54:47.486Z"),
-    "groups": [
-      "5ae18d0efbbe77641966cb60"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -350,9 +280,6 @@ db.modules.insert([
     "parent_id": "5ae2baff06ebe130282a3972",
     "update_date": ISODate("2018-04-27T06:43:36.194Z"),
     "create_date": ISODate("2018-04-27T05:54:55.391Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -363,9 +290,6 @@ db.modules.insert([
     "parent_id": "5ae2baff06ebe130282a3972",
     "update_date": ISODate("2018-04-27T06:43:36.197Z"),
     "create_date": ISODate("2018-04-27T05:55:04.553Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   },
@@ -376,9 +300,6 @@ db.modules.insert([
     "parent_id": "5ae2baff06ebe130282a3972",
     "update_date": ISODate("2018-04-27T06:43:36.199Z"),
     "create_date": ISODate("2018-04-27T05:55:13.396Z"),
-    "groups": [
-      "5ae2bde9b9c918367b75716c"
-    ],
     "sort": 0,
     "__v": 0
   }])

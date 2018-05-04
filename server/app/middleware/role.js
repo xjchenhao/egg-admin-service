@@ -29,21 +29,19 @@ module.exports = (action) => {
             return false;
         }
 
-        const groupsData = await ctx.model.AuthUser.findOne({
-            _id: userInfo.id,
+        const groupsList = await ctx.model.AuthGroup.find({
+            users: userInfo.id
         });
 
-        if (groupsData === null || !groupsData.groups.length) {
+        if (groupsList === null || !groupsList.length) {
             noAccess();
         }
-
-        const groupsList = groupsData.groups;
 
         for (let i = 0, l = groupsList.length; i < l; i++) {
             let uriId = (await ctx.model.AuthModule.findOne({
                 uri: action
             })).id;
-            
+
             let result = await ctx.model.AuthGroup.findOne({
                 _id: groupsList[i],
                 modules: uriId,

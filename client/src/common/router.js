@@ -72,30 +72,39 @@ export const getRouterData = (app) => {
   const mainRouterData = {
     '/': {
       component: dynamicWrapper(app, ['sys/user', 'sys/login'], () => import('../layouts/BasicLayout')),
+      // authority: 'admin',
     },
     '/home': {
       component: dynamicWrapper(app, ['sys/user', 'sys/login'], () => import('../routes/home/Index')),
+      // authority: 'admin',
     },
     '/auth/users': {
       component: dynamicWrapper(app, ['auth/users'], () => import('../routes/auth/Users')),
+      // authority: 'admin',
     },
     '/auth/group': {
       component: dynamicWrapper(app, ['auth/group'], () => import('../routes/auth/Group')),
+      // authority: 'admin',
     },
     '/auth/modules': {
       component: dynamicWrapper(app, ['auth/modules'], () => import('../routes/auth/Modules')),
+      // authority: 'admin',
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
+      // authority: 'admin',
     },
     '/user/login': {
       component: dynamicWrapper(app, ['sys/login'], () => import('../routes/sys/User/Login')),
+      // authority: 'admin',
     },
     '/user/register': {
       component: dynamicWrapper(app, ['sys/register'], () => import('../routes/sys/User/Register')),
+      // authority: 'admin',
     },
     '/user/register-result': {
       component: dynamicWrapper(app, [], () => import('../routes/sys/User/RegisterResult')),
+      // authority: 'admin',
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/403')),
@@ -122,7 +131,7 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['demo/project', 'demo/activities', 'demo/chart'], () => import('../routes/demo/Dashboard/Workplace')),
       // hideInBreadcrumb: true,
       // name: '工作台',
-      // authority: 'admin',
+      authority: 'admin',
     },
     '/demo/form/basic-form': {
       component: dynamicWrapper(app, ['demo/form'], () => import('../routes/demo/Forms/BasicForm')),

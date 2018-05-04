@@ -31,6 +31,13 @@ module.exports = app => {
                 _id: id,
             });
 
+            // 删除用户组集合中与此模块相关的数据
+            this.ctx.model.AuthGroup.update({},
+              {
+                '$pull': { 'modules': id }
+              }
+            );
+
             return result.result.n !== 0 && result;
         }
 

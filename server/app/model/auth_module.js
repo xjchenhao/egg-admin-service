@@ -12,7 +12,6 @@ module.exports = app => {
     describe: { type: String },
     sort: { type: Number, default: 0 },
     parent_id: { type: String },  // 假设parent_id没有值的时候，表示它是顶级module
-    groups: { type: Array },
     create_date: { type: Date, default: Date.now },
     update_date: { type: Date, default: Date.now },
   }, {

@@ -19,7 +19,6 @@ module.exports = app => {
     address: { type: String },
     mobile: { type: String },
     email: { type: String },
-    groups: { type: Array }
   }, {
       usePushEach: true,
       timestamps: { createdAt: 'create_date', updatedAt: 'update_date' }
