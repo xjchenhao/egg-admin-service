@@ -1,6 +1,4 @@
 
-// mongo localhost:27017/eas-back --quiet init.js
-
 db.users.insert({
   "_id": ObjectId("5ae16cc3e928ed4ac5f887a0"),
   "password": "e10adc3949ba59abbe56e057f20f883e",
