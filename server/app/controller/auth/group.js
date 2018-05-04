@@ -35,7 +35,7 @@ module.exports = app => {
           type: 'string',
           required: true,
         },
-        summary: {
+        describe: {
           type: 'string',
           required: false,
         },
@@ -119,7 +119,7 @@ module.exports = app => {
       ctx.body = {
         code: '0',
         msg: 'OK',
-        result: _.pick(result, ...['id', 'name', 'summary']),
+        result: _.pick(result, ...['id', 'name', 'describe']),
       };
     }
 
