@@ -1,6 +1,8 @@
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority() {
-  return localStorage.getItem('authority') || 'guest';
+  // const val = localStorage.getItem('authority');
+  // return val ? val : 'guest';
+  return localStorage.getItem('authority');
 }
 
 export function setAuthority(authority) {

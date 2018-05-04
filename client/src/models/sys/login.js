@@ -14,21 +14,30 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      console.log(response.result);
+
+      if (response.code !== '0') {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            type: 'account',
+            currentAuthority: 'guest',
+          },
+        });
+        reloadAuthorized();
+
+        return false;
+      }
 
       yield put({
         type: 'changeLoginStatus',
         payload: {
           type: 'account',
-          currentAuthority: response.result.groupName || 'guest',
+          currentAuthority: response.result.groupList.length ? response.result.groupList : 'guest',
         },
       });
 
-      // 登录成功
-      if (response.code === '0') {
-        reloadAuthorized();
-        yield put(routerRedux.push('/'));
-      }
+      reloadAuthorized();
+      yield put(routerRedux.push('/'));
     },
     *logout(_, { put, select, call }) {
       yield call(logout);

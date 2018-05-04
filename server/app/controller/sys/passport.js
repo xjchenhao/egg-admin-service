@@ -29,15 +29,11 @@ module.exports = app => {
                     password: ctx.query.password,
                 });
 
-                let groupNameList = [];
-                for (let i = 0, l = userInfo.groups.length; i < l; i++) {
-                    let result = await ctx.model.AuthGroup.findOne({
-                        _id: userInfo.groups[i],
-                    }, {
-                            name: 1,
-                        });
-                    groupNameList.push(result.name);
-                }
+                let groupNameList = await ctx.model.AuthGroup.find({
+                    users: userInfo.id,
+                }, {
+                        name: 1,
+                    });
 
                 ctx.body = {
                     "code": "0",
@@ -45,7 +41,7 @@ module.exports = app => {
                     "result": {
                         id: userInfo._id,
                         userName: userInfo.name,
-                        groupName: groupNameList,
+                        groupList: groupNameList.map(item => item.name),
                     }
                 }
                 ctx.status = 200;

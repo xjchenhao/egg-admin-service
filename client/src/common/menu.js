@@ -8,6 +8,7 @@ const menuData = [{
   name: '权限管理',
   icon: 'solution',
   path: 'auth',
+  // authority: 'admin',
   children: [{
     name: '用户管理',
     icon: 'user',
