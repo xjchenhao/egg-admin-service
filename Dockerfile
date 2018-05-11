@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM daocloud.io/library/centos:latest
 
 ADD ./docker/node-v8.tar.gz /usr
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
@@ -15,6 +15,6 @@ WORKDIR /var/eas
 
 ENV NODE_ENV=test
 
-EXPOSE 7001
+EXPOSE 3000
 
-CMD node index.js
+CMD npm run docker

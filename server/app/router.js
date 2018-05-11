@@ -48,5 +48,5 @@ module.exports = app => {
   app.get('/nodeApi/sys/login', 'sys.passport.login'); // 登录
   app.get('sysLogout', '/nodeApi/sys/logout', 'sys.passport.logout'); // 退出登录
 
-  app.get('/', 'home.render');  // 渲染单页面
+  app.get('/', 'home.render'); // 渲染单页面
 };

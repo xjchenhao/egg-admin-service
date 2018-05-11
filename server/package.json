@@ -32,6 +32,7 @@
     "npm-i": "cipm",
     "start": "egg-scripts start --daemon",
     "stop": "egg-scripts stop",
+    "docker": "egg-scripts start --title=eas",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
