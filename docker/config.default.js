@@ -14,7 +14,7 @@ module.exports = appInfo => {
     mongoose: {
       clients: {
         back: {
-          url: 'mongodb://192.168.8.100/back',
+          url: 'mongodb://127.0.0.1/back',
           options: {},
         },
       },
