@@ -17,11 +17,6 @@ module.exports = appInfo => {
           url: 'mongodb://192.168.8.100/back',
           options: {},
         },
-        app: {
-          url: 'mongodb://192.168.8.100:27017/mbc',
-          // url: 'mongodb://172.16.0.45:27017/uic',
-          options: {},
-        },
       },
     },
     view: {

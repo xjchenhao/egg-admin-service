@@ -10,7 +10,7 @@ import { enquireScreen } from 'enquire-js';
 import GlobalHeader from '../components/GlobalHeader';
 import GlobalFooter from '../components/GlobalFooter';
 import SiderMenu from '../components/SiderMenu';
-import NotFound from '../routes/demo/Exception/404';
+import NotFound from '../routes/sys/Exception/404';
 import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
@@ -128,7 +128,7 @@ class BasicLayout extends React.PureComponent {
   }
   handleMenuClick = ({ key }) => {
     if (key === 'triggerError') {
-      this.props.dispatch(routerRedux.push('/demo/exception/trigger'));
+      this.props.dispatch(routerRedux.push('/sys/exception/trigger'));
       return;
     }
     if (key === 'logout') {

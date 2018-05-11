@@ -131,7 +131,7 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/500')),
     },
     '/exception/trigger': {
-      component: dynamicWrapper(app, ['demo/error'], () => import('../routes/sys/Exception/triggerException')),
+      component: dynamicWrapper(app, ['sys/error'], () => import('../routes/sys/Exception/triggerException')),
     },
   };
   // Get name from ./menu.js or just set it in the router data.
