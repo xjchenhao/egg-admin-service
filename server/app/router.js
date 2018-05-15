@@ -36,7 +36,7 @@ module.exports = app => {
   app.get('/nodeApi/auth/modules/system', can('auth.module.system'), 'auth.module.system'); // 系统级模块列表
 
   /* 系统级接口 */
-  app.get('sysUserInfo', '/nodeApi/sys/userInfo', 'sys.main.userInfo'); // 获取用户信息
+  app.get('sysUserInfo', '/nodeApi/sys/userInfo', 'auth.user.userInfo'); // 获取用户信息
   app.get('sysSidebar', '/nodeApi/sys/sidebar', 'sys.main.sidebar'); // 查看系统菜单
 
   app.get('/nodeApi/sys/editProfile/:id/edit', 'sys.editProfile.edit'); // 编辑资料-用户详情

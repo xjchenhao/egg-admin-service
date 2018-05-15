@@ -258,6 +258,39 @@ module.exports = app => {
                 result: {}
             }
         }
+
+        async userInfo (ctx) {
+          if (!ctx.isAuthenticated()) {
+            ctx.body = {
+              code: '401',
+              msg: ctx.helper.errorCode['401'],
+              result: ctx.user,
+            };
+            ctx.status = 401;
+    
+            return false;
+          }
+    
+          let result = (await ctx.model.AuthUser.findOne({
+            _id: ctx.user.id,
+          }, {
+              _id: 0,
+              account: 1,
+              name: 1,
+              email: 1,
+              mobile: 1,
+            })).toJSON();
+    
+          ctx.body = {
+            code: '0',
+            msg: 'OK',
+            result: {
+              ...result,
+              id: ctx.user.id,
+            },
+          };
+          ctx.realStatus = 200;
+        }
     }
     return authUserController;
 };

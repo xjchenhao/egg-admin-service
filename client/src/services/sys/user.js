@@ -12,3 +12,14 @@ export async function logout(params) {
 export async function info(params) {
   return request(`/nodeApi/sys/userInfo${stringify(params)}`);
 }
+
+export async function getProfile(params) {
+  return request(`/nodeApi/sys/editProfile/${params.id}/edit?${stringify(params)}`);
+}
+
+export async function setProfile(params) {
+  return request(`/nodeApi/sys/editProfile/${params.id}`, {
+    method: 'PUT',
+    body: params,
+  });
+}

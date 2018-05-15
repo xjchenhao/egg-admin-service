@@ -7,7 +7,6 @@ const authority = (groupName) => {
       groupArr = groupName.split(',');
     }
 
-    console.log(currentAuthority);
     for (let i = 0, l = groupArr.length; i < l; i += 1) {
       if (currentAuthority.split(',').indexOf(groupArr[i]) > -1) {
         return true;
@@ -37,6 +36,11 @@ const menuData = [{
     icon: 'solution',
     path: 'modules',
   }],
+}, {
+  name: '修改个人资料',
+  icon: 'user',
+  path: 'editProfile',
+  hideInMenu: true,
 },
 ];
 

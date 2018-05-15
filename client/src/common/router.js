@@ -121,6 +121,10 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, [], () => import('../routes/sys/User/RegisterResult')),
       // authority: authority('admin'),
     },
+    '/editProfile': {
+      component: dynamicWrapper(app, ['sys/user'], () => import('../routes/sys/Other/EditProfile')),
+      // authority: authority('admin'),
+    },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/sys/Exception/403')),
     },

@@ -1,4 +1,5 @@
-import { info as queryUsers, info as queryCurrent } from '../../services/sys/user';
+import { message } from 'antd';
+import { info as queryUsers, info as queryCurrent, setProfile } from '../../services/sys/user';
 
 export default {
   namespace: 'user',
@@ -18,14 +19,46 @@ export default {
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
+
       yield put({
         type: 'saveCurrentUser',
         payload: {
           avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
           id: response.result.id,
-          name: response.result.userName,
+          name: response.result.name,
+          email: response.result.email,
+          mobile: response.result.mobile,
+          account: response.result.account,
         },
       });
+    },
+    // *getProfile (_, { call, put, select }) {
+    //   const id = yield select(state => state.user.currentUser.id);
+    //   const response = yield call(getProfile, { id });
+
+    //   yield put({
+    //     type: 'getProfile',
+    //     payload: {
+    //       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+    //       id: response.result.id,
+    //       name: response.result.name,
+    //       email: response.result.email,
+    //       mobile: response.result.mobile,
+    //       account: response.result.account,
+    //     },
+    //   });
+    // },
+    *setProfile({ payload }, { call, select, put }) {
+      const id = yield select(state => state.user.currentUser.id);
+      yield call(setProfile, {
+        ...payload,
+        id,
+      });
+      // TODO: 手机号和邮箱没有做去重
+
+      yield put({ type: 'fetchCurrent' });
+
+      message.success('修改成功');
     },
   },
 

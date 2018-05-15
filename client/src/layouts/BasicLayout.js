@@ -136,6 +136,9 @@ class BasicLayout extends React.PureComponent {
         type: 'login/logout',
       });
     }
+    if (key === 'setting') {
+      this.props.dispatch(routerRedux.push('/editProfile'));
+    }
   }
   handleNoticeVisibleChange = (visible) => {
     if (visible) {
