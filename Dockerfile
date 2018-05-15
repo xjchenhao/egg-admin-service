@@ -5,7 +5,7 @@ RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
 	&& mkdir /var/eas
 
 COPY ./client/dist/ /var/eas/app/assets
-COPY ./server/ /var/eas/
+COPY ./service/ /var/eas/
 COPY ./docker/config.default.js /var/eas/config/config.default.js
 
 RUN cd /var/eas \

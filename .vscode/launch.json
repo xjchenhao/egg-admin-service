@@ -8,7 +8,7 @@
             "name": "Launch Egg",
             "type": "node",
             "request": "launch",
-            "cwd": "${workspaceRoot}/server",
+            "cwd": "${workspaceRoot}/service",
             "runtimeExecutable": "npm",
             "windows": {
                 "runtimeExecutable": "npm.cmd"

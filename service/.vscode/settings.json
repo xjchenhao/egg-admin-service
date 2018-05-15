@@ -1,7 +1,7 @@
 {
 		// eslint规则文件
 		"eslint.options": {
-			"configFile": "/Users/chenhao/工程/我的项目/egg-admin-server/server/.eslintrc",
+			"configFile": "/Users/chenhao/工程/我的项目/egg-admin-service/service/.eslintrc",
 			"plugins": ["html"]
 		},
 	

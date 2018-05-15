@@ -1,7 +1,7 @@
 {
-  "name": "egg-admin-server",
+  "name": "egg-admin-service",
   "version": "1.0.0",
-  "description": "基于eggjs的nodeserver，用来做前后端分离的后台管理系统的后端服务。",
+  "description": "基于eggjs的node service，用来做前后端分离的后台管理系统的后端服务。",
   "private": true,
   "dependencies": {
     "egg": "^2.5.0",
