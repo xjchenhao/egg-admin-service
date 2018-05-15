@@ -1,15 +1,14 @@
 FROM daocloud.io/library/centos:latest
 
 ADD ./docker/node-v8.tar.gz /usr
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
-	&& mkdir /var/eas
+RUN mkdir /var/eas
 
 COPY ./client/dist/ /var/eas/app/assets
 COPY ./service/ /var/eas/
 COPY ./docker/config.default.js /var/eas/config/config.default.js
 
 RUN cd /var/eas \
-	&& cnpm install --save
+	&& cnpm install --save --registry=https://registry.npm.taobao.org
 
 WORKDIR /var/eas
 
