@@ -97,7 +97,7 @@ export default class BasicForms extends PureComponent {
     const { dispatch } = this.props;
 
     dispatch({
-      type: 'users/resetPwd',
+      type: 'user/resetPwd',
       payload: {
         id: this.state.resetPwdModal.data.id,
         ...fieldsValue,

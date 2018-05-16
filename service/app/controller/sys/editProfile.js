@@ -133,7 +133,7 @@ module.exports = app => {
 
       const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
 
-      if (!result.affectedRows) {
+      if (!result) {
         ctx.body = {
           code: '404',
           msg: ctx.helper.errorCode['404'],

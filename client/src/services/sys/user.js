@@ -23,3 +23,10 @@ export async function setProfile(params) {
     body: params,
   });
 }
+
+export async function resetPwd(params) {
+  return request(`/nodeApi/sys/editProfile/pwd/${params.id}`, {
+    method: 'PUT',
+    body: params,
+  });
+}

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { info as queryUsers, info as queryCurrent, setProfile } from '../../services/sys/user';
+import { info as queryUsers, info as queryCurrent, setProfile, resetPwd } from '../../services/sys/user';
 
 export default {
   namespace: 'user',
@@ -59,6 +59,20 @@ export default {
       yield put({ type: 'fetchCurrent' });
 
       message.success('修改成功');
+    },
+
+    *resetPwd({ payload }, { call }) {
+      const response = yield call(resetPwd, payload);
+
+      if (!response) {
+        return;
+      }
+
+      if (response.code === '0') {
+        message.success('密码重置成功');
+      } else {
+        message.error(response.msg);
+      }
     },
   },
 
