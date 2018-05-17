@@ -1,1 +1,2 @@
 coverage
+app/init.d/mongo/*.js

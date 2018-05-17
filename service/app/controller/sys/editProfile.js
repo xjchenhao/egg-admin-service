@@ -5,7 +5,7 @@ const _ = require('underscore');
 module.exports = app => {
   class authUserController extends app.Controller {
 
-    * edit (ctx) {
+    * edit(ctx) {
       const query = ctx.params;
       const userInfo = ctx.user;
 
@@ -41,11 +41,11 @@ module.exports = app => {
       ctx.body = {
         code: '0',
         msg: 'OK',
-        result: _.pick(result, ...['id', 'account', 'name', 'sex', 'mobile', 'email', 'remark']),
+        result: _.pick(result, ...[ 'id', 'account', 'name', 'sex', 'mobile', 'email', 'remark' ]),
       };
     }
 
-    * update (ctx) {
+    * update(ctx) {
       const id = ctx.params.id;
       const query = ctx.request.body;
 
@@ -106,7 +106,7 @@ module.exports = app => {
       };
     }
 
-    * setPassword (ctx) {
+    * setPassword(ctx) {
       const id = ctx.params.id;
       const query = ctx.request.body;
 

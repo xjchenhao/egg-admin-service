@@ -3,7 +3,6 @@
 module.exports = app => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
-  const ObjectId = Schema.ObjectId;
   const conn = app.mongooseDB.get('back');
 
   const GroupSchema = new Schema({
@@ -14,9 +13,9 @@ module.exports = app => {
     create_date: { type: Date, default: Date.now },
     update_date: { type: Date, default: Date.now },
   }, {
-      usePushEach: true,
-      timestamps: { createdAt: 'create_date', updatedAt: 'update_date' }
-    });
+    usePushEach: true,
+    timestamps: { createdAt: 'create_date', updatedAt: 'update_date' },
+  });
 
   // GroupSchema.index({ id: 1 });
   // GroupSchema.index({ parent_id: 1});

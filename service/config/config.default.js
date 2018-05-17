@@ -32,7 +32,7 @@ module.exports = appInfo => {
     },
     static: {
       prefix: '/',
-      dir: [path.join(appInfo.baseDir, 'app/assets'),path.join(appInfo.baseDir, 'app/public')]
+      dir: [ path.join(appInfo.baseDir, 'app/assets'), path.join(appInfo.baseDir, 'app/public') ],
     },
     // 是否加载到 app 上，默认开启
     app: true,

@@ -3,11 +3,11 @@ const _ = require('underscore');
 
 module.exports = app => {
   class authGroupController extends app.Controller {
-    async index (ctx) {
+    async index(ctx) {
       const query = ctx.request.query;
 
       // 获取传参中指定的key，且过滤掉为`空`的条件。
-      const where = _.pick(_.pick(query, ...['name']), value => {
+      const where = _.pick(_.pick(query, ...[ 'name' ]), value => {
         return value !== '' && value !== undefined;
       });
 
@@ -19,15 +19,15 @@ module.exports = app => {
           msg: 'OK',
           result: {
             ...result,
-            list: result.list.map((obj) => {
-              return _.pick(obj, ...['id', 'name', 'describe']);
-            })
+            list: result.list.map(obj => {
+              return _.pick(obj, ...[ 'id', 'name', 'describe' ]);
+            }),
           },
         };
       }
     }
 
-    async create (ctx) {
+    async create(ctx) {
       const query = ctx.request.body;
 
       const createRule = {
@@ -65,8 +65,8 @@ module.exports = app => {
           msg: '组名已存在',
           result: {
             name: query.name,
-          }
-        }
+          },
+        };
         ctx.status = 200;
 
         return false;
@@ -87,7 +87,7 @@ module.exports = app => {
 
     }
 
-    async destroy (ctx) {
+    async destroy(ctx) {
       const query = ctx.params;
 
       await ctx.service.auth.group.destroy(query.id);
@@ -100,7 +100,7 @@ module.exports = app => {
       ctx.status = 200;
     }
 
-    async edit (ctx) {
+    async edit(ctx) {
       const query = ctx.params;
 
       const result = await ctx.service.auth.group.edit(query.id);
@@ -119,17 +119,17 @@ module.exports = app => {
       ctx.body = {
         code: '0',
         msg: 'OK',
-        result: _.pick(result, ...['id', 'name', 'describe']),
+        result: _.pick(result, ...[ 'id', 'name', 'describe' ]),
       };
     }
 
-    async update (ctx) {
+    async update(ctx) {
       const id = ctx.params.id;
       const query = ctx.request.body;
 
       const isExist = await this.ctx.model.AuthGroup.findOne({
         _id: {
-          '$ne': id,
+          $ne: id,
         },
         name: query.name,
       });
@@ -139,14 +139,14 @@ module.exports = app => {
           msg: '组名已存在',
           result: {
             name: query.name,
-          }
-        }
+          },
+        };
         ctx.status = 200;
 
         return false;
       }
 
-      const result = await ctx.service.auth.group.update(id, _.pick(query, ...['name', 'describe']));
+      const result = await ctx.service.auth.group.update(id, _.pick(query, ...[ 'name', 'describe' ]));
 
       if (!result) {
         ctx.body = {
@@ -166,11 +166,11 @@ module.exports = app => {
       };
     }
 
-    async getUser (ctx) {
+    async getUser(ctx) {
       const query = ctx.params;
 
       const addArr = (await ctx.model.AuthGroup.findOne({
-        _id: query.id
+        _id: query.id,
       })).users;
 
       const allResult = await ctx.model.AuthUser.find();
@@ -193,14 +193,14 @@ module.exports = app => {
       };
     }
 
-    async setUser (ctx) {
+    async setUser(ctx) {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList;
 
       const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
         $set: {
-          users: idList
-        }
+          users: idList,
+        },
       });
 
       if (result === null) {
@@ -223,11 +223,11 @@ module.exports = app => {
       };
     }
 
-    async getModule (ctx) {
+    async getModule(ctx) {
       const query = ctx.params;
 
       const addArr = (await ctx.model.AuthGroup.findOne({
-        _id: query.id
+        _id: query.id,
       })).modules;
 
       const allResult = await ctx.service.auth.module.system({
@@ -244,15 +244,15 @@ module.exports = app => {
       };
     }
 
-    async setModule (ctx) {
+    async setModule(ctx) {
       const roleId = ctx.params.id;
       const idList = ctx.request.body.idList;
 
       // 给用户组集合插入user信息
       const result = await ctx.model.AuthGroup.findByIdAndUpdate(roleId, {
         $set: {
-          modules: idList
-        }
+          modules: idList,
+        },
       });
 
       if (result === null) {

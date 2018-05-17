@@ -1,11 +1,9 @@
 'use strict';
 
-const url = require('url');
-
 module.exports = app => {
   class userService extends app.Service {
 
-    async index (pageNumber = 1, pageSize = 20, query) {
+    async index(pageNumber = 1, pageSize = 20, query) {
       pageNumber = Number(pageNumber);
       pageSize = Number(pageSize);
 
@@ -21,14 +19,14 @@ module.exports = app => {
       });
     }
 
-    async create (data) {
+    async create(data) {
 
       const result = await this.ctx.model.AuthGroup.create(data);
 
       return result;
     }
 
-    async destroy (id) {
+    async destroy(id) {
       // const conn = await app.mysql.get('back').beginTransaction(); // 初始化事务
       // try {
       //   await this.app.mysql.get('back').delete('role', { id });
@@ -49,7 +47,7 @@ module.exports = app => {
       return result.result.n !== 0 && result;
     }
 
-    async edit (id) {
+    async edit(id) {
       const result = await this.ctx.model.AuthGroup.findOne({
         _id: id,
       });
@@ -57,8 +55,8 @@ module.exports = app => {
       return result;
     }
 
-    async update (id, data) {
-      let newData = Object.assign(data, { _id: id });
+    async update(id, data) {
+      const newData = Object.assign(data, { _id: id });
 
       try {
         return await this.ctx.model.AuthGroup.findByIdAndUpdate(id, newData, {
