@@ -16,6 +16,8 @@
             "runtimeArgs": [
                 "run",
                 "debug",
+                "--",
+                "--inspect-brk"
             ],
             "console": "integratedTerminal",
             "protocol": "auto",

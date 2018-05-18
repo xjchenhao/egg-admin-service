@@ -7,20 +7,20 @@ module.exports = app => {
 
     * edit(ctx) {
       const query = ctx.params;
-      const userInfo = ctx.user;
+      // const userInfo = ctx.user;
 
-      if (userInfo.id !== query.id) {
-        ctx.body = {
-          code: '403',
-          msg: ctx.helper.errorCode['403'],
-          result: {
-            userId: userInfo,
-            uri: '',
-          },
-        };
-        ctx.status = 403;
-        return false;
-      }
+      // if (userInfo.id !== query.id) {
+      //   ctx.body = {
+      //     code: '403',
+      //     msg: ctx.helper.errorCode['403'],
+      //     result: {
+      //       userId: userInfo,
+      //       uri: '',
+      //     },
+      //   };
+      //   ctx.status = 403;
+      //   return false;
+      // }
 
 
       const result = yield ctx.service.auth.user.edit(query.id);

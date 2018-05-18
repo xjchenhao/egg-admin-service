@@ -3,11 +3,11 @@ const _ = require('underscore');
 
 module.exports = app => {
   class authMenuController extends app.Controller {
-    async index(ctx) {
+    async index (ctx) {
       const query = ctx.request.query;
 
       // 获取传参中指定的key，且过滤掉为`空`的条件。
-      const where = _.pick(_.pick(query, ...[ 'name', 'url', 'uri', 'parent_id' ]), value => {
+      const where = _.pick(_.pick(query, ...['name', 'url', 'uri', 'parent_id']), value => {
         return value !== '' && value !== undefined;
       });
 
@@ -18,13 +18,13 @@ module.exports = app => {
         msg: 'OK',
         result: Object.assign(result, {
           list: result.list.map(obj => {
-            return _.pick(obj, ...[ 'id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id', 'parent_name' ]);
+            return _.pick(obj, ...['id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id', 'parent_name']);
           }),
         }),
       };
     }
 
-    async create(ctx) {
+    async create (ctx) {
       const query = ctx.request.body;
 
       const createRule = {
@@ -103,17 +103,19 @@ module.exports = app => {
         }
       }
 
-      await ctx.service.auth.module.create(_.pick(query, ...Object.keys(createRule)));
+      const result = await ctx.service.auth.module.create(_.pick(query, ...Object.keys(createRule)));
 
       ctx.body = {
         code: '0',
         msg: 'OK',
-        result: {},
+        result: {
+          id: result.id,
+        },
       };
 
     }
 
-    async destroy(ctx) {
+    async destroy (ctx) {
       const query = ctx.params;
 
       const isExist = await this.ctx.model.AuthModule.findOne({
@@ -142,7 +144,7 @@ module.exports = app => {
       ctx.status = 200;
     }
 
-    async edit(ctx) {
+    async edit (ctx) {
       const query = ctx.params;
 
       const result = await ctx.service.auth.module.edit(query.id);
@@ -150,11 +152,11 @@ module.exports = app => {
       ctx.body = {
         code: '0',
         msg: 'OK',
-        result: _.pick(result, ...[ 'id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id' ]),
+        result: _.pick(result, ...['id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id']),
       };
     }
 
-    async update(ctx) {
+    async update (ctx) {
       const id = ctx.params.id;
       const query = ctx.request.body;
 
@@ -245,7 +247,7 @@ module.exports = app => {
       ctx.status = 201;
     }
 
-    async system(ctx) {
+    async system (ctx) {
       // const query = ctx.request.query;
 
       const result = await ctx.service.auth.module.system({});

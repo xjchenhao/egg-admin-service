@@ -79,7 +79,7 @@ module.exports = app => {
           code: '0',
           msg: 'OK',
           result: {
-            id: result.insertId,
+            id: result.id,
           },
         };
         ctx.status = 201;
