@@ -1,157 +1,120 @@
 'use strict';
 const _ = require('underscore');
 
+const Controller = require('./../../core/baseController');
 
-module.exports = app => {
-  class authUserController extends app.Controller {
+class sysEditProfileController extends Controller {
 
-    * edit(ctx) {
-      const query = ctx.params;
-      // const userInfo = ctx.user;
+  * edit(ctx) {
+    const query = ctx.params;
 
-      // if (userInfo.id !== query.id) {
-      //   ctx.body = {
-      //     code: '403',
-      //     msg: ctx.helper.errorCode['403'],
-      //     result: {
-      //       userId: userInfo,
-      //       uri: '',
-      //     },
-      //   };
-      //   ctx.status = 403;
-      //   return false;
-      // }
+    const result = yield ctx.service.auth.user.edit(query.id);
 
+    if (!result) {
+      this.failure({
+        data: {
+          id: query.id,
+        },
+        state: 404,
+      });
 
-      const result = yield ctx.service.auth.user.edit(query.id);
-
-      if (!result) {
-        ctx.body = {
-          code: '404',
-          msg: ctx.helper.errorCode['404'],
-          result: {
-            id: query.id,
-          },
-        };
-        ctx.status = 404;
-
-        return false;
-      }
-
-      ctx.body = {
-        code: '0',
-        msg: 'OK',
-        result: _.pick(result, ...[ 'id', 'account', 'name', 'sex', 'mobile', 'email', 'remark' ]),
-      };
+      return false;
     }
 
-    * update(ctx) {
-      const id = ctx.params.id;
-      const query = ctx.request.body;
-
-      const createRule = {
-        account: {
-          type: 'string',
-          required: true,
-        },
-        name: {
-          type: 'string',
-          required: true,
-        },
-        mobile: {
-          type: 'string',
-          required: false,
-          allowEmpty: true,
-        },
-        email: {
-          type: 'email',
-          required: false,
-          allowEmpty: true,
-        },
-      };
-
-      try {
-        ctx.validate(createRule);
-      } catch (err) {
-
-        this.ctx.body = {
-          code: '400',
-          msg: ctx.helper.errorCode['400'],
-          result: err.errors,
-        };
-        this.ctx.status = 400;
-
-        return;
-      }
-
-      const result = yield ctx.service.auth.user.update(id, _.pick(query, 'mobile', 'email'));
-
-      if (!result) {
-        ctx.body = {
-          code: '404',
-          msg: ctx.helper.errorCode['404'],
-          result: {
-            id,
-          },
-        };
-        ctx.status = 404;
-
-        return false;
-      }
-
-      ctx.body = {
-        code: '0',
-        msg: 'OK',
-        result: {},
-      };
-    }
-
-    * setPassword(ctx) {
-      const id = ctx.params.id;
-      const query = ctx.request.body;
-
-      const createRule = {
-        password: {
-          type: 'string',
-          required: true,
-        },
-      };
-
-      try {
-        ctx.validate(createRule);
-      } catch (err) {
-
-        this.ctx.body = {
-          code: '400',
-          msg: ctx.helper.errorCode['400'],
-          result: err.errors,
-        };
-        this.ctx.status = 400;
-
-        return;
-      }
-
-      const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
-
-      if (!result) {
-        ctx.body = {
-          code: '404',
-          msg: ctx.helper.errorCode['404'],
-          result: {
-            id,
-          },
-        };
-        ctx.status = 404;
-
-        return false;
-      }
-
-      ctx.body = {
-        code: '0',
-        msg: 'OK',
-        result: {},
-      };
-    }
+    this.success(_.pick(result, ...[ 'id', 'account', 'name', 'sex', 'mobile', 'email', 'remark' ]));
   }
-  return authUserController;
-};
+
+  * update(ctx) {
+    const id = ctx.params.id;
+    const query = ctx.request.body;
+
+    const createRule = {
+      account: {
+        type: 'string',
+        required: true,
+      },
+      name: {
+        type: 'string',
+        required: true,
+      },
+      mobile: {
+        type: 'string',
+        required: false,
+        allowEmpty: true,
+      },
+      email: {
+        type: 'email',
+        required: false,
+        allowEmpty: true,
+      },
+    };
+
+    try {
+      ctx.validate(createRule);
+    } catch (err) {
+      this.failure({
+        data: err.errors,
+        state: 400,
+      });
+
+      return;
+    }
+
+    const result = yield ctx.service.auth.user.update(id, _.pick(query, 'mobile', 'email'));
+
+    if (!result) {
+
+      this.failure({
+        data: {
+          id,
+        },
+        state: 404,
+      });
+
+      return false;
+    }
+
+    this.success();
+  }
+
+  * setPassword(ctx) {
+    const id = ctx.params.id;
+    const query = ctx.request.body;
+
+    const createRule = {
+      password: {
+        type: 'string',
+        required: true,
+      },
+    };
+
+    try {
+      ctx.validate(createRule);
+    } catch (err) {
+
+      this.failure({
+        data: err.errors,
+        state: 400,
+      });
+
+      return;
+    }
+
+    const result = yield ctx.service.auth.user.update(id, _.pick(query, ...Object.keys(createRule)));
+
+    if (!result) {
+
+      this.failure({
+        data: {
+          id,
+        },
+        state: 404,
+      });
+
+      return false;
+    }
+
+    this.success();
+  }
+}
+module.exports = sysEditProfileController;

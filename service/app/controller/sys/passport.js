@@ -1,59 +1,50 @@
 'use strict';
 
 const crypto = require('crypto');
+const Controller = require('./../../core/baseController');
 
-module.exports = app => {
-  class sysController extends app.Controller {
+class sysPassportController extends Controller {
 
-    async logout(ctx) {
-      ctx.logout();
+  async logout(ctx) {
+    ctx.logout();
 
-      ctx.body = {
-        code: '0',
-        msg: '退出登录成功',
-        result: {},
-      };
-      ctx.status = 200;
-    }
+    this.success();
+  }
 
-    async login(ctx) {
+  async login(ctx) {
 
-      const userInfo = await ctx.model.AuthUser.findOne({
-        account: ctx.query.username,
-        password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+    const userInfo = await ctx.model.AuthUser.findOne({
+      account: ctx.query.username,
+      password: crypto.createHash('md5').update(ctx.query.password).digest('hex'),
+    });
+
+    if (userInfo) {
+      ctx.login({
+        username: ctx.query.username,
+        password: ctx.query.password,
       });
 
-      if (userInfo) {
-        ctx.login({
-          username: ctx.query.username,
-          password: ctx.query.password,
-        });
+      const groupNameList = await ctx.model.AuthGroup.find({
+        users: userInfo.id,
+      }, {
+        name: 1,
+      });
 
-        const groupNameList = await ctx.model.AuthGroup.find({
-          users: userInfo.id,
-        }, {
-          name: 1,
-        });
+      this.success({
+        id: userInfo._id,
+        userName: userInfo.name,
+        groupList: groupNameList.map(item => item.name),
+      });
+    } else {
 
-        ctx.body = {
-          code: '0',
-          msg: '登录成功',
-          result: {
-            id: userInfo._id,
-            userName: userInfo.name,
-            groupList: groupNameList.map(item => item.name),
-          },
-        };
-        ctx.status = 200;
-      } else {
-        ctx.body = {
-          code: '1',
-          msg: '账号或密码错误',
-          result: {},
-        };
-        ctx.status = 200;
-      }
+
+      this.failure({
+        code: '1',
+        data: {},
+        msg: '账号或密码错误',
+        state: 200,
+      });
     }
   }
-  return sysController;
-};
+}
+module.exports = sysPassportController;

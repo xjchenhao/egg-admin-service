@@ -1,2 +1,14 @@
 {
+    // eslint规则文件
+    "eslint.options": {
+        "configFile": "./service/.eslintrc",
+        // "plugins": ["html"]
+    },
+
+    // // 需要被eslint校验的文件
+    // "eslint.validate": [
+    //     "javascript"
+    // ],
+
+    "eslint.autoFixOnSave": true
 }
