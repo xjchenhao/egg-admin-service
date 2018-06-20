@@ -4,18 +4,14 @@ import classNames from 'classnames';
 import styles from './NoticeList.less';
 
 export default function NoticeList({
-  data = [],
-  onClick,
-  onClear,
-  title,
-  locale,
-  emptyText,
-  emptyImage,
+  data = [], onClick, onClear, title, locale, emptyText, emptyImage,
 }) {
   if (data.length === 0) {
     return (
       <div className={styles.notFound}>
-        {emptyImage ? <img src={emptyImage} alt="not found" /> : null}
+        {emptyImage ? (
+          <img src={emptyImage} alt="not found" />
+        ) : null}
         <div>{emptyText || locale.emptyText}</div>
       </div>
     );
@@ -52,8 +48,7 @@ export default function NoticeList({
         })}
       </List>
       <div className={styles.clear} onClick={onClear}>
-        {locale.clear}
-        {title}
+        {locale.clear}{title}
       </div>
     </div>
   );

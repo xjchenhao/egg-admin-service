@@ -3,22 +3,17 @@ import React from 'react';
 import DrawerMenu from 'rc-drawer-menu';
 import SiderMenu from './SiderMenu';
 
-const SiderMenuWrapper = props =>
+export default props => (
   props.isMobile ? (
     <DrawerMenu
       parent={null}
       level={null}
       iconChild={null}
       open={!props.collapsed}
-      onMaskClick={() => {
-        props.onCollapse(true);
-      }}
+      onMaskClick={() => { props.onCollapse(true); }}
       width="256px"
     >
       <SiderMenu {...props} collapsed={props.isMobile ? false : props.collapsed} />
     </DrawerMenu>
-  ) : (
-    <SiderMenu {...props} />
-  );
-
-export default SiderMenuWrapper;
+  ) : <SiderMenu {...props} />
+);
