@@ -77,7 +77,7 @@ export default function request(url, options) {
       // const { dispatch } = store;
       const status = e.name;
       if (status === 401) {
-        router.push('/user/login')
+        router.push('/sys/user/login')
         // dispatch({
         //   type: 'login/logout',
         // });

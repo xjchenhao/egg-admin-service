@@ -7,6 +7,7 @@ import SiderMenu from "../components/SiderMenu/SiderMenu";
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
 import GlobalHeader from "../components/GlobalHeader";
+import SimpleLayout from "./UserLayout"
 
 const { Content, Header, Footer } = Layout;
 
@@ -34,15 +35,37 @@ class BasicLayout extends Component {
     });
   }
 
+
   handleMenuCollapse = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     });
+  }
+
+  handleMenuClick = ({key}) => {
+
+    if (key === 'triggerError') {
+      // this.props.dispatch(routerRedux.push('/sys/exception/trigger'));
+      return;
+    }
+    if (key === 'logout') {
+      this.props.dispatch({
+        type: 'login/logout',
+      });
+    }
+    if (key === 'setting') {
+      // this.props.dispatch(routerRedux.push('/editProfile'));
+    }
   };
 
   render() {
     const { children, location, currentUser } = this.props;
     const { collapsed } = this.state;
+
+    if (this.props.location.pathname === '/sys/user/login') {
+      return <SimpleLayout>{ this.props.children }</SimpleLayout>
+    }
+
     return (
       <Layout>
         <SiderMenu
@@ -65,6 +88,7 @@ class BasicLayout extends Component {
               //   notifyCount: 12,
               // }}
               onCollapse={this.handleMenuCollapse}
+              onMenuClick={this.handleMenuClick}
             />
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>

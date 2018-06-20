@@ -1,14 +1,12 @@
-import { routerRedux } from 'dva/router';
 import { login, logout } from '../../services/sys/user';
-import { setAuthority } from '../../utils/authority';
-import { reloadAuthorized } from '../../utils/Authorized';
+import router from 'umi/router';
 
 export default {
   namespace: 'login',
 
   state: {
     type: '',
-    status: undefined,
+    status: '',
   },
 
   effects: {
@@ -23,7 +21,6 @@ export default {
             currentAuthority: 'guest',
           },
         });
-        reloadAuthorized();
 
         return false;
       }
@@ -36,35 +33,16 @@ export default {
         },
       });
 
-      reloadAuthorized();
-      yield put(routerRedux.push('/'));
+      router.push('/');
     },
     *logout(_, { put, select, call }) {
       yield call(logout);
-      try {
-        // get location pathname
-        const urlParams = new URL(window.location.href);
-        const pathname = yield select(state => state.routing.location.pathname);
-        // add the parameters in the url
-        urlParams.searchParams.set('redirect', pathname);
-        window.history.replaceState(null, 'login', urlParams.href);
-      } finally {
-        yield put({
-          type: 'changeLoginStatus',
-          payload: {
-            status: false,
-            currentAuthority: 'guest',
-          },
-        });
-        reloadAuthorized();
-        yield put(routerRedux.push('/user/login'));
-      }
+      router.push('/sys/user/login');
     },
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
       return {
         ...state,
         status: payload.status,
