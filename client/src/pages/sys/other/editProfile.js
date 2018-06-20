@@ -1,4 +1,5 @@
-import {PageHeader as PageHeaderLayout} from 'ant-design-pro/lib';
+// import {PageHeader as PageHeaderLayout} from 'ant-design-pro/lib';
+import PageHeaderLayout from '../../../layouts/pageHeaderLayout';
 import React, { PureComponent } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
