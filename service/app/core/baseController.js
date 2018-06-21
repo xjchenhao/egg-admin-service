@@ -20,7 +20,7 @@ class BaseController extends Controller {
       msg: msg || ctx.helper.errorCode[String(state)],
       result: data,
     };
-    ctx.status = state;
+    ctx.status = state || 500;
   }
   validateError(err) {
     const ctx = this.ctx;

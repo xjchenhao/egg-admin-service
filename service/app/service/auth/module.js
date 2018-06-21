@@ -49,7 +49,10 @@ module.exports = app => {
     async update(id, data) {
 
       try {
-        return await this.ctx.model.AuthModule.findByIdAndUpdate(id, data, {
+        return await this.ctx.model.AuthModule.findByIdAndUpdate(id, {
+          ...data,
+          parent_id: data.parent_id || '',
+        }, {
           new: true,
           runValidators: true,
         }).exec();

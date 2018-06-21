@@ -1,5 +1,6 @@
 'use strict';
 const Controller = require('./../../core/baseController');
+const _ = require('underscore');
 
 class sysMainController extends Controller {
 
@@ -13,8 +14,30 @@ class sysMainController extends Controller {
       return false;
     }
 
-    // 使用 mysql.escape 方法,做复杂的表关联查询
-    const result = await ctx.app.mysql.get('back').query('select distinct bm.* from role_module rm left join module bm on rm.id=bm.id left join user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.show=1', [ ctx.user.id ]);
+    // // 使用 mysql.escape 方法,做复杂的表关联查询
+    // const result = await ctx.app.mysql.get('back').query('select distinct bm.* from role_module rm left join module bm on rm.id=bm.id left join user_role ur on rm.role_id=ur.role_id WHERE ur.user_id=? AND bm.show=1', [ ctx.user.id ]);
+    let userGroupData = await ctx.model.AuthGroup.find({
+      users: ctx.user.id,
+    }, {
+      modules: 1,
+    });
+
+    userGroupData = userGroupData.map(item => item.toJSON().modules);
+
+    const userAuthModulePromise = [];
+
+    _.intersection(...userGroupData) // 去重
+      .forEach(item => {
+        userAuthModulePromise.push(ctx.model.AuthModule.findOne({
+          _id: item,
+          isMenu: true,
+        }));
+      });
+
+    let result = await Promise.all(userAuthModulePromise);
+
+    result = result.filter(item => !!item); // 过滤结果为null的项
+
 
     // 根据父级id遍历子集
     const subset = function(parentId) {
@@ -62,7 +85,7 @@ class sysMainController extends Controller {
       return arrMap;
     };
 
-    this.success(convert(subset(0)));
+    this.success(convert(subset('')));
   }
 }
 module.exports = sysMainController;

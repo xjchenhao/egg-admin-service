@@ -1,6 +1,6 @@
 export default {
     plugins: [
-      ['umi-plugin-dva', { immer: true }],
+      ['umi-plugin-dva', { immer: false }],
     ],
     hashHistory:true,
     "proxy": {

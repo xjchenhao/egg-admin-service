@@ -92,6 +92,7 @@ class authMenuController extends Controller {
           data: {
             uri: query.uri,
           },
+          state: 422,
         });
 
         return false;
@@ -137,7 +138,7 @@ class authMenuController extends Controller {
 
     const result = await ctx.service.auth.module.edit(query.id);
 
-    this.success(_.pick(result, ...[ 'id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'parent_id' ]));
+    this.success(_.pick(result, ...[ 'id', 'name', 'url', 'uri', 'iconfont', 'describe', 'sort', 'show', 'isMenu', 'url', 'parent_id' ]));
   }
 
   async update(ctx) {
@@ -166,6 +167,11 @@ class authMenuController extends Controller {
       },
       describe: {
         type: 'string',
+        required: false,
+        allowEmpty: true,
+      },
+      isMenu: {
+        type: 'boolean',
         required: false,
         allowEmpty: true,
       },
@@ -210,6 +216,7 @@ class authMenuController extends Controller {
         data: {
           uri: query.uri,
         },
+        state: 422,
       });
 
       return false;

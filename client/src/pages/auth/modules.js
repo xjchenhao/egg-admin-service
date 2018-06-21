@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, InputNumber, Button, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select } from 'antd';
+import { Row, Col, Card, Form, Input, InputNumber, Button,Switch, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select } from 'antd';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
 import styles from './../../utils/utils.less';
@@ -60,7 +60,11 @@ const EditModal = connect(state => ({
           />
         ));
       } else {
-        return breadcrumbData[0].name;
+        return (form.getFieldDecorator('parent_id', {
+          initialValue: '',
+        })(
+          <div>{breadcrumbData[0].name}</div>
+        ));
       }
     } else {
       return moduleParentName;
@@ -131,6 +135,43 @@ const EditModal = connect(state => ({
             <Input placeholder="请输入" />
           )}
         </FormItem>
+        <FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="是否是菜单"
+        >
+          {form.getFieldDecorator('isMenu', { valuePropName: 'checked',initialValue: data.isMenu })(
+            <Switch />
+          )}
+        </FormItem>
+        {form.getFieldValue('isMenu')?(<FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="菜单地址"
+        >
+          {form.getFieldDecorator('url', {
+            initialValue: data.url,
+            rules: [
+              // { required: true, message: '该项为必填项' },
+            ],
+          })(
+            <Input placeholder="请输入" />
+          )}
+        </FormItem>):''}
+        {form.getFieldValue('isMenu')?(<FormItem
+          labelCol={{ span: 5 }}
+          wrapperCol={{ span: 15 }}
+          label="iconfont"
+        >
+          {form.getFieldDecorator('iconfont', {
+            initialValue: data.iconfont,
+            rules: [
+              // { required: true, message: '该项为必填项' },
+            ],
+          })(
+            <Input placeholder="请输入" />
+          )}
+        </FormItem>):''}
         <FormItem
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 15 }}
@@ -279,9 +320,13 @@ export default class TableList extends PureComponent {
     const { editModal: { isEdit } } = this.state;
     const { dispatch } = this.props;
     if (isEdit) {
+      console.log(fieldsValue);
       dispatch({
         type: 'modules/edit',
-        payload: fieldsValue,
+        payload: {
+          ...fieldsValue,
+          parent_id:fieldsValue.parent_id,
+        },
         callback: resetFormCallBack,
       });
 
@@ -291,7 +336,10 @@ export default class TableList extends PureComponent {
     } else {
       dispatch({
         type: 'modules/add',
-        payload: fieldsValue,
+        payload: {
+          ...fieldsValue,
+          parent_id:fieldsValue.parent_id,
+        },
         callback: resetFormCallBack,
       });
 

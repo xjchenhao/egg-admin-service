@@ -246,6 +246,7 @@ export default {
     },
     pushBreadcrumb(state, action) {
       const { breadcrumb } = state;
+      console.log(breadcrumb);
 
       breadcrumb.push(action.payload);
 

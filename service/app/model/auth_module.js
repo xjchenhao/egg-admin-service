@@ -9,6 +9,9 @@ module.exports = app => {
     name: { type: String },
     uri: { type: String, unique: true },
     describe: { type: String },
+    isMenu: { type: Boolean, default: false },
+    url: { type: String },
+    iconfont: { type: String },
     sort: { type: Number, default: 0 },
     parent_id: { type: String }, // 假设parent_id没有值的时候，表示它是顶级module
     create_date: { type: Date, default: Date.now },

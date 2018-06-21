@@ -70,6 +70,7 @@ class authUserController extends Controller {
         data: {
           account: query.account,
         },
+        state: 422,
       });
 
       return false;

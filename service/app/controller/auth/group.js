@@ -58,6 +58,7 @@ class authGroupController extends Controller {
         data: {
           name: query.name,
         },
+        state: 422,
       });
 
       return false;
@@ -117,6 +118,7 @@ class authGroupController extends Controller {
         data: {
           name: query.name,
         },
+        state: 422,
       });
 
       return false;
