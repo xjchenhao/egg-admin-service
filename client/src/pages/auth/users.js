@@ -4,7 +4,8 @@ import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, Table
 // import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
-import styles from './users.less';
+import styles from './../../utils/utils.less';
+
 
 const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
@@ -476,7 +477,7 @@ export default class TableList extends PureComponent {
             </FormItem>
           </Col>
         </Row>
-        <div style={{ overflow: 'hidden' }}>
+        <div style={{ overflow: 'hidden',marginTop:10 }}>
           <span style={{ float: 'right', marginBottom: 24 }}>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>重置</Button>

@@ -3,7 +3,8 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, InputNumber, Button, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select } from 'antd';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
-import styles from './modules.less';
+import styles from './../../utils/utils.less';
+
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -443,7 +444,7 @@ export default class TableList extends PureComponent {
             </FormItem>
           </Col>
         </Row>
-        <div style={{ overflow: 'hidden' }}>
+        <div style={{ overflow: 'hidden',marginTop:10 }}>
           <span style={{ float: 'right', marginBottom: 24 }}>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>重置</Button>

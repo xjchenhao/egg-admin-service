@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, Button, Modal, Divider, Transfer, Table, Tree } from 'antd';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
-import styles from './group.less';
+import styles from './../../utils/utils.less';
 
 const FormItem = Form.Item;
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
