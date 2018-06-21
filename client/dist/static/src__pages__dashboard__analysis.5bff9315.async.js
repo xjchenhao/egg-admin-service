@@ -1,1 +1,0 @@
-webpackJsonp([11],{Ul34:function(e,a,n){"use strict";Object.defineProperty(a,"__esModule",{value:!0});var t=(n("crfj"),n("zwGx")),r=n("GiK3"),c=n.n(r),l=n("qbDP"),u=n.n(l),i=c.a.createElement("h1",null,"Dashboard Analysis Page");a.default=function(){return c.a.createElement(c.a.Fragment,null,i,c.a.createElement(t.a,{type:"primary",onClick:function(){u.a.goBack()}},"Back"))}}});
