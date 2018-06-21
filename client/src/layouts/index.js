@@ -1,22 +1,23 @@
 import { Component } from 'react';
 import { connect } from 'dva';
-import { Layout, Icon, message } from 'antd';
+import { Layout, Icon, message,LocaleProvider } from 'antd';
 import 'ant-design-pro/dist/ant-design-pro.css';
-// import { enquireScreen } from 'enquire-js';
+import { enquireScreen } from 'enquire-js';
 import SiderMenu from "../components/SiderMenu/SiderMenu";
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
 import GlobalHeader from "../components/GlobalHeader";
 import SimpleLayout from "./UserLayout"
 import router from 'umi/router';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 const { Content, Header, Footer } = Layout;
 
 
-// let isMobile;
-// enquireScreen((b) => {
-//   isMobile = b;
-// });
+let isMobile;
+enquireScreen((b) => {
+  isMobile = b;
+});
 
 class BasicLayout extends Component {
   constructor(props) {
@@ -26,11 +27,11 @@ class BasicLayout extends Component {
     };
   }
   componentDidMount() {
-    // enquireScreen((mobile) => {
-    //   this.setState({
-    //     isMobile: mobile,
-    //   });
-    // });
+    enquireScreen((mobile) => {
+      this.setState({
+        isMobile: mobile,
+      });
+    });
     this.props.dispatch({
       type: 'user/fetchCurrent',
     });
@@ -69,6 +70,7 @@ class BasicLayout extends Component {
     }
 
     return (
+      <LocaleProvider locale={zhCN}>
       <Layout>
         <SiderMenu
           logo={logo}
@@ -98,6 +100,7 @@ class BasicLayout extends Component {
           </Content>
         </Layout>
       </Layout>
+      </LocaleProvider>
     );
   }
 }

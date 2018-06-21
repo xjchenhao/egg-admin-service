@@ -23,7 +23,7 @@ const authority = (groupName) => {
 const menuData = [{
     name: 'home',
     icon: 'home',
-    path: 'home',
+    path: '',
   }, {
     name: '权限管理',
     icon: 'solution',
