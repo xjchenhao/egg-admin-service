@@ -8,6 +8,7 @@ import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
 import GlobalHeader from "../components/GlobalHeader";
 import SimpleLayout from "./UserLayout"
+import router from 'umi/router';
 
 const { Content, Header, Footer } = Layout;
 
@@ -54,6 +55,7 @@ class BasicLayout extends Component {
       });
     }
     if (key === 'setting') {
+      router.push('/sys/user/editProfile');
       // this.props.dispatch(routerRedux.push('/editProfile'));
     }
   };
