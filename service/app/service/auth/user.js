@@ -10,7 +10,7 @@ module.exports = app => {
       return this.ctx.response.format.paging({
         resultList: await this.ctx.model.AuthUser.find(query)
           .skip((pageNumber - 1) * pageSize)
-          .limit(pageSize)
+          .limit(Number(pageSize))
           .exec(),
 
         totalLength: await this.ctx.model.AuthUser.find(query).count(),

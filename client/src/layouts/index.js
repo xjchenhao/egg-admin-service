@@ -55,7 +55,7 @@ class BasicLayout extends Component {
       });
     }
     if (key === 'setting') {
-      router.push('/sys/user/editProfile');
+      router.push('/sys/other/editProfile');
       // this.props.dispatch(routerRedux.push('/editProfile'));
     }
   };
