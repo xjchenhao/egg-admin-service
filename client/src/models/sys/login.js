@@ -10,8 +10,9 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
+    *login ({ payload }, { call, put }) {
       const response = yield call(login, payload);
+      const { redirect } = window.g_history.location.query;
 
       if (response.code !== '0') {
         yield put({
@@ -33,16 +34,16 @@ export default {
         },
       });
 
-      router.push('/');
+      window.location.href = redirect ? redirect : '/';
     },
-    *logout(_, { put, select, call }) {
+    *logout (_, { put, select, call }) {
       yield call(logout);
-      router.push('/sys/user/login');
+      window.location.href = `/?redirect=${encodeURIComponent(window.g_history.location.pathname)}#/sys/user/login`;
     },
   },
 
   reducers: {
-    changeLoginStatus(state, { payload }) {
+    changeLoginStatus (state, { payload }) {
       return {
         ...state,
         status: payload.status,

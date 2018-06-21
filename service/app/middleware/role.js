@@ -9,19 +9,27 @@ module.exports = action => {
 
     const noAccess = () => {
       ctx.body = {
-        code: '401',
-        msg: ctx.helper.errorCode['401'],
+        code: '403',
+        msg: ctx.helper.errorCode['403'],
         result: {
           userId: userInfo,
           uri: action,
         },
       };
-      ctx.status = 401;
+      ctx.status = 403;
     };
 
     if (!isLogin) {
       if (ctx.acceptJSON) {
-        noAccess();
+        ctx.body = {
+          code: '401',
+          msg: ctx.helper.errorCode['401'],
+          result: {
+            userId: userInfo,
+            uri: action,
+          },
+        };
+        ctx.status = 401;
       } else {
         ctx.redirect('/login?redirect=' + encodeURIComponent(ctx.originalUrl));
       }

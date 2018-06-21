@@ -32,6 +32,11 @@ class BasicLayout extends Component {
         isMobile: mobile,
       });
     });
+
+    if (this.props.location.pathname === '/sys/user/login') {
+      return;
+    }
+    
     this.props.dispatch({
       type: 'user/fetchCurrent',
     });

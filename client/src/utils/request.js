@@ -1,6 +1,6 @@
 import fetch from 'dva/fetch';
 import router from 'umi/router';
-import { notification } from 'antd';
+import { notification,Modal } from 'antd';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -77,15 +77,38 @@ export default function request(url, options) {
       // const { dispatch } = store;
       const status = e.name;
       if (status === 401) {
-        router.push('/sys/user/login')
-        // dispatch({
-        //   type: 'login/logout',
-        // });
+
+        Modal.info({
+          title: '提示',
+          content: '登录状态已过期',
+          okText: '重新登录',
+          onOk() {
+            window.g_app._store.dispatch({
+              type:'login/logout'
+            });
+          },
+        });
         return;
       }
       if (status === 403) {
         // dispatch(routerRedux.push('/exception/403'));
-        router.push('/exception/403')
+        // router.push('/exception/403')
+
+        Modal.confirm({
+          title: '提示',
+          content: 'Sorry，该账号无权访问该页面',
+          okText: '更换账号',
+          okType: 'danger',
+          cancelText: '返回首页',
+          onOk() {
+            window.g_app._store.dispatch({
+              type:'login/logout'
+            });
+          },
+          onCancel() {
+            router.push('/')
+          },
+        });
         return;
       }
       if (status <= 504 && status >= 500) {
