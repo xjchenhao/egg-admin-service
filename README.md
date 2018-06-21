@@ -1,7 +1,7 @@
 # egg-admin-service
 
 基于eggjs的node service，用来做前后端分离的后台管理系统的后端服务。简称`Eas`。
-Eas后台使用egg当作后台框架，`antd pro`当作前端界面。
+Eas后台使用egg当作后台框架，`antd`当作前端界面。
 
 ## 已实现
 1. 权限管理，精确到api级别的权限管理
@@ -10,7 +10,7 @@ Eas后台使用egg当作后台框架，`antd pro`当作前端界面。
 ## 需要掌握
 
 - 为企业级框架和应用而生的node框架：[egg](https://eggjs.org/)
-- 极快的类 Next.js 的 React 应用框架：[umi](https://umijs.org/)
+- 极快的类Next.js的React应用框架：[umi](https://umijs.org/)
 - 开箱即用的中台前端/设计解决方案：[ANT DESIGN PRO](https://pro.ant.design/index-cn)
 
 ## 本地开发
