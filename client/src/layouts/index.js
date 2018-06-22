@@ -74,6 +74,8 @@ class BasicLayout extends Component {
     const { children, location, currentUser,sidebar } = this.props;
     const { collapsed } = this.state;
 
+    console.log(sidebar);
+
     if (this.props.location.pathname === '/sys/user/login') {
       return <SimpleLayout>{ this.props.children }</SimpleLayout>
     }

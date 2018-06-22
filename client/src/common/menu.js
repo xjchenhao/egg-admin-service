@@ -68,4 +68,7 @@ function formatter(data, parentPath = '/', parentAuthority) {
   });
 }
 
-export const getMenuData = (item) => formatter(item);
+export const getMenuData = (item) => {
+  // console.log(item);
+  return formatter(item);
+};

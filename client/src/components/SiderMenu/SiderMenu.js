@@ -23,7 +23,6 @@ const getIcon = (icon) => {
 };
 
 export const getMeunMatcheys = (flatMenuKeys, path) => {
-  console.log('flatMenuKeys',flatMenuKeys);
   return flatMenuKeys.filter((item) => {
     return pathToRegexp(item).test(path);
   });
@@ -32,11 +31,16 @@ export const getMeunMatcheys = (flatMenuKeys, path) => {
 export default class SiderMenu extends PureComponent {
   constructor(props) {
     super(props);
-    this.menus = props.menuData;
-    this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
+    // this.menus = props.menuData;
+    // this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
     this.state = {
       openKeys: this.getDefaultCollapsedSubMenus(props),
     };
+  }
+  componentWillUpdate(nextProps){
+    this.setState({
+      openKeys: this.getDefaultCollapsedSubMenus(nextProps),
+    });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
@@ -44,6 +48,12 @@ export default class SiderMenu extends PureComponent {
         openKeys: this.getDefaultCollapsedSubMenus(nextProps),
       });
     }
+  }
+  get menus(){
+    return this.props.menuData;
+  }
+  get flatMenuKeys(){
+    return this.getFlatMenuKeys(this.props.menuData);
   }
   /**
    * Convert pathname to openKeys
@@ -157,7 +167,6 @@ export default class SiderMenu extends PureComponent {
   // Get the currently selected menu
   getSelectedMenuKeys = () => {
     const { location: { pathname } } = this.props;
-    console.log(urlToList(pathname));
     return urlToList(pathname).map(itemPath =>
       getMeunMatcheys(this.flatMenuKeys, itemPath).pop(),
     );
@@ -200,7 +209,6 @@ export default class SiderMenu extends PureComponent {
       };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys();
-    console.log('selectedKeys',selectedKeys);
     if (!selectedKeys.length) {
       selectedKeys = [openKeys[openKeys.length - 1]];
     }
