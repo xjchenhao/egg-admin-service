@@ -75,11 +75,11 @@ class sysMainController extends Controller {
       const arrMap = [];
       arr.forEach(obj => {
         arrMap.push({
-          menuIcon: obj.iconfont,
-          menuName: obj.name,
-          menuUrl: obj.url,
+          icon: obj.iconfont,
+          name: obj.name,
+          path: obj.url || '',
           describe: obj.describe,
-          childrens: obj.children && convert(obj.children),
+          children: obj.children && convert(obj.children),
         });
       });
       return arrMap;

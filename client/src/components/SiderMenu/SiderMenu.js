@@ -23,6 +23,7 @@ const getIcon = (icon) => {
 };
 
 export const getMeunMatcheys = (flatMenuKeys, path) => {
+  console.log('flatMenuKeys',flatMenuKeys);
   return flatMenuKeys.filter((item) => {
     return pathToRegexp(item).test(path);
   });
@@ -156,6 +157,7 @@ export default class SiderMenu extends PureComponent {
   // Get the currently selected menu
   getSelectedMenuKeys = () => {
     const { location: { pathname } } = this.props;
+    console.log(urlToList(pathname));
     return urlToList(pathname).map(itemPath =>
       getMeunMatcheys(this.flatMenuKeys, itemPath).pop(),
     );
@@ -198,6 +200,7 @@ export default class SiderMenu extends PureComponent {
       };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys();
+    console.log('selectedKeys',selectedKeys);
     if (!selectedKeys.length) {
       selectedKeys = [openKeys[openKeys.length - 1]];
     }

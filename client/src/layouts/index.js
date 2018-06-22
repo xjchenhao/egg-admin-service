@@ -38,6 +38,10 @@ class BasicLayout extends Component {
     }
     
     this.props.dispatch({
+      type: 'global/fetchSidebar',
+    });
+    
+    this.props.dispatch({
       type: 'user/fetchCurrent',
     });
   }
@@ -67,7 +71,7 @@ class BasicLayout extends Component {
   };
 
   render() {
-    const { children, location, currentUser } = this.props;
+    const { children, location, currentUser,sidebar } = this.props;
     const { collapsed } = this.state;
 
     if (this.props.location.pathname === '/sys/user/login') {
@@ -80,7 +84,7 @@ class BasicLayout extends Component {
         <SiderMenu
           logo={logo}
           collapsed={collapsed}
-          menuData={getMenuData()}
+          menuData={getMenuData(sidebar)}
           location={location}
           onCollapse={this.handleMenuCollapse}
         />
@@ -115,4 +119,5 @@ export default connect(({ user, global, loading }) => ({
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
+  sidebar:global.sidebar,
 }))(BasicLayout);
