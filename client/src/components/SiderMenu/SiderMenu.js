@@ -37,11 +37,11 @@ export default class SiderMenu extends PureComponent {
       openKeys: this.getDefaultCollapsedSubMenus(props),
     };
   }
-  componentWillUpdate(nextProps){
-    this.setState({
-      openKeys: this.getDefaultCollapsedSubMenus(nextProps),
-    });
-  }
+  // componentWillUpdate(nextProps){
+  //   this.setState({
+  //     openKeys: this.getDefaultCollapsedSubMenus(nextProps),
+  //   });
+  // }
   componentWillReceiveProps(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.setState({
