@@ -53,9 +53,9 @@ const menuData = [{
 function formatter(data, parentPath = '/', parentAuthority) {
   return data.map(item => {
     let { path } = item;
-    if (!isUrl(path)) {
-      path = parentPath + item.path;
-    }
+    // if (!isUrl(path)) {  // 原先非http的url连接会根据菜单的嵌套做字符串合并，形成完整的url。因为改用后端配置侧栏菜单，这个处理已没有必要了。
+    //   path = parentPath + item.path;
+    // }
     const result = {
       ...item,
       path,
@@ -69,6 +69,5 @@ function formatter(data, parentPath = '/', parentAuthority) {
 }
 
 export const getMenuData = (item) => {
-  // console.log(item);
   return formatter(item);
 };

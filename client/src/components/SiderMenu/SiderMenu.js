@@ -8,7 +8,7 @@ import { urlToList } from '../utils/pathTools';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-// Allow menu.js config icon as string or ReactNode
+// icon设置，支持iconimage和iconfont
 //   icon: 'setting',
 //   icon: 'http://demo.com/icon.png',
 //   icon: <Icon type="setting" />,
@@ -69,7 +69,7 @@ export default class SiderMenu extends PureComponent {
       .filter(item => item);
   }
   /**
-   * Recursively flatten the data
+   * 拍平菜单map，获取url数组。
    * [{path:string},{path:string}] => {path,path2}
    * @param  menus
    */
@@ -85,7 +85,6 @@ export default class SiderMenu extends PureComponent {
   }
   /**
    * 判断是否是http链接.返回 Link 或 a
-   * Judge whether it is http link.return a or Link
    * @memberof SiderMenu
    */
   getMenuItemPath = (item) => {
@@ -164,14 +163,13 @@ export default class SiderMenu extends PureComponent {
       })
       .filter(item => item);
   };
-  // Get the currently selected menu
+  // 得到当前选中的菜单
   getSelectedMenuKeys = () => {
     const { location: { pathname } } = this.props;
     return urlToList(pathname).map(itemPath =>
       getMeunMatcheys(this.flatMenuKeys, itemPath).pop(),
     );
   };
-  // conversion Path
   // 转化路径
   conversionPath = (path) => {
     if (path && path.indexOf('http') === 0) {
