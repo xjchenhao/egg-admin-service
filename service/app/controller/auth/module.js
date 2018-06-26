@@ -160,6 +160,11 @@ class authMenuController extends Controller {
         required: false,
         allowEmpty: true,
       },
+      isMenu: {
+        type: 'boolean',
+        required: false,
+        allowEmpty: true,
+      },
       iconfont: {
         type: 'string',
         required: false,
@@ -167,11 +172,6 @@ class authMenuController extends Controller {
       },
       describe: {
         type: 'string',
-        required: false,
-        allowEmpty: true,
-      },
-      isMenu: {
-        type: 'boolean',
         required: false,
         allowEmpty: true,
       },
