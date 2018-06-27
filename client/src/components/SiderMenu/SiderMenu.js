@@ -89,7 +89,7 @@ export default class SiderMenu extends PureComponent {
    */
   getMenuItemPath = (item) => {
     const itemPath = this.conversionPath(item.path);
-    const icon = getIcon(item.icon);
+    const icon = item.icon ? getIcon(item.icon) : '';
     const { target, name } = item;
     // Is it a http link
     if (/^https?:\/\//.test(itemPath)) {
