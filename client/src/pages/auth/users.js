@@ -395,7 +395,9 @@ export default class TableList extends PureComponent {
     });
     dispatch({
       type: 'users/fetch',
-      payload: {},
+      payload: {
+        currentPage:1
+      },
     });
   }
 
@@ -499,6 +501,12 @@ export default class TableList extends PureComponent {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { selectedRows, editModal, resetPwdModal} = this.state;
 
+    const pagination={
+      current: data.pagination.currentPage,
+      pageSize: data.pagination.pages,
+      total: data.pagination.total,
+    };
+
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="remove">删除</Menu.Item>
@@ -590,7 +598,7 @@ export default class TableList extends PureComponent {
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
-                ...data.pagination,
+                ...pagination,
               }}
               onChange={this.handleStandardTableChange}
             />

@@ -43,7 +43,7 @@ export default {
             query: payload,
             list: response.result.list.map(obj => Object.assign(obj, { key: obj.id })),
             pagination: {
-              current: response.result.currentPage,
+              currentPage: response.result.currentPage,
               pageSize: response.result.pages,
               total: response.result.total,
             },
@@ -165,6 +165,7 @@ export default {
         payload: {
           ...query,
           parent_id: id,
+          currentPage:1,
         },
       });
 
@@ -227,6 +228,10 @@ export default {
 
   reducers: {
     save(state, action) {
+      console.log({
+        ...state,
+        ...action.payload,
+      });
       return {
         ...state,
         ...action.payload,
@@ -244,9 +249,17 @@ export default {
         loading: action.payload,
       };
     },
+    initBreadcrumb(state){
+      return {
+        ...state,
+        breadcrumb:[{
+          id: '',
+          name: 'Root',
+        }],
+      };
+    },
     pushBreadcrumb(state, action) {
       const { breadcrumb } = state;
-      console.log(breadcrumb);
 
       breadcrumb.push(action.payload);
 

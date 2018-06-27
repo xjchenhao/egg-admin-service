@@ -436,7 +436,9 @@ export default class TableList extends PureComponent {
     });
     dispatch({
       type: 'group/fetch',
-      payload: {},
+      payload: {
+        currentPage:1
+      },
     });
   }
 
@@ -467,6 +469,12 @@ export default class TableList extends PureComponent {
   render() {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { editModal, memberModal, authModal } = this.state;
+
+    const pagination={
+      current: data.pagination.currentPage,
+      pageSize: data.pagination.pages,
+      total: data.pagination.total,
+    };
 
     const columns = [
       {
@@ -544,7 +552,7 @@ export default class TableList extends PureComponent {
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
-                ...data.pagination,
+                ...pagination,
               }}
               onChange={this.handleStandardTableChange}
             />

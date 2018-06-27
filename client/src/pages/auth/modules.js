@@ -254,7 +254,9 @@ export default class TableList extends PureComponent {
 
     dispatch({
       type: 'modules/fetch',
-      payload: params,
+      payload: {
+        ...params,
+      },
     });
   }
 
@@ -273,7 +275,14 @@ export default class TableList extends PureComponent {
 
       dispatch({
         type: 'modules/fetch',
-        payload: fieldsValue,
+        payload: {
+          ...fieldsValue,
+        },
+      });
+
+      dispatch({
+        type: 'modules/initBreadcrumb',
+        payload: {},
       });
     });
   }
@@ -374,6 +383,13 @@ export default class TableList extends PureComponent {
     });
     dispatch({
       type: 'modules/fetch',
+      payload: {
+        currentPage:1
+      },
+    });
+
+    dispatch({
+      type: 'modules/initBreadcrumb',
       payload: {},
     });
   }
@@ -542,6 +558,12 @@ export default class TableList extends PureComponent {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
     const { editModal } = this.state;
 
+    const pagination={
+      current: data.pagination.currentPage,
+      pageSize: data.pagination.pages,
+      total: data.pagination.total,
+    };
+
     const columns = [
       {
         title: '序号',
@@ -632,7 +654,7 @@ export default class TableList extends PureComponent {
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
-                ...data.pagination,
+                ...pagination,
               }}
               onChange={this.handleStandardTableChange}
             />
