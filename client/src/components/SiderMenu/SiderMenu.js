@@ -4,6 +4,7 @@ import pathToRegexp from 'path-to-regexp';
 import { Link } from 'dva/router';
 import styles from './index.less';
 import { urlToList } from '../utils/pathTools';
+import { siderMenuTitle } from './../../utils/config';
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -42,17 +43,17 @@ export default class SiderMenu extends PureComponent {
   //     openKeys: this.getDefaultCollapsedSubMenus(nextProps),
   //   });
   // }
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.setState({
         openKeys: this.getDefaultCollapsedSubMenus(nextProps),
       });
     }
   }
-  get menus(){
+  get menus () {
     return this.props.menuData;
   }
-  get flatMenuKeys(){
+  get flatMenuKeys () {
     return this.getFlatMenuKeys(this.props.menuData);
   }
   /**
@@ -60,7 +61,7 @@ export default class SiderMenu extends PureComponent {
    * /list/search/articles = > ['list','/list/search']
    * @param  props
    */
-  getDefaultCollapsedSubMenus(props) {
+  getDefaultCollapsedSubMenus (props) {
     const { location: { pathname } } = props || this.props;
     return urlToList(pathname)
       .map((item) => {
@@ -73,7 +74,7 @@ export default class SiderMenu extends PureComponent {
    * [{path:string},{path:string}] => {path,path2}
    * @param  menus
    */
-  getFlatMenuKeys(menus) {
+  getFlatMenuKeys (menus) {
     let keys = [];
     menus.forEach((item) => {
       if (item.children) {
@@ -108,8 +109,8 @@ export default class SiderMenu extends PureComponent {
         onClick={
           this.props.isMobile
             ? () => {
-                this.props.onCollapse(true);
-              }
+              this.props.onCollapse(true);
+            }
             : undefined
         }
       >
@@ -132,8 +133,8 @@ export default class SiderMenu extends PureComponent {
                 <span>{item.name}</span>
               </span>
             ) : (
-              item.name
-            )
+                item.name
+              )
           }
           key={item.path}
         >
@@ -196,7 +197,7 @@ export default class SiderMenu extends PureComponent {
       openKeys: isMainMenu ? [lastOpenKey] : [...openKeys],
     });
   };
-  render() {
+  render () {
     const { logo, collapsed, onCollapse } = this.props;
     const { openKeys } = this.state;
     // Don't show popup menu when it is been collapsed
@@ -223,7 +224,7 @@ export default class SiderMenu extends PureComponent {
         <div className={styles.logo} key="logo">
           <Link to="/">
             <img src={logo} alt="logo" />
-            <h1>Ant Design Pro</h1>
+            <h1>{siderMenuTitle}</h1>
           </Link>
         </div>
         <Menu
