@@ -60,9 +60,9 @@ class sysMainController extends Controller {
       // 对子集进行排序
       arr.sort(function(val1, val2) {
         if (val1.sort < val2.sort) {
-          return -1;
-        } else if (val1.sort > val2.sort) {
           return 1;
+        } else if (val1.sort > val2.sort) {
+          return -1;
         }
         return 0;
 
