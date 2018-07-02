@@ -1,18 +1,6 @@
 version: '3'
 services:
 
-  eas:
-    image: daocloud.io/xjchenhao/eas
-    environment:
-      - NODE_ENV=production
-      - EGG_SERVER_ENV=prod
-    depends_on:
-      - mongodb
-    networks:
-      - docker_eas
-    ports:
-      - 3000:3000
-
   mongodb:
     image: mongo:3.2
     restart: always
@@ -25,6 +13,18 @@ services:
       - docker_eas
     ports:
       - 27017:27017
+
+  eas:
+    image: daocloud.io/xjchenhao/eas
+    # environment:
+    #   - NODE_ENV=production
+    #   - EGG_SERVER_ENV=prod
+    depends_on:
+      - mongodb
+    networks:
+      - docker_eas
+    ports:
+      - 3000:3000
 
 volumes:
   egg-mongo:
