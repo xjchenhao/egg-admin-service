@@ -14,7 +14,7 @@ module.exports = appInfo => {
     mongoose: {
       clients: {
         back: {
-          url:process.env.EGG_MONGODB_URL || 'mongodb://127.0.0.1:27017/eas',
+          url: process.env.EGG_MONGODB_URL || 'mongodb://127.0.0.1:27017/eas',
           options: {},
         },
       },
@@ -27,7 +27,7 @@ module.exports = appInfo => {
     },
     static: {
       prefix: '/',
-      dir: [path.join(appInfo.baseDir, 'app/assets'),path.join(appInfo.baseDir, 'app/public')]
+      dir: [path.join(appInfo.baseDir, 'app/assets'), path.join(appInfo.baseDir, 'app/public')]
     },
     // 是否加载到 app 上，默认开启
     app: true,

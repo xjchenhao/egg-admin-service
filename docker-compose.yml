@@ -1,0 +1,34 @@
+version: '3'
+services:
+
+  eas:
+    image: daocloud.io/xjchenhao/eas
+    environment:
+      - NODE_ENV=production
+      - EGG_SERVER_ENV=prod
+    depends_on:
+      - mongodb
+    networks:
+      - docker_eas
+    ports:
+      - 3000:3000
+
+  mongodb:
+    image: mongo:3.2
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=eas
+    volumes:
+      - egg-mongo:/data/db
+      - ./init.d/mongo/:/docker-entrypoint-initdb.d/
+    networks:
+      - docker_eas
+    ports:
+      - 27017:27017
+
+volumes:
+  egg-mongo:
+
+networks:
+  docker_eas:
+    driver: bridge
