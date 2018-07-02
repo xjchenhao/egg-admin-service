@@ -14,3 +14,4 @@ run/
 db/
 dist/
 eas.code-workspace
+service/app/assets/
