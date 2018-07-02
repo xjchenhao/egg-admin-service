@@ -13,9 +13,6 @@ services:
     ports:
       - 27017:27017
 
-volumes:
-  egg-mongo:
-
 networks:
   docker_eas:
     driver: bridge
