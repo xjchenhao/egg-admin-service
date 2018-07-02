@@ -14,7 +14,7 @@ module.exports = appInfo => {
     mongoose: {
       clients: {
         back: {
-          url: process.env.EGG_MONGODB_URL || 'mongodb://127.0.0.1:27017/eas',
+          url: process.env.EGG_MONGODB_URL || 'mongodb://mongodb:27017/eas',
           options: {},
         },
       },

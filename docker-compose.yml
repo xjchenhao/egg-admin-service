@@ -8,7 +8,6 @@ services:
       - MONGO_INITDB_DATABASE=eas
     volumes:
       - egg-mongo:/data/db
-      - ./init.d/mongo/:/docker-entrypoint-initdb.d/
     networks:
       - docker_eas
     ports:
