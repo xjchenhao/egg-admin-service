@@ -30,8 +30,8 @@
   },
   "scripts": {
     "npm-i": "cipm",
-    "start": "egg-scripts start --daemon",
-    "stop": "egg-scripts stop",
+    "start": "egg-scripts start --title=eas --daemon",
+    "stop": "egg-scripts stop --title=eas",
     "docker": "egg-scripts start --title=eas",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
