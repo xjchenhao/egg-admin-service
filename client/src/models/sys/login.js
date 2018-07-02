@@ -1,5 +1,4 @@
 import { login, logout } from '../../services/sys/user';
-import router from 'umi/router';
 
 export default {
   namespace: 'login',

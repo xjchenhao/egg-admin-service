@@ -34,9 +34,9 @@ export default class Register extends Component {
     prefix: '86',
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     const account = this.props.form.getFieldValue('mail');
-    if (nextProps.register.status === 'ok') {
+    if (prevProps.register.status === 'ok') {
       this.props.dispatch(routerRedux.push({
         pathname: '/user/register-result',
         state: {

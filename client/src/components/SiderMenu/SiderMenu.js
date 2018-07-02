@@ -43,10 +43,17 @@ export default class SiderMenu extends PureComponent {
   //     openKeys: this.getDefaultCollapsedSubMenus(nextProps),
   //   });
   // }
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.location.pathname !== this.props.location.pathname) {
+  // componentWillReceiveProps (nextProps) {
+  //   if (nextProps.location.pathname !== this.props.location.pathname) {
+  //     this.setState({
+  //       openKeys: this.getDefaultCollapsedSubMenus(nextProps),
+  //     });
+  //   }
+  // }
+  componentDidUpdate (prevProps) {
+    if (prevProps.location.pathname !== this.props.location.pathname) {
       this.setState({
-        openKeys: this.getDefaultCollapsedSubMenus(nextProps),
+        openKeys: this.getDefaultCollapsedSubMenus(prevProps),
       });
     }
   }
