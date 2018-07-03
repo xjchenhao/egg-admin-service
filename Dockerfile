@@ -1,7 +1,4 @@
-FROM daocloud.io/library/centos:latest
-
-# 给环境注入预先准备好的node执行环境
-ADD ./docker/node-v8.tar.gz /usr
+FROM  daocloud.io/library/node:8.9.4
 
 # copy客户端代码进docker，build静态页面
 RUN mkdir /var/client
@@ -13,7 +10,6 @@ RUN cd /var/client/ \
 # copy服务端代码进docker，替换config文件
 RUN mkdir /var/eas
 COPY ./service/ /var/eas/
-COPY ./docker/config.default.js /var/eas/config/config.default.js
 
 # 把build后的静态页面放入服务端的assets中，交由service运行
 RUN mkdir /var/eas/app/assets \
