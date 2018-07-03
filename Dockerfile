@@ -29,7 +29,7 @@ WORKDIR /var/eas
 ENV NODE_ENV=test
 
 # docker对外暴露的端口号
-EXPOSE 3000
+EXPOSE 7001
 
 # 执行脚本
 CMD npm run docker
