@@ -1,4 +1,4 @@
-FROM  daocloud.io/library/node:8.9.4
+FROM node:8.9.4
 
 # copy客户端代码进docker，build静态页面
 RUN mkdir /var/client
