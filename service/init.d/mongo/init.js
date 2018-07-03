@@ -1,5 +1,3 @@
-use eas;
-
 db.users.insert([
   {
     _id: ObjectId('5ae16cc3e928ed4ac5f887a0'),
