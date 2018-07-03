@@ -28,8 +28,7 @@ Eas后台使用egg当作后台框架，`antd`当作前端界面。
 
 ##### 执行脚本
 1. 进入工程目录下`/service/init.d/mongo`文件夹
-2. 修改`init.sh`文件中的变量(如果需要的话)
-3. 终端执行`sudo ./init.sh`（如果遇到无法执行的情况，记得`chmod 777 init.sh`给sh文件授权。）
+3. 终端执行`mongo init.js`
 4. 查看mongodb是否生成了数据
 
 #### 启动node服务

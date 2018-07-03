@@ -1,3 +1,4 @@
+use eas;
 
 db.users.insert([
   {

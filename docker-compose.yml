@@ -8,6 +8,7 @@ services:
       - MONGO_INITDB_DATABASE=eas
     volumes:
       - egg-mongo:/data/db
+      - ./service/init.d/mongo:/docker-entrypoint-initdb.d
     networks:
       - docker_eas
     ports:
@@ -15,15 +16,15 @@ services:
 
   eas:
     image: daocloud.io/xjchenhao/eas
-    # environment:
-    #   - NODE_ENV=production
-    #   - EGG_SERVER_ENV=prod
+    environment:
+      - NODE_ENV=test
+      - EGG_SERVER_ENV=test
     depends_on:
       - mongodb
     networks:
       - docker_eas
     ports:
-      - 3000:3000
+      - 7001:7001
 
 volumes:
   egg-mongo:
