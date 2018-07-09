@@ -2,7 +2,6 @@
 
 module.exports = action => {
   return async function(ctx, next) {
-    await next();
 
     const isLogin = ctx.isAuthenticated();
     const userInfo = ctx.user;
@@ -55,6 +54,8 @@ module.exports = action => {
         modules: uriId,
       });
       if (result) {
+        await next();
+
         return true;
       }
     }

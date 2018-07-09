@@ -2,6 +2,13 @@
 const Controller = require('./../../core/baseController');
 const _ = require('underscore');
 
+const uriToList = uri => {
+  const urilist = uri.split('.').filter(i => i);
+  return urilist.map((uriItem, index) => {
+    return `${urilist.slice(0, index + 1).join('.')}`;
+  });
+};
+
 class sysMainController extends Controller {
 
   async sidebar(ctx) {
@@ -30,13 +37,43 @@ class sysMainController extends Controller {
       .forEach(item => {
         userAuthModulePromise.push(ctx.model.AuthModule.findOne({
           _id: item,
-          isMenu: true,
+          // isMenu: true,
         }));
+
       });
 
     let result = await Promise.all(userAuthModulePromise);
 
     result = result.filter(item => !!item); // 过滤结果为null的项
+
+    const parentNodePromise = [];
+    result.forEach(function(obj) {
+      if (!obj.isMenu) {
+        const parentUriList = uriToList(obj.uri);
+        parentUriList.pop();
+        parentNodePromise.push(ctx.model.AuthModule.find({
+          uri: { $in: parentUriList },
+        }));
+      }
+    });
+
+    const parentNodes = await Promise.all(parentNodePromise);
+    const data = [ ...result ];
+    let pnodes = [];
+    parentNodes.forEach(pitem => {
+      pnodes = pnodes.concat(...pitem);
+    });
+    pnodes.forEach(pitem => {
+      let has = false;
+      data.forEach(item => {
+        if (pitem.id === item.id) {
+          has = true;
+        }
+      });
+      if (!has) {
+        data.push(pitem);
+      }
+    });
 
 
     // 根据父级id遍历子集
@@ -44,8 +81,8 @@ class sysMainController extends Controller {
       const arr = [];
 
       // 查询该id下的所有子集
-      result.forEach(function(obj) {
-        if (obj.parent_id === parentId) {
+      data.forEach(function(obj) {
+        if (obj.parent_id === parentId && obj.isMenu) {
           arr.push(Object.assign(obj, {
             children: subset(obj.id),
           }));
