@@ -110,7 +110,7 @@ export default class BasicForms extends PureComponent {
     }));
 
 
-    dispatch(routerRedux.push('/user/login'));
+    dispatch(routerRedux.push('/sys/user/login'));
   }
 
   handleSubmit = (e) => {
