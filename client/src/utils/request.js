@@ -99,12 +99,7 @@ export default function request(url, options) {
           content: 'Sorry，该账号无权访问该页面',
           okText: '更换账号',
           okType: 'danger',
-          cancelText: '返回首页',
-          onOk() {
-            window.g_app._store.dispatch({
-              type:'login/logout'
-            });
-          },
+          cancelText: '知道了',
           onCancel() {
             router.push('/')
           },
