@@ -34,8 +34,10 @@ export default class SiderMenu extends PureComponent {
     super(props);
     // this.menus = props.menuData;
     // this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
+    const pathname =  window.location.hash.split('#')[1];
+    let openKeys = urlToList(pathname);
     this.state = {
-      openKeys: this.getDefaultCollapsedSubMenus(props),
+      openKeys:openKeys// this.getDefaultCollapsedSubMenus(props),
     };
   }
   // componentWillUpdate(nextProps){
@@ -43,17 +45,10 @@ export default class SiderMenu extends PureComponent {
   //     openKeys: this.getDefaultCollapsedSubMenus(nextProps),
   //   });
   // }
-  // componentWillReceiveProps (nextProps) {
-  //   if (nextProps.location.pathname !== this.props.location.pathname) {
-  //     this.setState({
-  //       openKeys: this.getDefaultCollapsedSubMenus(nextProps),
-  //     });
-  //   }
-  // }
-  componentDidUpdate (prevProps) {
-    if (prevProps.location.pathname !== this.props.location.pathname) {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
       this.setState({
-        openKeys: this.getDefaultCollapsedSubMenus(prevProps),
+        openKeys: this.getDefaultCollapsedSubMenus(nextProps),
       });
     }
   }
@@ -207,6 +202,7 @@ export default class SiderMenu extends PureComponent {
   render () {
     const { logo, collapsed, onCollapse } = this.props;
     const { openKeys } = this.state;
+
     // Don't show popup menu when it is been collapsed
     const menuProps = collapsed
       ? {}
@@ -240,6 +236,7 @@ export default class SiderMenu extends PureComponent {
           mode="inline"
           {...menuProps}
           onOpenChange={this.handleOpenChange}
+          openKeys={openKeys}
           selectedKeys={selectedKeys}
           style={{ padding: '16px 0', width: '100%' }}
         >
