@@ -2,7 +2,7 @@ import fetch from 'dva/fetch';
 import router from 'umi/router';
 import { notification, Modal } from 'antd';
 
-const store = window.g_app._store;
+// const store = window.g_app._store;
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -49,7 +49,11 @@ export default function request (url, options) {
     credentials: 'include',
   };
   const newOptions = { ...defaultOptions, ...options };
-  if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
+  if (
+    newOptions.method === 'POST' ||
+    newOptions.method === 'PUT' ||
+    newOptions.method === 'DELETE'
+  ) {
     if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
@@ -61,11 +65,11 @@ export default function request (url, options) {
       // newOptions.body is FormData
       newOptions.headers = {
         Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
         ...newOptions.headers,
       };
     }
   }
+
 
   return fetch(url, newOptions)
     .then(checkStatus)
@@ -76,7 +80,7 @@ export default function request (url, options) {
       return response.json();
     })
     .catch((e) => {
-      const { dispatch } = store;
+      const { dispatch } = window.g_app._store;
       const status = e.name;
 
       if (status === 401) {
