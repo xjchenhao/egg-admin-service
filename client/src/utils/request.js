@@ -1,6 +1,8 @@
 import fetch from 'dva/fetch';
 import router from 'umi/router';
-import { notification,Modal } from 'antd';
+import { notification, Modal } from 'antd';
+
+const store = window.g_app._store;
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -20,7 +22,7 @@ const codeMessage = {
   504: '网关超时。',
 };
 
-function checkStatus(response) {
+function checkStatus (response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -42,7 +44,7 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url, options) {
+export default function request (url, options) {
   const defaultOptions = {
     credentials: 'include',
   };
@@ -74,17 +76,18 @@ export default function request(url, options) {
       return response.json();
     })
     .catch((e) => {
-      // const { dispatch } = store;
+      const { dispatch } = store;
       const status = e.name;
+
       if (status === 401) {
 
         Modal.info({
           title: '提示',
           content: '登录状态已过期',
           okText: '重新登录',
-          onOk() {
-            window.g_app._store.dispatch({
-              type:'login/logout'
+          onOk () {
+            dispatch({
+              type: 'login/logout'
             });
           },
         });
@@ -96,13 +99,18 @@ export default function request(url, options) {
 
         Modal.confirm({
           title: '提示',
-          content: 'Sorry，该账号无权访问该页面',
+          content: 'Sorry，账号无权执行该操作',
           okText: '更换账号',
           okType: 'danger',
           cancelText: '知道了',
-          onCancel() {
-            router.push('/')
+          onOk () {
+            dispatch({
+              type: 'login/logout'
+            });
           },
+          // onCancel() {
+          //   router.push('/')
+          // },
         });
         return;
       }
