@@ -86,7 +86,7 @@ db.modules.insert([
     sort: 1,
     __v: 0.0,
     isMenu: true,
-    iconfont: 'auth',
+    iconfont: 'solution',
     url: '/auth',
   },
   {
