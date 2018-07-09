@@ -40,9 +40,8 @@ module.exports = app => {
   app.get('sysSidebar', '/nodeApi/sys/sidebar', 'sys.main.sidebar'); // 查看系统菜单
 
   app.get('/nodeApi/sys/editProfile/:id/edit', 'sys.editProfile.edit'); // 编辑资料-用户详情
-  app.put('/nodeApi/sys/editProfile/:id', 'sys.editProfile.update'); // 编辑资料-修改用户详情
-  app.put('/nodeApi/sys/editProfile/pwd/:id', 'sys.editProfile.setPassword'); // 编辑资料-重置密码
-
+  app.put('/nodeApi/sys/editProfile/:id', can('sys.editProfile.update'), 'sys.editProfile.update'); // 编辑资料-修改用户详情
+  app.put('/nodeApi/sys/editProfile/pwd/:id', can('sys.editProfile.setPassword'), 'sys.editProfile.setPassword'); // 编辑资料-重置密码
 
   /* passport */
   app.get('/nodeApi/sys/login', 'sys.passport.login'); // 登录
