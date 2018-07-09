@@ -39,5 +39,5 @@ demo地址：[http://eas.xjchenhao.cn/](http://eas.xjchenhao.cn/)
 3. 执行`npm run dev`启动node服务
 
 #### 账号
-admin/123456
-test/123456
+- admin/123456
+- test/123456
