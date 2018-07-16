@@ -5,6 +5,7 @@ module.exports = appInfo => {
     security: {
       csrf: {
         enable: false,
+        disableConsoleAfterReady: false, // ps：egg官方不建议关闭
       },
     },
     logger: {
