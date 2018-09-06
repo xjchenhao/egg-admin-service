@@ -30,3 +30,9 @@ exports.mongoose = {
   enable: true,
   package: 'egg-mongoose',
 };
+
+// alinode性能监控
+exports.alinode = {
+  enable: true,
+  package: 'egg-alinode',
+};
