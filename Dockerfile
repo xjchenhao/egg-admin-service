@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/aliyun-node/alinode:3.9
+FROM registry.cn-hangzhou.aliyuncs.com/aliyun-node/alinode:latest
 
 # copy客户端代码进docker，build静态页面
 RUN mkdir /var/client
