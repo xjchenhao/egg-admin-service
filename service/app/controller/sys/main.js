@@ -33,7 +33,7 @@ class sysMainController extends Controller {
 
     const userAuthModulePromise = [];
 
-    _.intersection(...userGroupData) // 去重
+    _.union(...userGroupData) // 去重
       .forEach(item => {
         userAuthModulePromise.push(ctx.model.AuthModule.findOne({
           _id: item,
