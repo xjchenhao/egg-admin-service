@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, Table, Divider } from 'antd';
+import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, Table, Divider, Popconfirm } from 'antd';
 // import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
@@ -189,7 +189,7 @@ export default class TableList extends PureComponent {
     },
   };
 
-  componentDidMount() {
+  componentDidMount () {
     const { dispatch } = this.props;
 
     // 获取列表数据
@@ -396,7 +396,7 @@ export default class TableList extends PureComponent {
     dispatch({
       type: 'users/fetch',
       payload: {
-        currentPage:1
+        currentPage: 1
       },
     });
   }
@@ -479,7 +479,7 @@ export default class TableList extends PureComponent {
             </FormItem>
           </Col>
         </Row>
-        <div style={{ overflow: 'hidden',marginTop:10 }}>
+        <div style={{ overflow: 'hidden', marginTop: 10 }}>
           <span style={{ float: 'right', marginBottom: 24 }}>
             <Button type="primary" htmlType="submit">查询</Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>重置</Button>
@@ -497,11 +497,11 @@ export default class TableList extends PureComponent {
     return this.state.expandForm ? this.renderAdvancedForm() : this.renderSimpleForm();
   }
 
-  render() {
+  render () {
     const { pageModel: { loading: ruleLoading, data } } = this.props;
-    const { selectedRows, editModal, resetPwdModal} = this.state;
+    const { selectedRows, editModal, resetPwdModal } = this.state;
 
-    const pagination={
+    const pagination = {
       current: data.pagination.currentPage,
       pageSize: data.pagination.pages,
       total: data.pagination.total,
@@ -516,7 +516,7 @@ export default class TableList extends PureComponent {
     const columns = [
       {
         title: '序号',
-        render(text, record, index) {
+        render (text, record, index) {
           return index + 1;
         },
       },
@@ -554,12 +554,15 @@ export default class TableList extends PureComponent {
             >修改
             </a>
             <Divider type="vertical" />
-            <a
-              onClick={() => {
+            <Popconfirm
+              title="确认删除？"
+              onConfirm={() => {
                 this.handleRemove(record.id);
-              }}
-            >删除
+              }}>
+              <a
+              >删除
             </a>
+            </Popconfirm>
           </div>
         ),
       },

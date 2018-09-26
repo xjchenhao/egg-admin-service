@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Card, Form, Input, InputNumber, Button,Switch, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select } from 'antd';
+import { Row, Col, Card, Form, Input, InputNumber, Button,Switch, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select,Popconfirm } from 'antd';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
 import styles from './../../utils/utils.less';
@@ -617,12 +617,15 @@ export default class TableList extends PureComponent {
             >修改
             </a>
             <Divider type="vertical" />
-            <a
-              onClick={() => {
+            <Popconfirm
+              title="确认删除？"
+              onConfirm={() => {
                 this.handleRemove(record.id);
-              }}
-            >删除
+              }}>
+              <a
+              >删除
             </a>
+            </Popconfirm>
           </div>
         ),
       },
