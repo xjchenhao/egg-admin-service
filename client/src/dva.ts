@@ -5,7 +5,7 @@ import { message } from 'antd';
 
 export function config() {
   return {
-    onError(err) {
+    onError(err: { preventDefault: Function, message: Function }) {
       err.preventDefault();
       message.error(err.message);
     },
