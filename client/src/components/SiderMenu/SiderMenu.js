@@ -34,7 +34,7 @@ export default class SiderMenu extends PureComponent {
     super(props);
     // this.menus = props.menuData;
     // this.flatMenuKeys = this.getFlatMenuKeys(props.menuData);
-    const pathname =  window.location.hash.split('#')[1];
+    const pathname =  window.location.hash.split('#')[1] || '';
     let openKeys = urlToList(pathname);
     this.state = {
       openKeys:openKeys// this.getDefaultCollapsedSubMenus(props),
