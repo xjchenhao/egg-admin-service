@@ -17,27 +17,20 @@ demo地址：[http://eas.xjchenhao.cn/](http://eas.xjchenhao.cn/)
 
 ## 本地开发
 
-### 启动客户端
-1. 进入工程目录下`client`文件夹
-2. 执行`npm i`安装项目依赖
-3. 执行`npm start`启动，理论上浏览器会自动打开*http://localhost:7001/*
-
-### 启动服务端
-
-#### 初始化数据库内容
-##### 前提
+### 初始化数据库内容
+#### 前提
 该工程使用的数据库是mongodb，请先运行mongodb。
 
-##### 执行脚本
-1. 进入工程目录下`/service/init.d/mongo`文件夹
+#### 执行脚本
+1. 进入工程目录下`/init.d/mongo`文件夹
 3. 终端执行`mongo --quiet localhost:27017/eas init.js`
 4. 查看mongodb是否生成了数据
 
-#### 启动node服务
-1. 进入工程目录下`service`文件夹
+### 启动node服务
+1. 进入工程目录
 2. 执行`npm i`安装项目依赖
-3. 执行`npm run dev`启动node服务
+3. 执行`npm run dev`启动node服务（如果是vscode直接按F5运行即可）
 
-#### 账号
+### 账号
 - admin/123456
 - test/123456
