@@ -1,0 +1,27 @@
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.main {
+  width: 368px;
+  margin: 0 auto;
+}
+.main .icon {
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.2);
+  margin-left: 16px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: color .3s;
+}
+.main .icon:hover {
+  color: #1890ff;
+}
+.main .other {
+  text-align: left;
+  margin-top: 24px;
+  line-height: 22px;
+}
+.main .other .register {
+  float: right;
+}
