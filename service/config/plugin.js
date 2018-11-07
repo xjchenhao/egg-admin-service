@@ -36,3 +36,9 @@ exports.alinode = {
   enable: true,
   package: 'egg-alinode',
 };
+
+// egg官方提供的通用的静态资源管理和本地开发方案
+exports.assets = {
+  enable: true,
+  package: 'egg-view-assets',
+};

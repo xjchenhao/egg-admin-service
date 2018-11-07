@@ -20,19 +20,37 @@ module.exports = appInfo => {
       },
     },
     view: {
-      root: path.join(appInfo.baseDir, 'app/assets'),
+      defaultViewEngine: 'nunjucks',
+      // root: path.join(appInfo.baseDir, 'app/assets'),
       mapping: {
         '.html': 'nunjucks',
       },
     },
-    static: {
-      prefix: '/',
-      dir: [ path.join(appInfo.baseDir, 'app/assets'), path.join(appInfo.baseDir, 'app/public') ],
-    },
+    // static: {
+    //   prefix: '/',
+    //   dir: [ path.join(appInfo.baseDir, 'app/assets'), path.join(appInfo.baseDir, 'app/public') ],
+    // },
     // 是否加载到 app 上，默认开启
     app: true,
     // 是否加载到 agent 上，默认关闭
     agent: false,
+  };
+
+    // 客户端资源配置
+  config.assets = {
+    publicPath: '/public',
+    devServer: {
+      debug: false,
+      command: 'umi dev',
+      port: 8000,
+      env: {
+        APP_ROOT: process.cwd() + '/app/assets',
+        BROWSER: 'none',
+        ESLINT: 'none',
+        SOCKET_SERVER: 'http://127.0.0.1:8000',
+        PUBLIC_PATH: 'http://127.0.0.1:8000',
+      },
+    },
   };
 
   // use for cookie sign key, should change to your own and keep security
