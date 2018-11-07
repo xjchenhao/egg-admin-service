@@ -7,7 +7,8 @@ COPY ./ /usr/local/eas
 
 # 安装service的npm依赖
 RUN cd /usr/local/eas \
-	&& npm install --registry=https://registry.npm.taobao.org
+	&& npm install --registry=https://registry.npm.taobao.org \
+	&& npm run build
 
 # 进入工作目录
 WORKDIR /usr/local/eas
