@@ -14,3 +14,5 @@ run/
 db/
 dist/
 eas.code-workspace
+app/public/pages
+config/manifest.json

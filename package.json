@@ -43,6 +43,7 @@
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
+    "build": "APP_ROOT=$PWD/app/assets HTML=none umi build",
     "ci": "npm run lint && npm run cov",
     "autod": "autod"
   },
