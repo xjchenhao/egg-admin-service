@@ -1,29 +1,16 @@
 FROM registry.cn-hangzhou.aliyuncs.com/aliyun-node/alinode:latest
 
-# copy客户端代码进docker，build静态页面
-RUN mkdir /var/client
-COPY ./client/ /var/client/
-RUN cd /var/client/ \
-	&& npm install --save --registry=https://registry.npm.taobao.org \
-	&& npm run build
 
-# copy服务端代码进docker，替换config文件
-RUN mkdir /var/eas
-COPY ./service/ /var/eas/
-
-# 把build后的静态页面放入服务端的assets中，交由service运行
-RUN mkdir /var/eas/app/assets \
-	&& cp -r /var/client/dist/* /var/eas/app/assets
-
-# 删除client的业务代码（已经build出结果了，这部分代码已经用不到了，留着占docker空间）
-RUN rm -rf /var/client/	
+# copy代码进docker，替换config文件
+RUN mkdir /usr/local/eas
+COPY ./ /usr/local/eas
 
 # 安装service的npm依赖
-RUN cd /var/eas \
-	&& npm install --save --registry=https://registry.npm.taobao.org
+RUN cd /usr/local/eas \
+	&& npm install --registry=https://registry.npm.taobao.org
 
 # 进入工作目录
-WORKDIR /var/eas
+WORKDIR /usr/local/eas
 
 # 配置环境
 ENV NODE_ENV=test

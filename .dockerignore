@@ -1,7 +1,7 @@
 client/node_modules/
 client/dist/
-service/node_modules/
-service/logs/
-service/run/
+node_modules/
+logs/
+run/
 .git/
 .idea/
