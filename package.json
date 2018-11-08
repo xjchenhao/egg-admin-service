@@ -25,8 +25,8 @@
     "egg-mock": "^3.13.0",
     "eslint": "^4.11.0",
     "eslint-config-egg": "^5.1.0",
-    "umi": "2.1.2",
-    "umi-plugin-react": "1.1.1"
+    "umi": "^2.2.4",
+    "umi-plugin-react": "^1.1.1"
   },
   "engines": {
     "node": ">=8.9.0"
