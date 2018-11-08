@@ -1,7 +1,11 @@
-client/node_modules/
-client/dist/
 node_modules/
 logs/
 run/
 .git/
 .idea/
+.db/
+package-lock.json
+yarn.lock
+app/public/pages
+config/manifest.json
+eas.code-workspace

@@ -12,7 +12,7 @@ run/
 *.sw*
 *.un~
 db/
-dist/
 eas.code-workspace
 app/public/pages
 config/manifest.json
+app/assets/pages/.umi
