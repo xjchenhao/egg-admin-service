@@ -1,4 +1,5 @@
 import { login, logout } from '../../services/sys/user';
+import router from 'umi/router';
 
 export default {
   namespace: 'login',
@@ -35,11 +36,11 @@ export default {
         },
       });
 
-      window.location.href = redirect ? redirect : '/';
+      router.push(redirect ? redirect : '/');
     },
     *logout (_, { put, select, call }) {
       yield call(logout);
-      window.location.href = `/?redirect=${encodeURIComponent(window.g_history.location.pathname)}#/sys/user/login`;
+      router.push(`/sys/user/login?redirect=${encodeURIComponent(window.g_history.location.pathname)}`);
     },
   },
 
