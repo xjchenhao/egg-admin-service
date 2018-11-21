@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Card, Form, Input, InputNumber, Button,Switch, Modal, Divider, Table, Breadcrumb, TreeSelect, Icon, Select,Popconfirm } from 'antd';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
-import styles from './../../utils/utils.less';
+import styles from './../../assets/style/global.less';
 
 
 const FormItem = Form.Item;

@@ -4,7 +4,7 @@ import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, Table
 // import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from './../../layouts/pageHeaderLayout';
 
-import styles from './../../utils/utils.less';
+import styles from './../../assets/style/global.less';
 
 
 const FormItem = Form.Item;
