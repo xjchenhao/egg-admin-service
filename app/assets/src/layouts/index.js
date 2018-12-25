@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Layout, LocaleProvider, Icon } from 'antd';
 import 'ant-design-pro/dist/ant-design-pro.css';
 import { enquireScreen } from 'enquire-js';
-import SiderMenu from "../components/SiderMenu/SiderMenu";
+import SiderMenu from "../components/SiderMenu";
 import { getMenuData } from '../common/menu';
 import GlobalHeader from "../components/GlobalHeader";
 import GlobalFooter from 'ant-design-pro/lib/GlobalFooter';
@@ -68,6 +68,8 @@ class BasicLayout extends Component {
   render () {
     const { children, location, currentUser, sidebar } = this.props;
     const { collapsed } = this.state;
+
+    console.log('sidebar',sidebar);
 
     if (this.props.location.pathname === '/sys/user/login') {
       return <SimpleLayout>{this.props.children}</SimpleLayout>
