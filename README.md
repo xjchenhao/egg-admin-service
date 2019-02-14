@@ -3,8 +3,8 @@
 基于eggjs的node service，用来做前后端分离的后台管理系统的后端服务。简称`Eas`。
 Eas后台使用egg当作后台框架，`antd`当作前端界面。
 
-demo地址：[http://eas.xjchenhao.cn/](http://eas.xjchenhao.cn/)
-api地址：[http://yapi.demo.qunar.com/project/8948/interface/api](http://yapi.demo.qunar.com/project/8948/interface/api)
+- demo地址：[http://eas.xjchenhao.cn/](http://eas.xjchenhao.cn/)
+- api地址：[http://yapi.demo.qunar.com/project/8948/interface/api](http://yapi.demo.qunar.com/project/8948/interface/api)
 
 ## 已实现
 1. 权限管理，精确到api级别的权限管理
